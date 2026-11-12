@@ -109,6 +109,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .pickp{position:relative;display:inline-block;cursor:pointer}
 .dpick{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
 .hrow{flex-wrap:wrap}
+.newtip{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px 8px 14px;border-radius:16px;background:#FFF9EA;border:1.5px solid #F5DFB0;color:#6E4B18;font-size:13.5px;font-weight:600}
+.newtip span{min-width:0;line-height:1.35}
+.nt-acts{display:flex;align-items:center;gap:4px;flex:none}
+.nt-go{border:0;border-radius:999px;padding:5px 11px;background:#FFE49A;color:#5A3600;font-size:13px;font-weight:700;white-space:nowrap}
+.nt-x{border:0;background:none;color:#B29568;font-size:14px;padding:4px 6px;line-height:1}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .tgrp{grid-column:1/-1;font-family:var(--fun);font-weight:700;font-size:23px;color:var(--ink);margin:14px 0 -2px}
 .tile{position:relative;border:0;background:var(--white);border-radius:22px;padding:16px 8px 14px;display:flex;flex-direction:column;align-items:center;gap:5px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",var(--body);box-shadow:0 5px 0 var(--line);touch-action:manipulation}
@@ -453,21 +458,20 @@ details.parent summary::-webkit-details-marker{display:none}
 .dyed .edbody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 24px 18px;display:grid;grid-template-columns:248px 1fr;gap:24px;align-items:start}
 /* 左栏：重点突出的拍立得照片相框 */
 .ed-pcol{display:flex;flex-direction:column;align-items:center;gap:10px}
-.ed-pola{position:relative;width:100%;background:#fff;border-radius:18px;padding:12px 12px 14px;box-shadow:0 10px 24px rgba(90,56,20,.14),0 0 0 1.5px #ECDFC8;display:flex;flex-direction:column;gap:10px}
+.ed-pola{position:relative;width:100%;background:#fff;border-radius:18px;padding:12px 12px 22px;box-shadow:0 10px 24px rgba(90,56,20,.14),0 0 0 1.5px #ECDFC8;display:flex;flex-direction:column;gap:10px}
+.ed-pola.has{padding-bottom:14px}
 .ed-pola::before{content:"";position:absolute;top:-9px;left:50%;width:64px;height:18px;margin-left:-32px;border-radius:3px;background:rgba(255,226,140,.85);transform:rotate(-2deg);box-shadow:0 2px 4px rgba(0,0,0,.08)}
 .ed-pbox{position:relative;width:100%;aspect-ratio:1;border-radius:12px;border:2.5px dashed #E5CFA8;background:linear-gradient(180deg,#FFFBF2,#FFF2D6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center;cursor:pointer;overflow:hidden;transition:border-color .15s,transform .12s}
 .ed-pbox:active{transform:scale(.98)}
 .ed-pbox.has{border:0;padding:0;background:#F3EBDD}
 .ed-pbox img{width:100%;height:100%;object-fit:cover;display:block}
-.ed-pbox .cam-ic{width:56px;height:56px;border-radius:50%;background:#FFE5AE;display:grid;place-items:center;font-size:30px;box-shadow:0 4px 0 #F0C265}
-.ed-pbox .cam-t{font-size:17px;font-weight:800;color:#6E4214;margin-top:2px}
-.ed-pbox .cam-s{font-size:13px;color:#9B8468;line-height:1.35}
-.ed-pbox .cam-opt{font-size:12px;font-weight:700;color:#B08D62;background:rgba(255,255,255,.8);border-radius:99px;padding:2px 10px;margin-top:2px}
+.ed-pbox .cam-ic{width:54px;height:54px;border-radius:50%;background:#FFE5AE;display:grid;place-items:center;font-size:28px;box-shadow:0 4px 0 #F0C265}
+.ed-pbox .cam-t{font-size:16px;font-weight:800;color:#6E4214;margin-top:4px}
+.ed-pbox .cam-opt{font-size:12.5px;font-weight:600;color:#A88B67}
 .ed-pst{position:absolute;right:8px;bottom:8px;width:66px;height:66px;border-radius:50%;border:3.5px solid var(--c,#FF9F1C);color:var(--c,#FF9F1C);background:rgba(255,255,255,.86);box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 4px var(--c,#FF9F1C);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-12deg);font-weight:800;line-height:1.05;pointer-events:none}
 .ed-pst i{font-style:normal;font-size:20px}.ed-pst span{font-size:12px;white-space:nowrap}.ed-pst.s4 span{font-size:10px}
-.ed-pacts{display:flex;gap:8px;justify-content:center;align-items:center;min-height:32px}
-.ed-pacts .ed-pcap{font-size:13px;color:#9B8468;font-weight:600;text-align:center}
-.ed-pacts .ed-pcap b{font-weight:700;color:#7A5A36}.ed-pacts .ed-pcap em{display:none}
+.ed-pacts{display:flex;gap:8px;justify-content:center;align-items:center}
+.ed-pacts[hidden]{display:none}
 .ed-pacts .ed-pbtns{display:flex;gap:8px;width:100%}
 .ed-pacts button{flex:1;border:0;border-radius:10px;padding:8px 10px;font:700 13.5px/1 inherit;background:#EEF4FF;color:#2B6CB0;cursor:pointer;white-space:nowrap}
 .ed-pacts .edgray{background:#F3EEE6;color:#7A6E5E}
@@ -486,17 +490,25 @@ details.parent summary::-webkit-details-marker{display:none}
 .ed-cust{display:flex;gap:8px;align-items:center;margin-top:2px}
 .ed-cust input{width:150px;padding:8px 12px;border:2px solid #E5CFA8;border-radius:12px;font:700 15px inherit;background:#fff;color:inherit}
 .ed-cust button{border:0;border-radius:12px;padding:9px 14px;background:#FF9F1C;color:#fff;font:700 14px inherit;cursor:pointer}
-.ed-guide{background:#FFF6E2;border-left:4px solid #FFB74D;border-radius:8px 12px 12px 8px;padding:8px 12px;font-size:14px;line-height:1.5;color:#7A5318}
-.dyed textarea{width:100%;min-height:164px;border:2px solid #E6D8C0;border-radius:16px;padding:12px 14px;font:inherit;font-size:18px;line-height:1.75;color:#26357A;resize:vertical;
+.dyed textarea{width:100%;min-height:172px;border:2px solid #E6D8C0;border-radius:16px;padding:12px 14px;font:inherit;font-size:18px;line-height:1.75;color:#26357A;resize:vertical;
   background:linear-gradient(transparent 30px,#F1E7D6 31px) 0 8px/100% 31.5px,#FFFDF9}
+.dyed textarea::placeholder{color:#B0A28E;font-size:16.5px;font-weight:400}
 .dyed textarea:focus{outline:none;border-color:#FF9F1C;background-color:#fff}
 .dyed textarea.shake{border-color:#E5534B;animation:nope .36s}
 .ed-err{color:#D9483B;font-size:14px;font-weight:700;min-height:0}
-/* 弱化的次要信息栏：日期（默认今天）+ 天气（选填）+ 删除 */
+/* 弱化的次要信息栏：日期（默认今天，点开立刻切昨天或选日子）+ 天气（选填）+ 删除 */
 .ed-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px;padding-top:12px;border-top:1.5px dashed #ECE2D0;color:#8C7F6E;font-size:13.5px}
-.ed-dwrap{position:relative;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:99px;background:#F6F1E7;color:#6E6252;font-weight:600;cursor:pointer}
+.ed-darea{display:inline-flex;align-items:center;min-width:0}
+.ed-dwrap{border:1.5px solid transparent;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:#F6F1E7;color:#6E6252;font:600 13.5px/1.2 inherit;cursor:pointer;transition:background-color .15s,border-color .15s,transform .1s}
+.ed-dwrap:hover{background:#EFE7D8;border-color:#E2D3BC}
+.ed-dwrap:active{transform:scale(.96);background:#E8DEC9}
 .ed-dwrap u{text-decoration:none;color:#4A90E2;font-weight:700;margin-left:2px}
-.ed-dinp{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;border:0;padding:0}
+.ed-dpick{display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px;padding:5px 7px;border-radius:14px;background:#FFF6E2;border:1.5px solid #EECB94}
+.ed-dpick[hidden]{display:none}
+.ed-dpick button[data-dd]{border:0;border-radius:99px;padding:6px 11px;background:#fff;color:#6E583A;font:700 13px/1 inherit;cursor:pointer}
+.ed-dpick button[data-dd].on{background:#FF9F1C;color:#fff}
+.ed-dpick input[type="date"]{border:1.5px solid #E5CCA0;border-radius:10px;background:#fff;padding:4px 8px;font:600 13.5px inherit;color:#3A2614;cursor:pointer;min-height:30px}
+.ed-dpick .ed-dok{border:0;border-radius:99px;padding:6px 10px;background:#EDE3D2;color:#6E5A42;font:700 12.5px/1 inherit;cursor:pointer}
 .ed-wxw{display:inline-flex;align-items:center;gap:4px}
 .ed-wx{display:inline-flex;gap:4px}
 .ed-wx button{border:1.5px solid transparent;background:#F6F1E7;border-radius:99px;width:34px;height:32px;font-size:17px;padding:0;display:grid;place-items:center;opacity:.68;cursor:pointer;transition:all .15s}
@@ -509,19 +521,19 @@ details.parent summary::-webkit-details-marker{display:none}
   .dyed .edttl b{font-size:17px;white-space:nowrap}
   .dyed .edttl small{font-size:11.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .dyed .edbar button{padding:9px 13px;font-size:14.5px}
-  .dyed .edbody{grid-template-columns:1fr;gap:16px;padding:14px 16px 16px}
-  .ed-pola{flex-direction:row;align-items:center;padding:10px 12px;gap:12px}
-  .ed-pola::before{left:54px;margin-left:0;width:44px;height:14px;top:-7px}
-  .ed-pbox{width:96px;height:96px;flex:none;padding:6px;gap:2px}
-  .ed-pbox .cam-ic{width:38px;height:38px;font-size:20px}
-  .ed-pbox .cam-t{font-size:13px}
-  .ed-pbox .cam-s,.ed-pbox .cam-opt{display:none}
+  .dyed .edbody{grid-template-columns:1fr;gap:14px;padding:14px 16px 16px}
+  .ed-pola{padding:8px 10px}
+  .ed-pola.has{flex-direction:row;align-items:center;padding:10px 12px;gap:12px}
+  .ed-pola::before{left:50%;width:44px;height:14px;margin-left:-22px;top:-7px}
+  .ed-pola.has::before{left:54px;margin-left:0}
+  .ed-pola:not(.has) .ed-pbox{width:100%;height:56px;aspect-ratio:auto;flex-direction:row;justify-content:center;gap:10px;padding:8px 14px}
+  .ed-pola:not(.has) .ed-pbox .cam-t{margin-top:0;font-size:15px}
+  .ed-pola.has .ed-pbox{width:88px;height:88px;flex:none}
+  .ed-pbox .cam-ic{width:36px;height:36px;font-size:19px;box-shadow:0 2px 0 #F0C265}
   .ed-pst{width:42px;height:42px;right:4px;bottom:4px;border-width:2.5px}.ed-pst i{font-size:13px}.ed-pst span{font-size:8.5px}
-  .ed-pacts{flex:1;flex-direction:column;align-items:flex-start;gap:6px}
-  .ed-pacts .ed-pcap{font-size:14px;color:#5A4630;line-height:1.4}
-  .ed-pacts .ed-pcap em{display:block;font-style:normal;font-size:12.5px;color:#9B8468;font-weight:500;margin-top:2px}
+  .ed-pacts{flex:1}
   .ed-pacts .ed-pbtns{display:flex;flex-direction:column;gap:6px;width:100%}
-  .dyed textarea{min-height:118px;font-size:17px}
+  .dyed textarea{min-height:124px;font-size:17px}
 }
 #diary .dfoot{display:flex;align-items:flex-end;gap:calc(2*var(--u));order:5}#diary .dsign{order:4}#diary .dfoot .stamp{margin-left:auto}
 #diary .dpic{position:relative;flex:none;width:calc(19*var(--u));padding:calc(1*var(--u)) calc(1*var(--u)) calc(3*var(--u));background:#fff;border-radius:calc(.4*var(--u));box-shadow:0 calc(.5*var(--u)) calc(1.2*var(--u)) rgba(0,0,0,.18);transform:rotate(-5deg);margin:calc(1.6*var(--u)) 0 0 calc(.6*var(--u))}
@@ -1095,7 +1107,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid" type="button">🧒 小朋友</button><button class="mini" data-vs="normal" type="button">🙂 普通</button><button class="mini" data-vs="robot" type="button">🤖 机器人</button><button class="mini" data-vs="captain" type="button">🦾 机器人队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月12日 11:00</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月12日 14:56</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1103,28 +1115,142 @@ details.parent summary{background:none}
 
 <div class="pop" id="pop" hidden><div class="box" id="popBox"></div></div>
 
-<div id="setup" hidden role="dialog" aria-label="开始使用"><div class="sucard">
-  <h2>欢迎来到小当家 ⭐</h2>
-  <p>先告诉我们孩子叫什么，卡片和日记本上会写上名字，生日会变成积分卡左下角的专属卡号。</p>
-  <input id="suName" autocomplete="off" maxlength="8" placeholder="孩子的名字（小名也可以）" aria-label="孩子的名字">
-  <label class="subday"><span>🎂 孩子的生日（印成专属卡号，可后填）</span><input id="suBday" type="date" aria-label="孩子的生日"></label>
-  <input id="suCls" autocomplete="off" maxlength="12" placeholder="班级，比如 一（3）班（可不填）" aria-label="班级">
-  <button id="suGo" type="button">开始使用</button>
-  <div class="suor">家里已经有设备在用了？</div>
-  <div class="surow"><input id="suCode" autocomplete="off" autocapitalize="characters" placeholder="输入家庭码" aria-label="家庭码"><button id="suJoin" type="button">加入</button></div>
-  <div id="suMsg" role="status"></div>
-</div></div>
+<div id="setup" hidden role="dialog" aria-label="欢迎来到小当家">
+  <div class="su-wrap">
+    <div class="su-stage" aria-hidden="true">
+      <span class="su-sp s1">✦</span><span class="su-sp s2">★</span><span class="su-sp s3">✦</span>
+      <div class="su-gcard shine" id="suCard">
+        <div class="su-ctop">
+          <div class="su-cbrand"><span class="su-clogo">★</span><div><b>小当家</b><small>XIAODANGJIA</small></div></div>
+          <div class="su-ckind">积分卡</div>
+        </div>
+        <div class="su-cmid">
+          <div class="su-ccap" id="suCardCap">专属持卡人</div>
+          <div class="su-cname su-empty" id="suCardName"><span>宝贝</span><i>★</i></div>
+        </div>
+        <div class="su-cbot">
+          <span class="su-cno" id="suCardNo">No. ✦✦✦✦✦✦✦✦</span>
+          <span class="su-holo"></span>
+        </div>
+      </div>
+    </div>
+    <div class="su-panel">
+      <div class="su-pane" id="suPaneNew">
+        <h2>送宝贝一张星星卡</h2>
+        <p class="su-sub">写个名字就能领卡，马上开始攒星星</p>
+        <div class="su-field">
+          <input id="suName" autocomplete="off" maxlength="10" placeholder="宝贝叫什么？（小名也可以）" aria-label="孩子的名字">
+        </div>
+        <div class="su-opt">
+          <button type="button" class="su-bday-tog" id="suBdayTog">🎂 顺便印上生日卡号（选填）</button>
+          <div class="su-bday-box" id="suBdayBox" hidden>
+            <span>🎂 生日</span>
+            <input id="suBday" type="date" aria-label="孩子的生日">
+            <button type="button" class="su-bday-x" id="suBdayHide" aria-label="收起">收起</button>
+          </div>
+        </div>
+        <button id="suGo" class="su-cta su-idle" type="button">领卡出发</button>
+        <div id="suMsg" class="su-msg" role="status"></div>
+        <div class="su-foot">
+          <button type="button" class="su-switch" id="suToJoin">家里别的设备在用了？<b>输入家庭码 ›</b></button>
+        </div>
+      </div>
+      <div class="su-pane" id="suPaneJoin" hidden>
+        <button type="button" class="su-back" id="suToNew">‹ 返回领新卡</button>
+        <h2>连上家里的记录</h2>
+        <p class="su-sub">输入另一台设备「家长看这里」里的 9 位家庭码</p>
+        <div class="su-field su-join-field">
+          <input id="suCode" class="su-code" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="20" placeholder="XXX-XXX-XXX" aria-label="家庭码">
+        </div>
+        <button id="suJoin" class="su-cta su-idle" type="button">同步进入</button>
+        <div id="suJoinMsg" class="su-msg" role="status"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <style>
-#setup{position:fixed;inset:0;z-index:9999;background:#FBF7F0;display:grid;place-items:center;padding:20px;overflow:auto}
-#setup[hidden]{display:none}
-.sucard{width:min(420px,100%);background:#fff;border-radius:24px;padding:26px 22px;display:grid;gap:12px;border:2px solid #EFE7DA}
-.sucard h2{margin:0;font-size:24px}.sucard p{margin:0;color:#6B7280;font-size:15px;line-height:1.5}
-.sucard input{font:inherit;font-size:17px;padding:12px 14px;border-radius:14px;border:2px solid #E5E0D6;background:#fff;min-width:0;width:100%;box-sizing:border-box}
-.subday{display:grid;gap:5px;color:#6B7280;font-size:14px}
-.sucard button{font:inherit;font-size:18px;font-weight:700;padding:12px 16px;border-radius:14px;border:0;background:#FFC83D;color:#3A2A00}
-.suor{margin-top:10px;padding-top:14px;border-top:2px dashed #EFE7DA;color:#6B7280;font-size:15px}
-.surow{display:flex;gap:8px}.surow button{background:#E8F1FF;color:#1F4FA8;white-space:nowrap}
-#suMsg{min-height:1.4em;color:#C2410C;font-size:14px}
+#setup{position:fixed;inset:0;z-index:9999;background:radial-gradient(circle at 50% 24%,#FFF5D6 0%,#FBF7F0 62%);color:#1F2B57;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#setup[hidden]{display:none!important}
+.su-wrap{min-height:100%;min-height:100dvh;box-sizing:border-box;max-width:420px;margin:0 auto;padding:max(38px,env(safe-area-inset-top,0px)) 28px max(26px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.su-stage{position:relative;width:min(268px,78vw);padding:6px 0}
+.su-sp{position:absolute;color:#F5B82E;pointer-events:none;animation:suFloat 3.6s ease-in-out infinite}
+.su-sp.s1{top:-8px;left:-14px;font-size:18px;opacity:.75}
+.su-sp.s2{top:12%;right:-18px;font-size:15px;opacity:.55;animation-delay:1.1s}
+.su-sp.s3{bottom:2px;left:-10px;font-size:13px;opacity:.45;animation-delay:2s}
+@keyframes suFloat{50%{transform:translateY(-5px) scale(1.08)}}
+.su-gcard{position:relative;overflow:hidden;aspect-ratio:1.586;container-type:inline-size;border-radius:20px;padding:5.6% 6.6%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;color:#4A2600;transform:rotate(-2.2deg);transition:transform .35s cubic-bezier(.2,.9,.3,1.2),box-shadow .35s;
+  background:repeating-linear-gradient(115deg,rgba(255,255,255,.10) 0 2px,transparent 2px 9px),radial-gradient(120% 90% at 100% 0%,#FFF3B8 0%,transparent 48%),linear-gradient(135deg,#FFE066 0%,#F7B72E 52%,#E8871A 100%);
+  box-shadow:0 20px 42px rgba(216,132,20,.26),0 4px 10px rgba(216,132,20,.12),inset 0 0 0 1.5px rgba(255,255,255,.55)}
+.su-gcard::before{content:"★";position:absolute;right:-6cqw;bottom:-22cqw;font-size:68cqw;line-height:1;color:#fff;opacity:.17;transform:rotate(14deg);pointer-events:none}
+.su-gcard.su-on{transform:rotate(-1deg) scale(1.02);box-shadow:0 24px 48px rgba(216,132,20,.34),0 6px 14px rgba(216,132,20,.16),inset 0 0 0 2px rgba(255,255,255,.7)}
+.su-gcard.su-pop{animation:suCardPop .36s ease-out}
+@keyframes suCardPop{40%{transform:rotate(0deg) scale(1.045)}}
+.su-gcard>*{position:relative;z-index:1;width:100%}
+.su-ctop{display:flex;justify-content:space-between;align-items:flex-start}
+.su-cbrand{display:flex;align-items:center;gap:2.6cqw}
+.su-clogo{width:11cqw;height:11cqw;border-radius:50%;background:#4A2600;color:#FFD54A;display:grid;place-items:center;font-size:6.4cqw}
+.su-cbrand b{display:block;font-size:6cqw;line-height:1.1;font-weight:700}
+.su-cbrand small{display:block;font-size:2.7cqw;letter-spacing:.16em;opacity:.75}
+.su-ckind{background:rgba(74,38,0,.88);color:#FFE27A;border-radius:999px;padding:1.2cqw 3.4cqw;font-size:4.2cqw;font-weight:700;letter-spacing:.06em}
+.su-cmid{margin-top:1cqw}
+.su-ccap{font-size:3.8cqw;opacity:.78;margin-bottom:1cqw;font-weight:600}
+.su-cname{display:flex;align-items:baseline;gap:2cqw;font-size:14.5cqw;font-weight:800;line-height:1.05;color:#fff;text-shadow:0 .6cqw 0 rgba(185,95,8,.55);letter-spacing:.02em;transition:opacity .2s,font-size .18s}
+.su-cname.su-long{font-size:10.5cqw}
+.su-cname span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:74cqw}
+.su-cname.su-empty{opacity:.52}
+.su-cname i{font-style:normal;font-size:8cqw;color:#FFF6CE;text-shadow:none}
+.su-cbot{display:flex;justify-content:space-between;align-items:flex-end}
+.su-cno{color:#FFF8E1;font-size:4.8cqw;font-weight:700;letter-spacing:.12em;font-variant-numeric:tabular-nums;text-shadow:0 1px 0 rgba(74,38,0,.45)}
+.su-holo{width:13cqw;height:8.5cqw;border-radius:2cqw;background:conic-gradient(from 30deg,#ff9a9e,#fad0c4,#a1c4fd,#c2e9fb,#d4fc79,#96e6a1,#ff9a9e);opacity:.85;box-shadow:inset 0 0 0 1px rgba(255,255,255,.7)}
+
+.su-panel{width:100%;display:flex;flex-direction:column}
+.su-pane{display:flex;flex-direction:column;align-items:center;text-align:center}
+.su-pane h2{margin:0;font-size:25px;font-weight:800;letter-spacing:-.01em;color:#1F2B57}
+.su-sub{margin:7px 0 22px;color:#7B849B;font-size:14.5px;line-height:1.4}
+.su-field{width:100%}
+.su-pane input[type="text"],.su-pane input:not([type]){font:inherit;width:100%;box-sizing:border-box;height:56px;padding:0 20px;border-radius:18px;border:2px solid rgba(31,43,87,.08);background:#fff;color:#1F2B57;font-size:18px;font-weight:600;text-align:center;box-shadow:0 6px 20px rgba(31,43,87,.05);transition:border-color .2s,box-shadow .2s}
+.su-pane input::placeholder{color:#B0B7C6;font-weight:500;font-size:16px}
+.su-pane input:focus{outline:none;border-color:#FFB81C;box-shadow:0 8px 24px rgba(255,184,28,.18)}
+.su-pane input.su-shake{animation:suShake .34s}
+@keyframes suShake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+.su-join-field{margin-bottom:18px}
+.su-code{letter-spacing:.18em;font-variant-numeric:tabular-nums;font-size:20px!important}
+.su-opt{width:100%;margin:12px 0 20px;min-height:28px;display:flex;justify-content:center}
+.su-bday-tog{border:0;background:none;padding:4px 10px;border-radius:999px;color:#8A795D;font-size:13.5px;font-weight:600;opacity:.88;transition:background-color .15s,opacity .15s}
+.su-bday-tog:hover{background:rgba(255,200,61,.16);opacity:1}
+.su-bday-box{width:100%;display:flex;align-items:center;gap:8px;padding:6px 12px 6px 14px;border-radius:14px;background:rgba(255,255,255,.78);border:1.5px solid rgba(31,43,87,.07)}
+.su-bday-box span{font-size:13.5px;font-weight:600;color:#6B7280;white-space:nowrap}
+.su-bday-box input{font:inherit;flex:1;min-width:0;border:0;background:transparent;color:#1F2B57;font-size:15px;font-weight:600;padding:4px 0}
+.su-bday-box input:focus{outline:none}
+.su-bday-x{border:0;background:none;color:#9CA3AF;font-size:13px;padding:4px 6px;white-space:nowrap}
+
+.su-cta{width:100%;height:54px;border-radius:18px;border:0;font:inherit;font-size:18px;font-weight:800;letter-spacing:.02em;background:linear-gradient(180deg,#FFD54F 0%,#FFBD24 100%);color:#3D2600;box-shadow:0 5px 0 #DC9610,0 12px 24px rgba(240,165,20,.26);transition:transform .12s,box-shadow .2s,background .2s,color .2s,opacity .2s}
+.su-cta:active:not(.su-idle){transform:translateY(3px);box-shadow:0 2px 0 #DC9610}
+.su-cta.su-idle{background:#ECE6DA;color:#A9A090;box-shadow:none}
+.su-msg{min-height:20px;margin-top:10px;color:#D9534F;font-size:13.5px;font-weight:600}
+.su-foot{margin-top:26px}
+.su-switch{border:0;background:none;padding:8px 14px;border-radius:999px;color:#848CA1;font-size:14px}
+.su-switch b{color:#4E6FAE;font-weight:700;margin-left:2px}
+.su-back{align-self:flex-start;border:0;background:none;padding:4px 2px;margin-bottom:10px;color:#6E7891;font-size:14.5px;font-weight:600}
+
+@media (min-width:760px){
+  #setup{background:radial-gradient(circle at 30% 48%,#FFF3CC 0%,#FBF7F0 52%)}
+  .su-wrap{max-width:880px;flex-direction:row;justify-content:space-between;gap:68px;padding:48px 56px}
+  .su-stage{width:380px;flex:none}
+  .su-gcard{border-radius:24px;transform:rotate(-3deg)}
+  .su-sp.s1{font-size:22px;top:-14px;left:-18px}
+  .su-sp.s2{font-size:18px;right:-22px}
+  .su-panel{flex:1;max-width:360px}
+  .su-pane{align-items:flex-start;text-align:left}
+  .su-pane h2{font-size:30px}
+  .su-sub{font-size:15.5px;margin:8px 0 26px}
+  .su-pane input[type="text"],.su-pane input:not([type]){text-align:left;padding:0 20px}
+  .su-code{text-align:center!important}
+  .su-opt{justify-content:flex-start}
+  .su-bday-tog{margin-left:-10px}
+  .su-foot{margin-top:32px;align-self:flex-start}
+  .su-switch{padding-left:0}
+}
 </style>
 <script>
 const PAGE="bank"; /* pts = 积分卡页，bank = 存折页 */
@@ -1491,7 +1617,7 @@ async function initStore(){
    每次切换家庭码都会彻底清空上一家的本地残留，保证家庭与家庭之间 100% 独立、绝不串数据。 */
 const MODE="family",API="https://eelyepkkkazgztdcnicu.supabase.co",APIKEY="sb_publishable_eGBwA1L2QycoBc9XQnzY1Q_LW-ra8ip";
 /* 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="20dec59ec3";
+const BUILD="8c06ebd928";
 if(MODE==="family"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const setSync=t=>{const el=$("#status");if(el)el.textContent=t};
@@ -1503,7 +1629,7 @@ const famShow=c=>c?c.slice(0,3)+"-"+c.slice(3,6)+"-"+c.slice(6):"";
 function resetFamilyLocal(code,maps){
   stopSpeech();
   for(const c of ALL_COLS){const m=(maps&&maps[c])||{};localPut(c,m);state[c]=m}
-  lsSet("pend",[]);lsSet("fam",code);lsSet("famOk",code);
+  lsSet("pend",[]);lsSet("fam",code);lsSet("famOk",code);lsSet("newTip",null);
   for(const k in shown)delete shown[k];
   phoneGrp="";recDay=null;vFamLoaded="";
   loadLocalVPref();
@@ -1565,18 +1691,21 @@ function applyKid(){
   if(kb&&document.activeElement!==kb){kb.max=today();kb.value=BDAY()}
   if(kc&&document.activeElement!==kc)kc.value=CLS();
 }
-/* 第一次打开：填孩子的名字和生日开始用，或者输入家里已有的家庭码加入 */
+/* 第一次打开：领一张金色星星卡（极简一步），或输入家里已有的家庭码连上记录 */
 const Setup={
-  el:null,
-  show(){this.el.hidden=false},hide(){this.el.hidden=true},
-  msg(t){$("#suMsg").textContent=t||""},
-  begin(name,cls,bday){
-    name=name.trim();if(!name){this.msg("先写上孩子的名字（小名也可以）");return}
+  el:null,mode:"new",
+  show(){this.el.hidden=false;barTint("#FBF7F0")},
+  hide(){this.el.hidden=true;barTint("")},
+  msg(t,join){const el=$(join?"#suJoinMsg":"#suMsg");if(el)el.textContent=t||""},
+  pulse(){const c=$("#suCard");if(!c)return;c.classList.remove("su-pop");void c.offsetWidth;c.classList.add("su-pop")},
+  shake(inp){if(!inp)return;inp.classList.remove("su-shake");void inp.offsetWidth;inp.classList.add("su-shake");inp.focus()},
+  begin(name,bday){
+    name=name.trim();if(!name){this.shake($("#suName"));return}
     const code=famNew();
     resetFamilyLocal(code,null);
-    lsSet("famNew",true);
-    const kid={name,cls:cls.trim()};if(bday)kid.bday=bday;
-    put("profile","kid",kid);this.hide();if(PAGE==="pts")Layout.open(true)},
+    lsSet("famNew",true);lsSet("newTip",1);
+    const kid={name,cls:""};if(bday)kid.bday=bday;
+    put("profile","kid",kid);this.hide();chaching();confetti()},
   async join(code,done){
     code=famClean(code);if(code.length!==9){done(false);return}
     if(!API){done(null);return}
@@ -1594,11 +1723,47 @@ const Setup={
     }catch(e){done(e==="nofam"?false:null)}},
   init(){
     this.el=$("#setup");if(!this.el)return;
-    const sb=$("#suBday");if(sb)sb.max=today();
+    const sn=$("#suName"),sb=$("#suBday"),sc=$("#suCode"),go=$("#suGo"),jn=$("#suJoin"),card=$("#suCard"),cn=$("#suCardName"),cno=$("#suCardNo"),ccap=$("#suCardCap");
+    if(sb)sb.max=today();
+    let hadName=false;
+    const syncNew=pop=>{
+      const nm=(sn&&sn.value||"").trim(),bd=(sb&&sb.value||"").replace(/\D/g,"");
+      if(ccap)ccap.textContent="专属持卡人";
+      if(cn){cn.innerHTML=`<span>${esc(nm||"宝贝")}</span><i>★</i>`;cn.classList.toggle("su-empty",!nm);cn.classList.toggle("su-long",[...nm].length>4)}
+      if(cno)cno.textContent=bd.length===8?"No."+bd:"No. ✦✦✦✦✦✦✦✦";
+      if(card)card.classList.toggle("su-on",!!nm);
+      if(go)go.classList.toggle("su-idle",!nm);
+      if(pop||(!!nm!==hadName)){hadName=!!nm;this.pulse()}
+      this.msg("");
+    };
+    const fmtCode=raw=>{const c=famClean(raw).slice(0,9);return c.length>6?c.slice(0,3)+"-"+c.slice(3,6)+"-"+c.slice(6):c.length>3?c.slice(0,3)+"-"+c.slice(3):c};
+    const syncJoin=()=>{
+      const c=famClean(sc&&sc.value||"").slice(0,9),vis=fmtCode(c);
+      if(sc&&sc.value!==vis)sc.value=vis;
+      if(ccap)ccap.textContent="家庭共享同步";
+      if(cn){cn.innerHTML=`<span>${c.length===9?"准备同步":"连上记录"}</span><i>★</i>`;cn.classList.toggle("su-empty",c.length<9);cn.classList.remove("su-long")}
+      if(cno)cno.textContent=vis?"FAM · "+vis:"FAM · --- --- ---";
+      if(card)card.classList.toggle("su-on",c.length===9);
+      if(jn)jn.classList.toggle("su-idle",c.length!==9);
+      this.msg("",true);
+    };
     if(!lsGet("fam",""))this.show();
-    $("#suGo").addEventListener("click",()=>this.begin($("#suName").value,$("#suCls").value,sb?sb.value:""));
-    $("#suJoin").addEventListener("click",()=>{this.msg("正在找这个家庭…");
-      this.join($("#suCode").value,ok=>{if(ok===true)this.hide();else this.msg(ok===false?"家庭码不对，请照着另一台设备上的再输一遍（9 位）":"现在连不上网，请稍后再试")})});
+    if(sn){sn.addEventListener("input",()=>syncNew(false));sn.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();go.click()}})}
+    if(sb){sb.addEventListener("input",()=>syncNew(true));sb.addEventListener("change",()=>syncNew(true))}
+    const bt=$("#suBdayTog"),bb=$("#suBdayBox"),bh=$("#suBdayHide");
+    if(bt&&bb)bt.addEventListener("click",()=>{bt.hidden=true;bb.hidden=false;if(sb){sb.focus();try{if(sb.showPicker)sb.showPicker()}catch(e){}}});
+    if(bh&&bb&&bt)bh.addEventListener("click",()=>{if(sb)sb.value="";bb.hidden=true;bt.hidden=false;syncNew(true)});
+    if(go)go.addEventListener("click",()=>this.begin(sn?sn.value:"",sb?sb.value:""));
+    const toJ=$("#suToJoin"),toN=$("#suToNew"),pN=$("#suPaneNew"),pJ=$("#suPaneJoin");
+    if(toJ)toJ.addEventListener("click",()=>{pN.hidden=true;pJ.hidden=false;syncJoin();this.pulse();if(sc)sc.focus()});
+    if(toN)toN.addEventListener("click",()=>{pJ.hidden=true;pN.hidden=false;syncNew(true)});
+    if(sc){sc.addEventListener("input",syncJoin);sc.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();jn.click()}})}
+    if(jn)jn.addEventListener("click",()=>{
+      const c=famClean(sc&&sc.value||"");
+      if(c.length!==9){this.shake(sc);if(c.length)this.msg(`还差 ${9-c.length} 位家庭码`,true);return}
+      this.msg("正在连上家里的记录…",true);
+      this.join(c,ok=>{if(ok===true){this.hide();chaching()}else this.msg(ok===false?"家庭码不对，请照着另一台设备再核对一下":"暂时连不上网，请稍后再试",true)});
+    });
     const save=$("#kidSave");
     if(save)save.addEventListener("click",()=>{const n=$("#kidName").value.trim();if(!n)return;const kb=$("#kidBday"),kid={name:n,cls:$("#kidCls").value.trim()};if(kb&&kb.value)kid.bday=kb.value;put("profile","kid",kid);save.textContent="已保存 ✓";setTimeout(()=>save.textContent="保存",1500)});
     const jb=$("#famJoin");
@@ -1724,9 +1889,14 @@ const Layout={
       if(t.diary&&t.diary.startsWith("c:")){const w=t.diary.slice(2).trim();if(!w){this.msg(`请给「${t.name}」填上日记印章词（最多 4 个字，如：助人）`);return}t.diary="c:"+w}
     }
     if(!d.tiles.length){this.msg("至少要有一张选择卡片");return}
+    lsSet("newTip",null);
     put("layout","pts",{groups:d.groups,tiles:d.tiles,ts:Date.now()});this.close()}
 };
-document.addEventListener("click",e=>{if(e.target.closest("#layOpen"))Layout.open()});
+document.addEventListener("click",e=>{
+  if(e.target.closest("#layOpen"))Layout.open();
+  else if(e.target.closest("#ntEdit")){lsSet("newTip",null);renderPts();Layout.open(true)}
+  else if(e.target.closest("#ntHide")){lsSet("newTip",null);renderPts()}
+});
 
 
 /* ---------- 计算 ---------- */
@@ -1784,6 +1954,7 @@ document.addEventListener("click",e=>{const b=e.target.closest(".gtabs [data-g]"
 function renderPts(){
   const p=ptsCalc(),t=recDate();
   countTo("ptsTotal",p.total);
+  const nt=$("#newTip");if(nt)nt.hidden=!(lsGet("newTip",0)&&!(state.layout&&state.layout.pts));
   const st=$("#ptsStreak");st.hidden=p.streak<2;st.textContent="🔥 连续打卡 "+p.streak+" 天";
   if(!GROUPS.some(g=>g.id===phoneGrp))phoneGrp=GROUPS[0].id;
   const ghead=g=>`<span class="gic">${esc(g.ic)}</span>${esc(g.name)}<em class="gcnt" id="cnt-${g.id}"></em>`;
@@ -1980,7 +2151,7 @@ function endEntry(){entryT.forEach(clearTimeout);entryT=[];const en=$("#entry");
 function closeShop(){if(shopOpen)doorSnd(false);endEntry();shopOpen=false;picked=null;$("#shop").hidden=true;$("#counter").hidden=true;document.body.style.overflow="";barTint("")}
 const perRow=()=>innerWidth>=760?4:3;
 let migHero=false;try{migHero=!!localStorage.getItem("xdj:migHero")}catch(e){}
-function renderShop(){
+function renderShop(force){
   if(PAGE!=="pts")return;
   /* 大愿望原来的小熊图标换成小英雄（只换一次，之后家长可以自己改） */
   if(!migHero&&state.shop.s_toy){migHero=true;try{localStorage.setItem("xdj:migHero","1")}catch(e){}if(state.shop.s_toy.icon==="r_toy"){shopSave("s_toy",{icon:"r_hero"});return}}
@@ -2004,7 +2175,7 @@ function renderShop(){
   $("#tacts").hidden=!p;
   if(p&&!$("#regBtn"))$("#tacts").innerHTML=`<button class="back2" id="putBack" type="button">放回去</button><button class="reg" id="regBtn" type="button"><i></i>${gico("r_register")}<span>家长按住收银机</span></button>`;
   if(!p)$("#tacts").innerHTML="";
-  const ed=$("#erows");if(ed.contains(document.activeElement))return;
+  const ed=$("#erows"),ae=document.activeElement;if(!force&&ae&&ed.contains(ae)&&ae.tagName==="INPUT")return;
   ed.innerHTML=got.map(d=>`<div class="erow egot" data-id="${d.id}"><span class="eic">${itIco(d)}</span><span class="en">${esc(d.name)}<small>${gd(d.got)} 换到</small></span><button class="eback" type="button">放回货架</button><button class="edel" type="button" aria-label="删掉">🗑</button></div>`).join("")+items.map(d=>`<div class="erow" data-id="${d.id}"><button class="eic" type="button" aria-label="${d.photo?"去掉照片":"换图标"}">${itIco(d)}</button><button class="ecam" type="button" aria-label="用照片">📷</button><input class="en" value="${esc(d.name)}" aria-label="名字"><input class="ep" type="number" min="1" inputmode="numeric" value="${d.pts}" aria-label="几分"><button class="estar ${d.wish?"on":""}" type="button" aria-label="设成大愿望">⭐</button><button class="edel" type="button" aria-label="撤下">🗑</button></div>`).join("");
 }
 async function pickItem(d,el){
@@ -2073,20 +2244,20 @@ if(PAGE==="pts"){
   $("#counter").addEventListener("contextmenu",e=>{if(e.target.closest("#regBtn"))e.preventDefault()});
   const ed=$("#erows");
   ed.addEventListener("click",async e=>{const row=e.target.closest(".erow");if(!row)return;const id=row.dataset.id,d=shopAll().find(x=>x.id===id);if(!d)return;
-    if(e.target.closest(".eback")){if(confirm("把「"+d.name+"」放回货架吗？"))await shopSave(id,{got:null});return}
+    if(e.target.closest(".eback")){if(confirm("把「"+d.name+"」放回货架吗？")){await shopSave(id,{got:null});renderShop(true)}return}
     if(e.target.closest(".ecam")){photoFor=id;$("#ePhoto").value="";$("#ePhoto").click();return}
-    if(e.target.closest(".eic")&&d.photo){if(confirm("去掉照片，换回图标吗？"))await shopSave(id,{photo:null});return}
-    if(e.target.closest(".eic")){const i=SHOP_ICONS.indexOf(d.icon);await shopSave(id,{icon:SHOP_ICONS[(i+1)%SHOP_ICONS.length]})}
-    else if(e.target.closest(".estar")){await ensureShop();for(const x of shopItems())if(x.wish&&x.id!==id)await shopSave(x.id,{wish:false});await shopSave(id,{wish:!d.wish})}
-    else if(e.target.closest(".edel")){if(confirm(d.got?"把「"+d.name+"」从已经换到的礼物里删掉？":"把「"+d.name+"」撤下货架？")){await ensureShop();await del("shop",id)}}});
+    if(e.target.closest(".eic")&&d.photo){if(confirm("去掉照片，换回图标吗？")){await shopSave(id,{photo:null});renderShop(true)}return}
+    if(e.target.closest(".eic")){const i=SHOP_ICONS.indexOf(d.icon);await shopSave(id,{icon:SHOP_ICONS[(i+1)%SHOP_ICONS.length]});renderShop(true)}
+    else if(e.target.closest(".estar")){await ensureShop();for(const x of shopItems())if(x.wish&&x.id!==id)await shopSave(x.id,{wish:false});await shopSave(id,{wish:!d.wish});renderShop(true)}
+    else if(e.target.closest(".edel")){if(confirm(d.got?"把「"+d.name+"」从已经换到的礼物里删掉？":"把「"+d.name+"」撤下货架？")){await ensureShop();await del("shop",id);renderShop(true)}}});
   ed.addEventListener("change",async e=>{const row=e.target.closest(".erow");if(!row)return;const id=row.dataset.id;
     if(e.target.classList.contains("en")){const v=e.target.value.trim();if(v)await shopSave(id,{name:v})}
     if(e.target.classList.contains("ep")){const v=Math.round(Number(e.target.value));if(v>0)await shopSave(id,{pts:v})}
-    e.target.blur();renderShop()});
+    e.target.blur();renderShop(true)});
   let photoFor=null;
   $("#ePhoto").addEventListener("change",async e=>{const f=e.target.files[0];if(!f||!photoFor)return;
-    try{await shopSave(photoFor,{photo:await shrinkPhoto(f)})}catch(err){alert("这张照片读不出来，换一张试试")}photoFor=null});
-  $("#eAdd").addEventListener("click",async()=>{await ensureShop();const n=shopItems().reduce((m,x)=>Math.max(m,x.order||0),0)+1;await shopSave("s"+rid(),{name:"新东西",icon:"r_gift",pts:50,order:n})});
+    try{await shopSave(photoFor,{photo:await shrinkPhoto(f)});renderShop(true)}catch(err){alert("这张照片读不出来，换一张试试")}photoFor=null});
+  $("#eAdd").addEventListener("click",async()=>{await ensureShop();const n=shopItems().reduce((m,x)=>Math.max(m,x.order||0),0)+1;await shopSave("s"+rid(),{name:"新东西",icon:"r_gift",pts:50,order:n});renderShop(true)});
 }
 
 /* ---------- 家长区：换奖励 ---------- */
@@ -2535,12 +2706,12 @@ const Diary=(()=>{
   $("#dyEdit").addEventListener("toggle",renderEditor);
   const ed=$("#dyEd"),edText=$("#edText"),edCust=$("#edCust"),edCustIn=$("#edCustIn"),edErr=$("#edErr");let E=null;
   const Q_GUIDES={
-    persist:"💡 引导：本来哪里觉得有点累或难？宝贝是怎么咬牙坚持做完的？",
-    brave:"💡 引导：遇到了什么有点害怕或陌生的事？宝贝是怎么鼓起勇气做到的？",
-    focus:"💡 引导：今天做什么事情特别认真投入？一口气专注了多久？",
-    nocry:"💡 引导：遇到了什么着急或委屈的事？宝贝是怎么忍住眼泪好好解决的？",
-    self:"💡 引导：今天哪件事不用爸爸妈妈催，自己主动去做好了？",
-    talk:"💡 引导：心里有什么想法或委屈，宝贝是怎么清楚、好好地说出来的？"
+    persist:"本来哪里觉得有点累或难？宝贝是怎么咬牙坚持做完的？",
+    brave:"遇到了什么有点害怕或陌生的事？宝贝是怎么鼓起勇气做到的？",
+    focus:"今天做什么事情特别认真投入？一口气专注了多久？",
+    nocry:"遇到了什么着急或委屈的事？宝贝是怎么忍住眼泪好好解决的？",
+    self:"今天哪件事不用爸爸妈妈催，自己主动去做好了？",
+    talk:"心里有什么想法或委屈，宝贝是怎么清楚、好好地说出来的？"
   };
   function qChips(sel){const m=curDQ();if(sel&&!m[sel])m[sel]=dqOf(sel);
     return Object.entries(m).map(([k,q])=>`<button type="button" data-q="${esc(k)}" class="${k===sel?"on":""}" style="--c:${q.c}">${esc(q.ic)} ${esc(q.name)}</button>`).join("")+`<button type="button" data-q="+">＋ 自定印章</button>`}
@@ -2548,20 +2719,27 @@ const Diary=(()=>{
     if(!ds)ds=today();const[,mo,da]=md(ds),w="周"+wdOf(ds);
     return ds===today()?`今天 · ${mo}月${da}日 ${w}`:ds===addDays(today(),-1)?`昨天 · ${mo}月${da}日 ${w}`:`${mo}月${da}日 ${w}`;
   }
+  const edDateBtn=$("#edDateBtn"),edDateBox=$("#edDateBox"),edDateInp=$("#edDate");
+  function closeDateBox(){edDateBox.hidden=true;edDateBtn.hidden=false}
   function edDraw(){
     if(!E)return;
-    const q=dqOf(E.q),pbox=$("#edPbox"),pacts=$("#edPacts");
+    const q=dqOf(E.q),pola=$("#edPola"),pbox=$("#edPbox"),pacts=$("#edPacts");
     $("#edQ").innerHTML=qChips(E.q);
-    $("#edGuide").textContent=Q_GUIDES[E.q]||`💡 引导：宝贝今天在「${q.name}」这件事上是怎么做的？记下一两句吧！`;
+    edText.placeholder=Q_GUIDES[E.q]||`宝贝今天在「${q.name}」这件事上是怎么做的？记下一两句吧～`;
+    pola.classList.toggle("has",!!E.photo);
     pbox.classList.toggle("has",!!E.photo);
     if(E.photo){
       pbox.innerHTML=`<img src="${E.photo}" alt="日记照片"><span class="ed-pst${q.name.length>3?" s4":""}" style="--c:${q.c}"><i>${esc(q.ic)}</i><span>${esc(q.name)}</span></span>`;
-      pacts.innerHTML=`<div class="ed-pbtns"><button type="button" data-pa="pick">🔄 换一张照片</button><button type="button" class="edgray" data-pa="del">✕ 去掉</button></div>`;
+      pacts.innerHTML=`<div class="ed-pbtns"><button type="button" data-pa="pick">换一张</button><button type="button" class="edgray" data-pa="del">去掉</button></div>`;
+      pacts.hidden=false;
     }else{
-      pbox.innerHTML=`<span class="cam-ic">📷</span><span class="cam-t">点这里加照片</span><span class="cam-s">拍一张或从相册选</span><span class="cam-opt">选填 · 有图更有纪念感</span>`;
-      pacts.innerHTML=`<span class="ed-pcap"><b>📸 给今天配一张高光照片</b><em>拍下宝贝骄傲的样子（选填，不加也能存）</em></span>`;
+      pbox.innerHTML=`<span class="cam-ic">📷</span><span class="cam-t">加照片</span><span class="cam-opt">选填</span>`;
+      pacts.innerHTML="";
+      pacts.hidden=true;
     }
-    $("#edDateLbl").textContent=fmtEdDate($("#edDate").value||E.date);
+    const curD=edDateInp.value||E.date;
+    $("#edDateLbl").textContent=fmtEdDate(curD);
+    edDateBox.querySelectorAll("[data-dd]").forEach(b=>b.classList.toggle("on",curD===addDays(today(),+b.dataset.dd)));
     $("#edWx").innerHTML=DWX.map(w=>`<button type="button" data-w="${w}" class="${w===(E.wx||"")?"on":""}" aria-label="天气 ${w}">${w}</button>`).join("");
     $("#edCount").textContent=`${edText.value.trim().length} 字`;
   }
@@ -2578,9 +2756,8 @@ const Diary=(()=>{
     $("#edCancel").textContent=E.fromAsk?"先跳过":"取消";
     $("#edSave").textContent=d?"保存修改":"✨ 写进日记";
     $("#edDel").hidden=!d;
-    edCust.hidden=true;edErr.hidden=true;edText.classList.remove("shake");
-    $("#edDate").max=today();$("#edDate").value=E.date;edText.value=E.text||"";
-    edText.placeholder=opts&&opts.habitName?`比如：今天做「${opts.habitName}」的时候发生了什么？写一两句就好～`:"写下一两句刚才发生的事就很好，写长一点书里也会自动分页～";
+    edCust.hidden=true;edErr.hidden=true;edText.classList.remove("shake");closeDateBox();
+    edDateInp.max=today();edDateInp.value=E.date;edText.value=E.text||"";
     edDraw();ed.hidden=false;ed.querySelector(".edbody").scrollTop=0;
   }
   const edDirty=()=>E&&JSON.stringify([$("#edDate").value||E.date,E.q,E.wx||"",edText.value.trim(),E.photo||null])!==E.orig;
@@ -2605,7 +2782,16 @@ const Diary=(()=>{
   $("#edCustOk").addEventListener("click",applyCustQ);
   edCustIn.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();applyCustQ()}});
   $("#edWx").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.wx=E.wx===b.dataset.w?"":b.dataset.w;edDraw()}});
-  $("#edDate").addEventListener("change",()=>{if(E){E.date=$("#edDate").value||today();edDraw()}});
+  edDateBtn.addEventListener("click",()=>{
+    edDateBtn.hidden=true;edDateBox.hidden=false;edDraw();
+    edDateInp.focus();try{if(edDateInp.showPicker)edDateInp.showPicker()}catch(e){}
+  });
+  edDateBox.addEventListener("click",e=>{
+    const b=e.target.closest("[data-dd]");
+    if(b&&E){const ds=addDays(today(),+b.dataset.dd);E.date=ds;edDateInp.value=ds;closeDateBox();edDraw();return}
+    if(e.target.closest("#edDateDone"))closeDateBox();
+  });
+  edDateInp.addEventListener("change",()=>{if(E){E.date=edDateInp.value||today();closeDateBox();edDraw()}});
   edText.addEventListener("input",()=>{$("#edCount").textContent=`${edText.value.trim().length} 字`;if(edText.value.trim()){edErr.hidden=true;edText.classList.remove("shake")}});
   /* 日记照片：缩成 480px 见方存进这一篇里一起同步 */
   let photoCb=null;
