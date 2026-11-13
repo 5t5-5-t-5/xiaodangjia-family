@@ -87,6 +87,26 @@ A.meiguobing=()=>person({robe:"#7A7B4C",trim:"#5C5D36",belt:"#C9B98A",brow:"angr
   chest:`<path d="M60 94 L52 106 M60 94 L68 106" stroke="#5C5D36" stroke-width="5" stroke-linecap="round"/><g transform="translate(42 104)"><rect x="0" y="0" width="16" height="11" fill="#fff" ${S2}/><path d="M0 2.5 H16 M0 6 H16 M0 9.2 H16" stroke="#D2343B" stroke-width="1.8"/><rect x="0" y="0" width="7" height="6" fill="#2B4DB3"/><circle cx="3.5" cy="3" r="1.1" fill="#fff"/></g><rect x="64" y="108" width="12" height="9" rx="2" fill="#5C5D36" ${S2}/>`,
   hair:`<path d="M24 58 Q22 18 60 17 Q98 18 96 58 Q60 50 24 58Z" fill="#6B6C3E" ${S}/><path d="M18 58 Q60 48 102 58 L100 64 Q60 55 20 64Z" fill="#5C5D36" ${S2}/><path d="M34 34 L86 34 M30 44 L90 44 M48 22 L44 56 M72 22 L76 56" stroke="#4E4F2C" stroke-width="1.5" opacity=".7"/><path d="M28 62 Q32 82 50 86 M92 62 Q88 82 70 86" stroke="#4E4F2C" stroke-width="2.5" fill="none"/>`,
   front:`<g transform="translate(104 140) rotate(-8)"><rect x="-4" y="-120" width="7" height="70" rx="2" fill="#4A4A52" ${S2}/><path d="M-6 -60 L5 -60 L7 -2 Q0 6 -8 -2Z" fill="#9A6234" ${S2}/><rect x="-7" y="-82" width="10" height="20" rx="3" fill="#9A6234" ${S2}/></g>`});
+/* 哥斯拉：站着的大怪兽，背上一排发蓝光的骨板，张嘴吼 */
+A.gesila=()=>{const b="#3E5A52",d="#2C443D",l="#8FA58C";
+  const spike=(x,y,r)=>`<path transform="translate(${x} ${y}) rotate(${r})" d="M0 -14 L-7 -3 L-14 -6 L-10 4 L-16 8 L0 10 Z" fill="#DCEBF5" ${S2}/>`;
+  return svg("0 0 120 150",`
+  <ellipse cx="38" cy="86" rx="30" ry="58" fill="#7FD3FF" opacity=".35"/>
+  <path d="M42 126 Q8 136 2 112 Q6 104 12 112 Q20 124 46 114Z" fill="${b}" ${S}/>
+  ${spike(42,44,-30)}${spike(34,58,-40)}${spike(28,74,-55)}${spike(26,92,-70)}${spike(28,110,-85)}${spike(14,118,-100)}
+  <rect x="38" y="124" width="20" height="22" rx="7" fill="${d}" ${S}/><rect x="64" y="124" width="20" height="22" rx="7" fill="${d}" ${S}/>
+  <path d="M40 146 l4 -5 4 5 4 -5 4 5 M66 146 l4 -5 4 5 4 -5 4 5" stroke="#F3EEE0" stroke-width="2.4" fill="none"/>
+  <path d="M34 130 Q28 92 42 66 Q54 50 70 56 Q92 64 90 102 Q90 124 86 132Z" fill="${b}" ${S}/>
+  <path d="M54 128 Q50 100 60 78 Q76 82 80 104 Q82 120 78 128Z" fill="${l}" ${S2}/>
+  <path d="M57 90 H78 M55 102 H80 M55 114 H80" stroke="${d}" stroke-width="2" opacity=".6"/>
+  <path d="M80 82 Q94 84 100 94 L104 92 L103 98 L98 99 Q90 92 82 92Z" fill="${b}" ${S2}/>
+  <path d="M42 46 Q40 20 64 17 Q90 16 104 30 L108 40 Q98 42 86 42 L84 46 Q66 56 52 54 Q42 52 42 46Z" fill="${b}" ${S}/>
+  <path d="M84 46 Q96 48 106 46 L104 56 Q90 64 74 58Z" fill="${b}" ${S}/>
+  <path d="M86 42 L108 40 L106 46 L84 46Z" fill="#B3262E" ${S2}/>
+  <path d="M88 42 l3 4 3 -4 3 4 3 -4 3 4 M88 46 l3 -3 3 3 3 -3 3 3 3 -3" stroke="#fff" stroke-width="2" fill="none"/>
+  <ellipse cx="78" cy="28" rx="6" ry="4.5" fill="#FFE66D" ${S2}/><circle cx="79" cy="28.5" r="2.4" fill="${K}"/>
+  <path d="M68 20 L88 26" stroke="${K}" stroke-width="4.5" stroke-linecap="round"/>
+  <circle cx="102" cy="32" r="1.6" fill="${K}"/>`)};
 /* 悟空（super=true 变成金发） */
 A.wukong=(sup)=>{const h=sup?"#FFD23F":"#1F1F2A";
   return person({robe:"#F28C28",trim:"#2B4DB3",belt:"#2B4DB3",sleeve:"#F28C28",brow:sup?"angry":"",mouth:sup?"shout":"",
