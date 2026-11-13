@@ -82,6 +82,11 @@ A.jiefangjun=()=>person({robe:"#5E8A3E",trim:"#C8342B",belt:"#8A5A33",
 A.ribenbing=()=>person({robe:"#B9A46C",trim:"#8A7A4A",belt:"#6B4A2A",brow:"angry",mouth:"flat",
   hair:`<path d="M26 54 Q26 22 60 20 Q94 22 94 54Z" fill="#B9A46C" ${S}/><path d="M24 54 Q60 60 96 54 L96 60 Q60 66 24 60Z" fill="#8A7A4A" ${S2}/><path d="M60 30 l3 7 7 0 -5.5 4.5 2 7 -6.5 -4 -6.5 4 2 -7 -5.5 -4.5 7 0z" fill="#E7B53C"/><path d="M28 58 L26 84 L36 84 L36 62Z M92 58 L94 84 L84 84 L84 62Z" fill="#E9E1C8" ${S2}/>`,
   front:pole(104,40,148,"#7A5230")+`<path d="M104 4 L108 40 L100 40Z" fill="#E3EAF3" ${S2}/>`});
+/* 美国兵：圆钢盔、橄榄色军装、胸前小星条旗、步枪 */
+A.meiguobing=()=>person({robe:"#7A7B4C",trim:"#5C5D36",belt:"#C9B98A",brow:"angry",mouth:"flat",
+  chest:`<path d="M60 94 L52 106 M60 94 L68 106" stroke="#5C5D36" stroke-width="5" stroke-linecap="round"/><g transform="translate(42 104)"><rect x="0" y="0" width="16" height="11" fill="#fff" ${S2}/><path d="M0 2.5 H16 M0 6 H16 M0 9.2 H16" stroke="#D2343B" stroke-width="1.8"/><rect x="0" y="0" width="7" height="6" fill="#2B4DB3"/><circle cx="3.5" cy="3" r="1.1" fill="#fff"/></g><rect x="64" y="108" width="12" height="9" rx="2" fill="#5C5D36" ${S2}/>`,
+  hair:`<path d="M24 58 Q22 18 60 17 Q98 18 96 58 Q60 50 24 58Z" fill="#6B6C3E" ${S}/><path d="M18 58 Q60 48 102 58 L100 64 Q60 55 20 64Z" fill="#5C5D36" ${S2}/><path d="M34 34 L86 34 M30 44 L90 44 M48 22 L44 56 M72 22 L76 56" stroke="#4E4F2C" stroke-width="1.5" opacity=".7"/><path d="M28 62 Q32 82 50 86 M92 62 Q88 82 70 86" stroke="#4E4F2C" stroke-width="2.5" fill="none"/>`,
+  front:`<g transform="translate(104 140) rotate(-8)"><rect x="-4" y="-120" width="7" height="70" rx="2" fill="#4A4A52" ${S2}/><path d="M-6 -60 L5 -60 L7 -2 Q0 6 -8 -2Z" fill="#9A6234" ${S2}/><rect x="-7" y="-82" width="10" height="20" rx="3" fill="#9A6234" ${S2}/></g>`});
 /* 悟空（super=true 变成金发） */
 A.wukong=(sup)=>{const h=sup?"#FFD23F":"#1F1F2A";
   return person({robe:"#F28C28",trim:"#2B4DB3",belt:"#2B4DB3",sleeve:"#F28C28",brow:sup?"angry":"",mouth:sup?"shout":"",

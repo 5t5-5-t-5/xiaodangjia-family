@@ -386,11 +386,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113g"></script>
+<script src="art.js?v=20261113h"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113g";
+const VER="20261113h";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -421,7 +421,7 @@ const LEVELS=[
   {n:"凑十",art:"wukong",name:"悟空"},
   {n:"进位",art:"qingtianzhu",name:"擎天柱",soon:true},
   {n:"退位",art:"beijita",name:"贝吉塔",soon:true},
-  {n:"大复习",art:"ribenbing",name:"日本兵"}
+  {n:"大复习",art:"meiguobing",name:"美国兵"}
 ];
 const CARDS=[
   ["liubei","刘备"],["guanyu","关羽"],["zhangfei","张飞"],["zhaoyun","赵云"],["lvbu","吕布"],
