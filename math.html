@@ -219,6 +219,9 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 @keyframes slash{0%{opacity:0;transform:scale(.4) rotate(-30deg)}30%{opacity:1}100%{opacity:0;transform:scale(1.3) rotate(10deg)}}
 .dmg{position:fixed;z-index:51;pointer-events:none;font-size:44px;font-weight:900;color:#fff;-webkit-text-stroke:3px #B3262E;animation:dmg 1s ease-out forwards}
 @keyframes dmg{0%{transform:translateY(0) scale(.6);opacity:0}20%{transform:translateY(-10px) scale(1.2);opacity:1}100%{transform:translateY(-80px) scale(1);opacity:0}}
+.softcrit{position:fixed;width:0;height:0;z-index:55;pointer-events:none}
+.softcrit i{position:absolute;width:12px;height:12px;margin:-6px;border-radius:50%;background:#FFD86B;box-shadow:0 0 8px #FFE9A6;animation:softc .8s ease-out forwards}
+@keyframes softc{from{transform:none;opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.4);opacity:0}}
 .critfx{position:fixed;inset:0;z-index:60;pointer-events:none;display:flex;align-items:center;justify-content:center}
 .critfx .flash{position:absolute;inset:0;background:#fff;animation:fl .35s ease-out forwards}
 @keyframes fl{from{opacity:.85}to{opacity:0}}
@@ -233,7 +236,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 @keyframes spark{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
 .shake{animation:shake .5s}
 /* 龟派气功（孩子叫它“哈比哈比哈比哈”） */
-.kame{position:fixed;inset:0;z-index:70;pointer-events:none;background:rgba(16,26,70,.55);animation:kfade 2.9s ease forwards;overflow:hidden}
+.kame{position:fixed;inset:0;z-index:70;pointer-events:none;background:rgba(16,26,70,.18);animation:kfade 2.9s ease forwards;overflow:hidden}
 @keyframes kfade{0%{opacity:0}8%{opacity:1}85%{opacity:1}100%{opacity:0}}
 .kame .wk{position:absolute;left:30px;bottom:20px;width:330px;height:350px;animation:kwk 2.9s ease forwards}
 @keyframes kwk{0%{transform:scale(.6) translateY(80px)}15%{transform:none}100%{transform:none}}
@@ -352,6 +355,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .clegs{width:300px;height:46px;display:block}
 .crow{display:flex;align-items:center;gap:90px}
 .csay{font-size:30px;font-weight:900;color:#fff;background:#0003;border-radius:999px;padding:4px 22px}
+.csay.ok{background:#22B573}
 .cbig{width:150px;height:150px;border-radius:50%;background:linear-gradient(#FFB347,#F2662B);color:#fff;font-size:96px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 0 #C2410C;animation:pop .25s}
 .cand{font-size:40px;font-weight:900;color:#fff}
 .cmeter{font-size:40px;font-weight:900;color:#FFE14D;-webkit-text-stroke:2px #B3262E;paint-order:stroke fill;min-height:50px}
@@ -362,7 +366,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .popf{position:absolute;inset:0}
 .bub{position:absolute;width:108px;height:108px;margin:-54px 0 0 -54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0,#BFEAFF 30%,#3BB4FF 100%);border:4px solid #ffffffcc;box-shadow:0 6px 14px #0003;font-size:54px;font-weight:900;color:#123E80;animation:float 3s ease-in-out infinite;z-index:2}
 .bub.sel{background:radial-gradient(circle at 35% 30%,#fff 0,#FFF1A6 30%,#FFB300 100%);scale:1.15;box-shadow:0 0 0 6px #FFD23F,0 6px 14px #0003}
-.bub.gone{animation:burst .35s forwards;pointer-events:none}
+.bub.gone{animation:burst .35s forwards!important;animation-delay:0s!important;pointer-events:none}
 @keyframes burst{to{scale:1.7;opacity:0}}
 .bub.bad{animation:hurt .4s}
 @keyframes float{50%{translate:0 -10px}}
@@ -514,11 +518,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113w"></script>
+<script src="art.js?v=20261113x"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113w";
+const VER="20261113x";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -632,7 +636,7 @@ let AC=null;const ac=()=>(AC=AC||new (window.AudioContext||window.webkitAudioCon
 function tone(f,d,t="sine",v=.15,delay=0,f2){try{const c=ac(),o=c.createOscillator(),g=c.createGain(),s=c.currentTime+delay;o.type=t;o.frequency.setValueAtTime(f,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g).connect(c.destination);o.start(s);o.stop(s+d)}catch(e){}}
 function noise(d,v=.3,delay=0,hp=800){try{const c=ac(),b=c.createBuffer(1,c.sampleRate*d,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*(1-i/x.length);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();f.type="highpass";f.frequency.value=hp;s.buffer=b;g.gain.value=v;s.connect(f).connect(g).connect(c.destination);s.start(c.currentTime+delay)}catch(e){}}
 const sndHit=()=>{noise(.18,.35,0,1500);tone(320,.18,"square",.12,0,90)};
-const sndCrit=()=>{noise(.35,.5,0,400);tone(110,.5,"sawtooth",.18,0,40);tone(880,.25,"square",.1,.05,1760);[523,784,1047].forEach((f,i)=>tone(f,.35,"triangle",.14,.12+i*.07))};
+const sndCrit=()=>{sndHit();[660,880].forEach((f,i)=>tone(f,.25,"triangle",.07,.1+i*.08))};
 const sndNo=()=>{tone(300,.18,"sine",.12);tone(220,.3,"sine",.1,.15)};
 const sndPick=()=>tone(700,.07,"triangle",.12);
 const sndDrop=()=>{tone(420,.08,"square",.08);tone(630,.1,"triangle",.1,.05)};
@@ -911,12 +915,12 @@ function stageHTML(q,reveal){
     case"table":return tableHTML(q)+boss;
     case"combo":{const x=q.seq[Math.min(q.k,n)];return`<div class="combo">
       <div class="ctree"><div class="ctop">${n}</div><svg viewBox="0 0 300 46" class="clegs"><path d="M150 4 L52 42 M150 4 L248 42" stroke="#fff" stroke-width="8" stroke-linecap="round"/></svg>
-      <div class="crow"><div class="cbig" key="${q.k}">${x}</div>${q.done?NB(n-x,"g"):QB}</div></div>
-      <div class="csay">${x} 和 ${q.done?n-x:"?"} 合起来是 ${n}</div>
+      <div class="crow"><div class="cbig" key="${q.k}">${x}</div>${q.done||q.rev?NB(n-x,"g pop"):QB}</div></div>
+      <div class="csay ${q.rev?"ok":""}">${x} 和 ${q.done||q.rev?n-x:"?"} 合起来是 ${n}${q.rev?" ✓":""}</div>
       <div class="cmeter">${q.combo>1?`🔥 连击 ×${q.combo}`:"&nbsp;"}</div>${q.done?"":`<div class="ctime"><i style="animation-name:ctime${q.k%2}"></i></div>`}
       <div class="cdots">${q.seq.map((v,i)=>`<u class="${i<q.k?"on":""}"></u>`).join("")}</div></div>`}
-    case"pop":return`<div class="popf">${q.items.map((it,i)=>`<button class="bub ${it.gone?"gone":""} ${q.sel===i?"sel":""}" data-i="${i}" style="left:${it.x}%;top:${it.y}%;animation-delay:${(i*.37%2).toFixed(2)}s">${it.v}</button>`).join("")}</div>
-      <div class="total" style="bottom:12px">${q.sel!==null&&q.sel!==undefined?`${q.items[q.sel].v} 和 ? 合起来是 ${n}`:`点两个数，合起来是 ${n}`}</div>`;
+    case"pop":return`<div class="popf">${q.items.map((it,i)=>it.gone&&!it.fresh?"":`<button class="bub ${it.gone?"gone":""} ${q.sel===i?"sel":""}" data-i="${i}" style="left:${it.x}%;top:${it.y}%;animation-delay:${(i*.37%2).toFixed(2)}s">${it.v}</button>`).join("")}</div>
+      <div class="total" style="bottom:12px">${q.items.every(it=>it.gone)?"全部消掉了 ✓":q.sel!==null&&q.sel!==undefined?`${q.items[q.sel].v} 和 ? 合起来是 ${n}`:`点两个数，合起来是 ${n}`}</div>`;
     case"flash":return`<div class="sea" id="sea"></div>`;
   }
 }
@@ -939,7 +943,7 @@ function dotsHint(q){
 function multiDone(q,res,speech){
   q.done=true;if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
   $("#stage").innerHTML=stageHTML(q,true);const crit=res==="f";hitFx(crit);crit?sndCrit():sndHit();
-  $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⚡ 暴击！":"✅ 完成！";$("#fb").hidden=false;
+  $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⭐ 又快又对！":"✅ 完成！";$("#fb").hidden=false;
   
   B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
 }
@@ -947,20 +951,25 @@ function floatText(t,big){const st=$("#stage").getBoundingClientRect(),d=documen
 /* 凑数连击（合起来是 n）：0～n 打乱顺序，看到一个马上说出和它合起来是 n 的另一个；3 秒内答对连击 +1。
    2026-11-13 家长说“n 的好朋友”看不懂，改成分合图样子 + “x 和几合起来是 n”。 */
 function comboAnswer(q,btn){
-  const x=q.seq[q.k],n=q.n;
+  if(q.busy)return;
+  const x=q.seq[q.k],n=q.n,secs=q.t0?(Date.now()-q.t0)/1000:0;
+  /* 答对（或错两次）先把答案填进去、变绿，停一下再换下一个数 */
+  const show=(res,b)=>{q.busy=true;q.rev=true;if(b)b.classList.add("ok");$("#stage").innerHTML=stageHTML(q);
+    $("#fb").className="fb ok";$("#fb").textContent=res==="w"?`${x} 和 ${n-x} 合起来是 ${n}`:"✅ 对了！";$("#fb").hidden=false;
+    setTimeout(()=>{q.busy=false;q.rev=false;if(b)b.classList.remove("ok");$("#pad").querySelectorAll(".no").forEach(e=>e.classList.remove("no"));next(res)},900)};
   const next=res=>{
     if(res!=="f"){q.allFast=false;q.combo=0}else{q.combo++;q.best=Math.max(q.best,q.combo)}
     if(res==="w")q.anyWrong=true;
-    if(x>0&&x<n)record(`${n}|f|${x}`,res,false,q.t0?(Date.now()-q.t0)/1000:0);
+    if(x>0&&x<n)record(`${n}|f|${x}`,res,false,secs);
     if(res==="f"&&q.combo>1)floatText(`连击 ×${q.combo}`,q.combo>=4);
     q.k++;q.ct=0;
     if(q.k>n){multiDone(q,q.anyWrong?"w":q.allFast?"f":"s",`最高连击${q.best}！合起来是${n}的，全都找到了！`);return}
     q.ans=n-q.seq[q.k];q.t0=Date.now();$("#stage").innerHTML=stageHTML(q);$("#fb").hidden=true;
     say(`${q.seq[q.k]}和几？`);
   };
-  if(btn.dataset.v===String(n-x)){const secs=q.t0?(Date.now()-q.t0)/1000:0;next(q.ct>0?"w":secs<=3?"f":"s")}
-  else{q.ct++;q.combo=0;$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
-    say(`${x}和几合起来是${n}？`);if(q.ct>=2)next("w")}
+  if(btn.dataset.v===String(n-x)){show(q.ct>0?"w":secs<=3?"f":"s",btn)}
+  else{q.ct++;q.combo=0;btn.classList.add("no");$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
+    if(q.ct>=2)show("w",null)}
 }
 /* 合起来消消乐：点两个泡泡，合起来是 n 就消掉；点了一个，下面提示“x 和 ? 合起来是 n” */
 $("#stage").addEventListener("click",e=>{
@@ -969,10 +978,12 @@ $("#stage").addEventListener("click",e=>{
   if(q.sel===null){q.sel=i;say(`${q.items[i].v}和几合起来是${n}？`)}
   else if(q.sel===i){q.sel=null}
   else{const A=q.items[q.sel],C=q.items[i];
-    if(A.v+C.v===n){A.gone=C.gone=true;q.sel=null;floatText(`${A.v} + ${C.v} = ${n}`)}
+    if(A.v+C.v===n){q.items.forEach(it=>it.fresh=false);A.gone=C.gone=true;A.fresh=C.fresh=true;q.sel=null;floatText(`${A.v} + ${C.v} = ${n}`)}
     else{q.miss++;q.sel=null;b.classList.add("bad")}
   }
-  if(q.items.every(it=>it.gone)){multiDone(q,q.miss?"s":"f",`泡泡全消掉了！`);return}
+  const clean=()=>setTimeout(()=>$("#stage").querySelectorAll(".bub.gone").forEach(e=>e.remove()),380);   /* 消掉的泡泡一定拿走，不会再冒出来 */
+  if(q.items.every(it=>it.gone)){multiDone(q,q.miss?"s":"f",`泡泡全消掉了！`);clean();return}
+  clean();
   if(!b.classList.contains("bad"))$("#stage").innerHTML=stageHTML(q);else setTimeout(()=>{if(!q.done)$("#stage").innerHTML=stageHTML(q)},400);
 });
 function tableAnswer(q,btn){
@@ -985,7 +996,7 @@ function tableAnswer(q,btn){
     if(q.k>n){q.done=true;
       const r2=q.anyWrong?"w":q.allFast?"f":"s";if(r2==="f")B.fast++;else if(r2==="s")B.slow++;else B.wrong++;
       $("#stage").innerHTML=stageHTML(q,true);const crit=r2==="f";hitFx(crit);crit?sndCrit():sndHit();
-      $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⚡ 暴击！":"✅ 填完了！";$("#fb").hidden=false;
+      $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⭐ 又快又对！":"✅ 填完了！";$("#fb").hidden=false;
       
       B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;return}
     q.ans=n-q.top[q.k];q.t0=Date.now();$("#stage").innerHTML=stageHTML(q);$("#stage .pop").style.animation="none";
@@ -1113,7 +1124,6 @@ function kameFx(voice=true){
   const o=document.createElement("div");o.className="kame";
   o.innerHTML=`<div class="wk">${art("wukongAngry")}</div><div class="ball"></div><div class="beam"></div><div class="kw">哈比哈比哈比哈！</div>`;
   document.body.appendChild(o);setTimeout(()=>o.remove(),3000);
-  setTimeout(()=>{const sc=$("#battle");sc.classList.remove("shake");void sc.offsetWidth;sc.classList.add("shake")},1450);
 }
 const tenLv=()=>B&&B.lv&&B.lv.n==="凑十";
 const bossIsFriend=()=>B&&B.lv&&/^wukong/.test(B.lv.art);
@@ -1134,14 +1144,14 @@ function hitFx(crit){
   const s=document.createElement("div");s.className="slash";s.style.left=(cx-110)+"px";s.style.top=(cy-110)+"px";
   s.innerHTML=`<svg viewBox="0 0 100 100"><path d="M10 80 Q50 50 92 12 Q58 56 14 86Z" fill="#fff" stroke="${crit?"#FFD23F":"#9FE0FF"}" stroke-width="4"/></svg>`;
   document.body.appendChild(s);setTimeout(()=>s.remove(),500);
-  const d=document.createElement("div");d.className="dmg";d.textContent=crit?"-2":"-1";d.style.left=(cx+20)+"px";d.style.top=(cy-30)+"px";if(crit){d.style.fontSize="64px";d.style.color="#FFE14D"}
+  const d=document.createElement("div");d.className="dmg";d.textContent=crit?"-2":"-1";d.style.left=(cx+20)+"px";d.style.top=(cy-30)+"px";if(crit){d.style.color="#FFE14D"}
   document.body.appendChild(d);setTimeout(()=>d.remove(),1000);
   if(!bossIsFriend()){bb.classList.remove("hurt");void bb.offsetWidth;bb.classList.add("hurt")}
   if(!crit)return;
-  const o=document.createElement("div");o.className="critfx";
-  o.innerHTML=`<div class="flash"></div><div class="rays"></div>`+rep(i=>{const a=i/16*Math.PI*2,dist=260+rnd(200);return`<i class="spark" style="--dx:${Math.cos(a)*dist}px;--dy:${Math.sin(a)*dist}px;background:${pick(["#FFD23F","#FF7A3D","#fff","#7FE3FF"])}"></i>`},16)+`<div class="word">暴击！</div>`;
-  document.body.appendChild(o);setTimeout(()=>o.remove(),1150);
-  const sc=$("#battle");sc.classList.remove("shake");void sc.offsetWidth;sc.classList.add("shake");
+  /* 2026-11-13 家长：暴击太刺激，改温和——不闪屏、不震屏、没有大字，只在敌人身边亮一圈小星星 */
+  const o=document.createElement("div");o.className="softcrit";o.style.left=cx+"px";o.style.top=cy+"px";
+  o.innerHTML=rep(i=>{const a=i/8*Math.PI*2;return`<i style="--dx:${Math.cos(a)*70}px;--dy:${Math.sin(a)*70}px"></i>`},8);
+  document.body.appendChild(o);setTimeout(()=>o.remove(),900);
 }
 $("#pad").addEventListener("click",e=>{
   const btn=e.target.closest("button");if(!btn||!B)return;const q=B.qs[B.i];if(q.done||q.intro)return;
@@ -1156,7 +1166,7 @@ $("#pad").addEventListener("click",e=>{
     if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}
     const crit=res==="f",kame=q.mode==="energy"||(tenLv()&&crit);
     if(kame){kameFx(true);crit?sndCrit():sndHit()}else{hitFx(crit);crit?sndCrit():sndHit()}
-    $("#fb").className="fb ok";$("#fb").innerHTML=kame?"💥 哈比哈比哈比哈！":crit?"⚡ 暴击！":"✅ 打中了！";$("#fb").hidden=false;
+    $("#fb").className="fb ok";$("#fb").innerHTML=kame?"💥 哈比哈比哈比哈！":crit?"⭐ 又快又对！":"✅ 打中了！";$("#fb").hidden=false;
     B.i++;hpDraw();
     $("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":B.probe?"下一个 ›":B.exam?"🏁 看结果 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
   }else{
