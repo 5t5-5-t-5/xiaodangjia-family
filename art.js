@@ -107,7 +107,7 @@ A.gesila=()=>{const b="#3E5A52",d="#2C443D",l="#8FA58C";
   <ellipse cx="78" cy="28" rx="6" ry="4.5" fill="#FFE66D" ${S2}/><circle cx="79" cy="28.5" r="2.4" fill="${K}"/>
   <path d="M68 20 L88 26" stroke="${K}" stroke-width="4.5" stroke-linecap="round"/>
   <circle cx="102" cy="32" r="1.6" fill="${K}"/>`)};
-/* 超级赛亚人悟空·很生气（问之要的样子）：双手张开、长长的金发披到背后、抬着头大喊，金色气焰+蓝色闪电 */
+/* 超级赛亚人悟空·很生气（孩子要的样子）：双手张开、长长的金发披到背后、抬着头大喊，金色气焰+蓝色闪电 */
 A.wukongAngry=()=>{const g="#FFD23F",gd="#F2B21B",o="#F28C28",bl="#2B4DB3",sk="#FFD9B8";
   const bolt=(d)=>`<path d="${d}" stroke="#7FE3FF" stroke-width="3.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`;
   return svg("0 0 160 170",`
