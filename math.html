@@ -142,6 +142,8 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .side{display:flex;flex-direction:column;gap:14px}
 .ask{background:#fff;border-radius:24px;padding:18px 20px}
 .ask .t{font-size:34px;font-weight:900;line-height:1.3}
+.ask .t.long{font-size:27px;line-height:1.35}
+#battle #again{display:none}
 .ask .say{margin-top:10px;font-size:14px;color:var(--soft);line-height:1.5;font-weight:500}
 .ask .say b{color:var(--orange)}
 .spk{font-size:26px;margin-top:6px}
@@ -485,7 +487,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <div class="whead"><button class="back" id="wkBack">‹ 回家</button><h2>📒 复习本</h2><span class="pill" id="wkN"></span></div>
   <div class="wkgo"><div class="pic" id="wkPic"></div><button class="go2" id="wkGo">⚔️ 打这些！</button><button class="tiny2" id="wkAll">🔁 大复习（2～10 全部）</button></div>
   <div class="wklist" id="wkList"></div>
-  <div class="wknote">家长：这里自动收集孩子还不熟的题——做过但还没“会了”的（红=上次答错，黄=答对了但慢、只在有图时对、或只有一天答得快）。“打这些！”只练这些题，不看图；两天都又快又对就会自动从本子里消失。记录只存在这台 iPad 上。</div>
+  <div class="wknote">家长：这是错题本——答错过的题（红）和想了 5 秒以上才答对的题（黄）都放在这里。“打这些！”只练这些题，不看图；之后又在 5 秒内答对 2 次，就会自动从本子里拿掉。记录只存在这台 iPad 上。</div>
 </section>
 
 <!-- 胜利 -->
@@ -512,11 +514,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113v"></script>
+<script src="art.js?v=20261113w"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113v";
+const VER="20261113w";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -613,7 +615,7 @@ function factsOf(n){const o=[];
   return o}
 const ZERO=[{id:"0|+",t:"0+"},{id:"0|-",t:"0-"},{id:"0|=",t:"0="}];
 const VIEW=[{id:"v|+",t:"v+"},{id:"v|-",t:"v-"}];
-function record(id,r,pic){const h=stats[id]||[];h.push({r,p:pic?1:0,d:today()});stats[id]=h.slice(-10);save("stats2",stats)}
+function record(id,r,pic,t){const h=stats[id]||[];const e={r,p:pic?1:0,d:today()};if(t>0)e.t=Math.round(t*10)/10;h.push(e);stats[id]=h.slice(-10);save("stats2",stats)}
 function mastered(id){const h=(stats[id]||[]).filter(x=>!x.p);if(!h.length||h[h.length-1].r!=="f")return false;return new Set(h.filter(x=>x.r==="f").map(x=>x.d)).size>=2}
 function status(id){const h=stats[id]||[];if(!h.length)return"";if(h[h.length-1].r==="w")return"r";return mastered(id)?"g":"y"}
 const numReady=n=>factsOf(n).every(f=>mastered(f.id));
@@ -640,6 +642,7 @@ function pickVoice(){const vs=speechSynthesis.getVoices().filter(v=>/zh[-_]CN/i.
 if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
 function say(t,done){
   if(!("speechSynthesis" in window)){done&&setTimeout(done,500);return}
+  if(!$("#battle").hidden){done&&setTimeout(done,0);return}   /* 2026-11-13 家长：题目页不念题，只留掉血声 */
   speechSynthesis.cancel();
   const u=new SpeechSynthesisUtterance(t);u.lang="zh-CN";u.rate=1.04;u.pitch=1.1;if(zhVoice)u.voice=zhVoice;
   let fired=false;const fin=()=>{if(!fired){fired=true;done&&done()}};
@@ -799,10 +802,14 @@ function buildReview(){
    孩子在首页点“📒 复习本”看到这些题，按“打这些！”就只练它们；会了自动从本子里消失。 */
 function parseFact(id){const m=/^(\d+)\|([fh+-])\|(\d+)$/.exec(id);if(!m)return null;const n=+m[1],t=m[2],a=+m[3];
   if(t==="h"&&a>n-a)return null;if(a<1||a>=n)return null;return{id,n,t,a}}
-function weakInfo(id){const h=stats[id]||[];if(!h.length||mastered(id))return null;
-  const np=h.filter(x=>!x.p),last=h[h.length-1],w=h.filter(x=>x.r==="w").length;
-  const why=last.r==="w"?"上次答错":!np.length?"只在有图时做对":np[np.length-1].r==="s"?"答对了但有点慢":np[np.length-1].r==="w"?"不看图时答错":"还差一天（要两天都又快又对）";
-  return{id,red:last.r==="w",w,why,d:last.d}}
+/* 2026-11-13 家长定：复习本 = 错题本。答错过、或者想了 5 秒以上才答对的题放进来；
+   之后又在 5 秒内答对 2 次，就从本子里拿掉。 */
+const isBad=x=>x.r==="w"||(x.t!=null&&x.t>5);
+function weakInfo(id){const h=stats[id]||[];let k=-1;h.forEach((x,i)=>{if(isBad(x))k=i});if(k<0)return null;
+  const good=h.slice(k+1).filter(x=>!isBad(x)).length;if(good>=2)return null;
+  const bad=h.filter(isBad),last=h[k],w=h.filter(x=>x.r==="w").length;
+  const why=last.r==="w"?"答错了":`想了 ${Math.round(last.t)} 秒`;
+  return{id,red:last.r==="w",w,why:why+(good?" · 后来对了 1 次":""),d:last.d}}
 function weakList(){
   const out=[];for(const id of Object.keys(stats)){
     const f=parseFact(id),z=ZERO.find(x=>x.id===id),v=VIEW.find(x=>x.id===id);if(!f&&!z&&!v)continue;
@@ -944,7 +951,7 @@ function comboAnswer(q,btn){
   const next=res=>{
     if(res!=="f"){q.allFast=false;q.combo=0}else{q.combo++;q.best=Math.max(q.best,q.combo)}
     if(res==="w")q.anyWrong=true;
-    if(x>0&&x<n)record(`${n}|f|${x}`,res,false);
+    if(x>0&&x<n)record(`${n}|f|${x}`,res,false,q.t0?(Date.now()-q.t0)/1000:0);
     if(res==="f"&&q.combo>1)floatText(`连击 ×${q.combo}`,q.combo>=4);
     q.k++;q.ct=0;
     if(q.k>n){multiDone(q,q.anyWrong?"w":q.allFast?"f":"s",`最高连击${q.best}！合起来是${n}的，全都找到了！`);return}
@@ -973,7 +980,7 @@ function tableAnswer(q,btn){
   /* 填好当前这一格（res：f 快、s 慢、w 错过），然后走到下一格；最后一格填完算这道题做完 */
   const fill=res=>{
     if(res!=="f")q.allFast=false;if(res==="w")q.anyWrong=true;
-    if(top>0&&top<n)record(`${n}|f|${top}`,res,false);
+    if(top>0&&top<n)record(`${n}|f|${top}`,res,false,q.t0?(Date.now()-q.t0)/1000:0);
     q.k++;q.ct=0;
     if(q.k>n){q.done=true;
       const r2=q.anyWrong?"w":q.allFast?"f":"s";if(r2==="f")B.fast++;else if(r2==="s")B.slow++;else B.wrong++;
@@ -1071,7 +1078,10 @@ function ask(){
     $("#bHero").innerHTML=art(h[0]);const m=$("#bHero");m.classList.remove("pop2");void m.offsetWidth;m.classList.add("pop2")}
   hpDraw();$("#qno").textContent=q.intro?"":`${answeredSoFar()+1}/${answerable()}`;
   $("#fb").hidden=true;$("#nextBtn").hidden=true;
-  $("#askT").textContent=q.t;
+  const FULL={table:`${q.n} 分一分：上面是几，下面填几？`,combo:`合起来是 ${q.n}：看到一个数，马上说出另一个数`,flash:"一眼看，有几只？"};
+  const full=FULL[q.mode]||(["eq","blank","zero","treeF","treeH","intro"].includes(q.mode)?q.t:(q.sayT0||q.sayT));
+  const fullT=TEAM&&q.mode==="take"?full.replace("关羽",heroOf(q)[1]):full;
+  $("#askT").textContent=fullT;$("#askT").classList.toggle("long",fullT.length>12);
   const st=$("#stage");st.className="stage "+BG[q.mode];
   if(q.intro){
     $("#askSay").innerHTML=`家长：这一组分法会变成 ${q.a===q.b?"2":"4"} 个算式（一图四式）。让${kid()}先大声读一遍：“${q.n} 可以分成 ${q.a} 和 ${q.b}”。`;
@@ -1079,7 +1089,7 @@ function ask(){
     B.onIntro=true;$("#nextBtn").textContent="📜 读完了，做算式 ›";$("#nextBtn").hidden=false;
     say(q.sayT);return;
   }
-  $("#askSay").innerHTML=q.mode==="pick"?`家长：让${kid()}说说为什么选这个。${q.tip}`:`家长：念完题让${kid()}<b>不掰手指</b>直接说或点数字。答错了就照着做：${q.tip}`;
+  $("#askSay").innerHTML=q.mode==="pick"?`家长：让${kid()}说说为什么选这个。${q.tip}`:`家长：把上面的题念给${kid()}听，让他<b>不掰手指</b>直接说或点数字（从题目出来开始算时间，超过 5 秒或答错会进复习本）。答错了就照着做：${q.tip}`;
   $("#pad").innerHTML=padHTML(q);
   if(q.mode==="flash"){
     $("#pad").style.pointerEvents="none";
@@ -1142,7 +1152,7 @@ $("#pad").addEventListener("click",e=>{
     q.done=true;btn.classList.add("ok");
     const secs=q.t0?(Date.now()-q.t0)/1000:0;
     const res=q.tries>1?"w":secs<=(q.mode==="flash"?5:3)?"f":"s";
-    record(q.id,res,q.pic);if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
+    record(q.id,res,q.pic,secs);if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
     if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}
     const crit=res==="f",kame=q.mode==="energy"||(tenLv()&&crit);
     if(kame){kameFx(true);crit?sndCrit():sndHit()}else{hitFx(crit);crit?sndCrit():sndHit()}
