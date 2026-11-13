@@ -39,13 +39,13 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .go:active{transform:translateY(4px);box-shadow:0 2px 0 #C2410C}
 .sec{margin:20px 0 10px;font-size:22px;font-weight:900;display:flex;align-items:baseline;gap:10px}
 .sec span{font-size:14px;color:var(--soft);font-weight:600}
-.map{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.map{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
 .node{background:#fff;border-radius:20px;padding:8px 6px 10px;text-align:center;position:relative}
 .node .pic{width:74px;height:84px;margin:0 auto}
 .node b{display:block;font-size:17px;margin-top:2px}
 .node .num{position:absolute;left:10px;top:6px;font-size:22px;font-weight:900;color:var(--orange);z-index:1}
 .node .num.w{font-size:14px;top:8px}
-.node .dots{display:flex;gap:3px;justify-content:center;margin-top:5px;min-height:10px}
+.node .dots{display:flex;flex-wrap:wrap;gap:2px;justify-content:center;margin:5px auto 0;min-height:10px;max-width:120px}
 .node .dots u{width:10px;height:10px;border-radius:3px;background:var(--line)}
 .dots u.g{background:var(--green)} .dots u.y{background:var(--yellow)} .dots u.r{background:var(--red)}
 .node.lock{background:#F1ECE3}
@@ -224,7 +224,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .hprog{display:flex;gap:4px;margin:0 0 12px;flex-wrap:wrap;max-width:420px}
 .hprog u{width:16px;height:16px;border-radius:5px;background:#ffffff55}
 .hprog u.g{background:#3FE08A}.hprog u.y{background:#FFE14D}.hprog u.r{background:#FF9A9A}
-.node .dots u{width:8px;height:8px}
+.node .dots u{width:7px;height:7px;border-radius:2px}
 .nbox.red{background:linear-gradient(#FF7A6E,#D9363E);box-shadow:0 6px 0 #8F1D25}
 .nbox.big,.qbox.big{width:140px;height:140px;font-size:88px}
 .cornerboss{position:absolute;left:18px;bottom:14px;width:110px;height:130px}
@@ -257,6 +257,40 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .bar.ten{display:grid;grid-template-columns:repeat(5,1fr)}.bar.ten i{width:64px;height:84px;font-size:32px}
 .field.many .fig{width:66px;height:82px}
 
+
+.node .later{position:absolute;right:6px;top:6px;font-style:normal;font-size:12px;background:#EEE7FF;color:#5B34C9;border-radius:999px;padding:2px 8px;font-weight:800}
+.ftable{display:flex;border:4px solid #2B2B3A;border-radius:18px;overflow:hidden;background:#FFF8E6;position:relative;z-index:1}
+.ftable .fn{width:84px;display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:900;border-right:4px solid #2B2B3A;background:#FFE3D6}
+.fgrid{display:grid;grid-auto-flow:column;grid-template-rows:auto auto}
+.fgrid div{width:60px;height:78px;border-left:2px solid #D9C9A0;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:900}
+.fgrid .tt{border-bottom:3px solid #2B2B3A;color:#2453B8}
+.fgrid .tb.ok{color:#1FA463}
+.fgrid .tb.cur{background:#FFD23F;color:#fff;animation:pulse 1.2s ease-in-out infinite}
+.ftable.many .fn{width:56px;font-size:40px}.ftable.many .fgrid div{width:44px;height:76px;font-size:32px}
+.dhint{position:absolute;left:12px;right:12px;bottom:12px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;background:#ffffffe6;border-radius:16px;padding:10px;z-index:4;font-size:24px}
+.dhint i{width:30px;height:30px;border-radius:50%;border:3px solid #2B2B3A;position:relative;background:#fff}
+.dhint i.b{background:#9CC2FF}.dhint i.o{background:#FFC27A}
+.dhint i.x::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;height:4px;margin-top:-2px;background:#E0283A;transform:rotate(-45deg);border-radius:2px}
+
+
+.combo{display:flex;flex-direction:column;align-items:center;gap:16px;position:relative;z-index:1}
+.combo .ch{font-size:32px;font-weight:900;background:#fff;border-radius:999px;padding:6px 24px}
+.crow{display:flex;align-items:center;gap:18px}
+.cbig{width:150px;height:150px;border-radius:50%;background:linear-gradient(#FFB347,#F2662B);color:#fff;font-size:96px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 0 #C2410C;animation:pop .25s}
+.cand{font-size:40px;font-weight:900;color:#fff}
+.cmeter{font-size:40px;font-weight:900;color:#FFE14D;-webkit-text-stroke:2px #B3262E;paint-order:stroke fill;min-height:50px}
+.ctime{width:320px;height:16px;border-radius:999px;background:#ffffff44;overflow:hidden}
+.ctime i{display:block;height:100%;width:100%;background:#3FE08A;animation-duration:3s;animation-timing-function:linear;animation-fill-mode:forwards}
+@keyframes ctime0{to{width:0;background:#E0283A}}@keyframes ctime1{to{width:0;background:#E0283A}}
+.cdots{display:flex;gap:6px}.cdots u{width:14px;height:14px;border-radius:50%;background:#ffffff44}.cdots u.on{background:#FFD23F}
+.popf{position:absolute;inset:0}
+.bub{position:absolute;width:108px;height:108px;margin:-54px 0 0 -54px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0,#BFEAFF 30%,#3BB4FF 100%);border:4px solid #ffffffcc;box-shadow:0 6px 14px #0003;font-size:54px;font-weight:900;color:#123E80;animation:float 3s ease-in-out infinite;z-index:2}
+.bub.sel{background:radial-gradient(circle at 35% 30%,#fff 0,#FFF1A6 30%,#FFB300 100%);scale:1.15;box-shadow:0 0 0 6px #FFD23F,0 6px 14px #0003}
+.bub.gone{animation:burst .35s forwards;pointer-events:none}
+@keyframes burst{to{scale:1.7;opacity:0}}
+.bub.bad{animation:hurt .4s}
+@keyframes float{50%{translate:0 -10px}}
+
 /* 名字 */
 .dlg{position:fixed;inset:0;background:#1F2B57aa;z-index:90;display:flex;align-items:center;justify-content:center}
 .dlg>div{background:#fff;border-radius:28px;padding:28px;width:min(440px,92vw);text-align:center}
@@ -269,7 +303,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 @media (max-width:900px){
   .arena{grid-template-columns:1fr}
   .stage{min-height:460px}
-  .map{grid-template-columns:repeat(4,1fr)}
+  .map{grid-template-columns:repeat(4,minmax(0,1fr))}
   .field{grid-template-columns:1fr 1fr}
   #zp{grid-column:1/-1;min-height:200px;order:-1}
 }
@@ -352,11 +386,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113e"></script>
+<script src="art.js?v=20261113g"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113e";
+const VER="20261113g";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -384,10 +418,10 @@ const LEVELS=[
   {n:8,art:"shayu",name:"大白鲨"},
   {n:9,art:"wuzei",name:"大王乌贼"},
   {n:10,art:"lvbu",name:"吕布"},
-  {n:"凑十",art:"wukong",name:"悟空",soon:true},
+  {n:"凑十",art:"wukong",name:"悟空"},
   {n:"进位",art:"qingtianzhu",name:"擎天柱",soon:true},
   {n:"退位",art:"beijita",name:"贝吉塔",soon:true},
-  {n:"大复习",art:"ribenbing",name:"日本兵",soon:true}
+  {n:"大复习",art:"ribenbing",name:"日本兵"}
 ];
 const CARDS=[
   ["liubei","刘备"],["guanyu","关羽"],["zhangfei","张飞"],["zhaoyun","赵云"],["lvbu","吕布"],
@@ -418,8 +452,10 @@ function mastered(id){const h=(stats[id]||[]).filter(x=>!x.p);if(!h.length||h[h.
 function status(id){const h=stats[id]||[];if(!h.length)return"";if(h[h.length-1].r==="w")return"r";return mastered(id)?"g":"y"}
 const numReady=n=>factsOf(n).every(f=>mastered(f.id));
 const numCount=n=>factsOf(n).filter(f=>mastered(f.id)).length;
-const isOpen=l=>!l.soon&&(l.n===LEVELS[0].n||passed.includes(l.n-1));
-function focusLevel(){for(const l of LEVELS){if(!isOpen(l))break;if(!passed.includes(l.n))return l}return LEVELS.filter(isOpen).pop()}
+/* 2026-11-13 家长要求：所有关卡都能随便点（不再按顺序解锁）。首页大卡推荐的是第一个还没决战通过的数 */
+const isOpen=l=>true;
+const lvN=lv=>typeof lv.n==="number"?lv.n:10;
+function focusLevel(){return LEVELS.find(l=>typeof l.n==="number"&&!passed.includes(l.n))||LEVELS.find(l=>l.n===10)}
 const weight=id=>{const s=status(id);return s==="r"?6:s==="y"?4:s===""?3:1};
 function wpick(list,not){const L=list.filter(f=>!not||!not.includes(f.id));const src=L.length?L:list;const w=src.map(f=>weight(f.id)),t=w.reduce((x,y)=>x+y,0);let r=Math.random()*t;for(let i=0;i<src.length;i++){r-=w[i];if(r<=0)return src[i]}return src[src.length-1]}
 
@@ -459,9 +495,9 @@ function drawHome(){
   $("#goBtn").textContent=ready?"⚔️ 决战！":"⚔️ 开战！";
   $("#streak").textContent=days.includes(new Date().toDateString())?"✅ 今天打过了":`🔥 ${days.length} 天`;
   $("#map").innerHTML=LEVELS.map(l=>{
-    const open=isOpen(l),num=typeof l.n==="number";
+    const open=!l.soon,num=typeof l.n==="number";
     return `<button class="node ${open?"":"lock"} ${l===f?"on":""} ${passed.includes(l.n)?"done":""}" data-n="${l.n}" ${open?"":"disabled"}>
-      <span class="num ${num?"":"w"}">${l.n}</span><div class="pic">${art(l.art)}</div><b>${open?l.name:"🔒"}</b>
+      <span class="num ${num?"":"w"}">${l.n}</span><div class="pic">${art(l.art)}</div><b>${l.name}</b>${l.soon?`<em class="later">下学期</em>`:""}
       <div class="dots">${open&&num?factsOf(l.n).map(x=>`<u class="${status(x.id)}"></u>`).join(""):""}</div></button>`}).join("");
   $("#albumN").textContent=`${cards.length} 张`;
   $("#album").innerHTML=cards.map(n=>{const c=CARDS.find(x=>x[1]===n);return`<div class="card"><div class="pic">${c?art(c[0]):""}</div><b>${n}</b></div>`}).join("")+`<div class="card none">?</div>`;
@@ -473,7 +509,9 @@ function drawHome(){
     return`<div class="gnum"><b>${n}</b><span>${passed.includes(n)?"🏆 决战通过":numReady(n)?"⚔️ 可以决战了":`会了 ${numCount(n)}/${F.length}`}</span></div>`+
       ["f","h","+","-"].map(t=>`<div class="grow"><i>${T_NAME[t]}</i>${F.filter(x=>x.t===t).map(x=>`<span class="cell ${status(x.id)}">${factLabel(x)}</span>`).join("")}</div>`).join("")}).join("");
 }
-$("#map").addEventListener("click",e=>{const b=e.target.closest(".node");if(!b||b.disabled)return;startBattle(LEVELS.find(l=>String(l.n)===b.dataset.n))});
+$("#map").addEventListener("click",e=>{const b=e.target.closest(".node");if(!b)return;const l=LEVELS.find(l=>String(l.n)===b.dataset.n);
+  if(l.soon){say(`${l.name}这一关是20以内的${l.n}，下学期才学，到时候再来！`);alert(`「${l.n}」是 20 以内的${l.n==="进位"?"进位加法":"退位减法"}，北师大版要到一年级下册才学。到时候再把这一关做出来。`);return}
+  startBattle(l)});
 $("#goBtn").addEventListener("click",()=>startBattle(focusLevel()));
 $("#resetBtn").addEventListener("click",()=>{if(!confirm("清空所有练习记录、决战记录和卡片吗？"))return;stats={};cards=[];days=[];passed=[];save("stats2",stats);save("cards",cards);save("days",days);save("passed",passed);drawHome()});
 $("#probeBtn").addEventListener("click",()=>{if(!KID){askName();return}if(confirm("摸底：从 3 开始，每个数考 4 道没图的题。全部又快又对就算这个数已经会了，直接跳过，接着考下一个数；有一道没答好就停，从这个数开始练。现在开始吗？"))startProbe()});
@@ -515,6 +553,16 @@ function mk(mode,f,extra){
     case"zero":{const k=f.k;const T=f.t==="0+"?(Math.random()<.5?[k,"+",0]:[0,"+",k]):f.t==="0-"?[k,"−",0]:[k,"−",k];const ans=f.t==="0="?0:k;
       return{...q,id:f.id,n:k,pic:false,L:T,ans,t:`${T[0]} ${T[1]} ${T[2]} = ？`,sayT:`${T[0]}${T[1]==="+"?"加":"减"}${T[2]}等于几？`,
         tip:f.t==="0="?`全部拿走，一个也不剩，就是 0。`:`加 0、减 0，就是一个也没变。`}}
+    case"table":{const top=Array.from({length:n+1},(_,i)=>i);   /* 照北师大课本：上面 0～n 从小到大，下面 n～0 */
+      return{...q,id:"排"+n,pic:false,top,k:0,ans:n-top[0],ct:0,allFast:true,anyWrong:false,
+        t:`${n} 分一分，填一填`,sayT:`${n}可以分成几和几？上面是几，下面填几，一个一个快快填！`,tip:`上面多 1，下面就少 1。`}}
+    case"combo":{const seq=shuffle(Array.from({length:n+1},(_,i)=>i));
+      return{...q,id:"连"+n,pic:false,seq,k:0,combo:0,best:0,ct:0,allFast:true,anyWrong:false,ans:n-seq[0],
+        t:`${n} 的好朋友`,sayT:`${n}的好朋友数！看到一个数，马上说出它的好朋友！`,tip:`${n} 分成几和几？想想它的好朋友。`}}
+    case"pop":{const P=[];for(let x=0;x<=n/2;x++)P.push(x);let ch=shuffle(P).slice(0,4);while(ch.length<Math.min(4,n+1))ch.push(pick(P));
+      const vals=shuffle(ch.flatMap(x=>[x,n-x])),cols=4,rows=Math.ceil(vals.length/cols),cells=shuffle(Array.from({length:cols*rows},(_,i)=>i)).slice(0,vals.length);
+      const items=vals.map((v,i)=>{const c=cells[i]%cols,r=Math.floor(cells[i]/cols);return{v,x:14+c*(72/(cols-1))+(Math.random()*6-3),y:(rows===1?50:22+r*(56/(rows-1)))+(Math.random()*6-3),gone:false}});
+      return{...q,id:"消"+n,pic:true,items,sel:null,miss:0,ans:null,t:`点两个，凑成 ${n}`,sayT:`找朋友！点两个泡泡，合起来是${n}就消掉！`,tip:`找一找，谁和谁合起来是 ${n}？`}}
     case"intro":return{...q,intro:true,t:`${n} 分成 ${a} 和 ${b}`,sayT:`解放军送来密信：${n}可以分成${a}和${b}。用它来做算式！`};
   }
 }
@@ -523,6 +571,25 @@ function familyOf(n){
   let best=null,bw=-1;
   for(let a=1;a<=n/2;a++){const ids=[...new Set([`${n}|+|${a}`,`${n}|+|${n-a}`,`${n}|-|${a}`,`${n}|-|${n-a}`])];const w=ids.reduce((s,id)=>s+weight(id),0)+Math.random();if(w>bw){bw=w;best={a,ids}}}
   return best;
+}
+/* 凑十：10 的分与合专练（能量槽十格、分合图、括号、一图四式） */
+function buildTen(){
+  const F=factsOf(10),fs=F.filter(f=>f.t==="f"),used=[],take=L=>{const f=wpick(L,used);used.push(f.id);return f};
+  const qs=[mk("energy",take(fs)),mk("table",{n:10,a:0}),mk("combo",{n:10,a:0}),mk("treeF",take(fs)),mk("blank",take(fs)),mk("energy",take(fs)),mk("treeF",take(fs)),mk("blank",take(fs))];
+  const fam=familyOf(10);qs.push(mk("intro",{n:10,a:fam.a,id:"intro"}));
+  for(const id of fam.ids){const [, t, a]=id.split("|");qs.push(mk("eq",{id,n:10,t,a:+a}))}
+  qs.push(mk("pop",{n:10,a:0}));
+  return qs;
+}
+/* 大复习：2～10 里还没会的题（没图），再加 0 和看图列式 */
+function buildReview(){
+  let pool=[];for(let m=2;m<=10;m++)pool.push(...factsOf(m).filter(f=>!mastered(f.id)));
+  if(pool.length<12){for(let m=2;m<=10;m++)pool.push(...factsOf(m))}
+  const used=[],qs=[];
+  for(let k=0;k<12;k++){const f=wpick(pool,used);used.push(f.id);qs.push(bareQ(f))}
+  const z=wpick(ZERO);qs.splice(4,0,mk("zero",{...z,k:1+rnd(10)}));
+  const v=wpick(VIEW),n=4+rnd(6),a=1+rnd(n-1);qs.splice(8,0,mk("pick",{id:v.id,t:v.t,n,a:v.t==="v+"?Math.min(a,n-a):a}));
+  return qs;
 }
 const bareQ=f=>f.t==="f"?mk(Math.random()<.5?"treeF":"blank",f):f.t==="h"?mk("treeH",f):mk("eq",f);
 function buildBattle(lv){
@@ -535,7 +602,8 @@ function buildBattle(lv){
   qs.push(mk("merge",take("h")));
   const v=wpick(VIEW);const vf=wpick(by(v.t==="v+"?"h":"-"));     /* ③ 看图列式 */
   qs.push(mk("pick",{id:v.id,t:v.t,n,a:vf.a}));
-  qs.push(mk("treeF",take("f")));                                /* ④ 没图 */
+  qs.push(mk("table",{n,a:0}));                                   /* ④ 没图：分一分排排队（照课本的表） */
+  qs.push(mk("combo",{n,a:0}));                                   /*    好朋友数连击：打乱顺序，看到一个马上想到另一个 */
   qs.push(mk("treeH",take("h")));
   qs.push(mk("blank",take("f")));
   const fam=familyOf(n);                                         /* ⑤ 一图四式 */
@@ -543,8 +611,9 @@ function buildBattle(lv){
   for(const id of fam.ids){const [, t, a]=id.split("|");qs.push(mk("eq",{id,n,t,a:+a}))}
   let pool=[];for(let m=2;m<n;m++)pool.push(...factsOf(m).filter(f=>!mastered(f.id)));   /* ⑥ 复习 + 0 */
   if(!pool.length)pool=F.filter(f=>!used.includes(f.id));
-  for(let k=0;k<2&&pool.length;k++){const f=wpick(pool,used);used.push(f.id);qs.push(bareQ(f))}
+  for(let k=0;k<1&&pool.length;k++){const f=wpick(pool,used);used.push(f.id);qs.push(bareQ(f))}
   const z=wpick(ZERO);qs.push(mk("zero",{...z,k:1+rnd(n)}));
+  qs.push(mk("pop",{n,a:0}));                                     /* 收尾：找朋友消消乐 */
   return qs;
 }
 /* 决战：分、合、加、减轮流出，四类都考到；这个数的题不够 10 道就从前面的数补 */
@@ -555,7 +624,7 @@ function buildExam(lv){
   if(out.length<10){const extra=[];for(let m=n-1;m>=2;m--)extra.push(...factsOf(m));out.push(...shuffle(extra).slice(0,10-out.length))}
   return shuffle(out).map(bareQ);
 }
-const BG={treeF:"bg-scroll",treeH:"bg-scroll",blank:"bg-scroll",split:"bg-camp",take:"bg-camp",energy:"bg-gym",hide:"bg-jungle",merge:"bg-city",flash:"bg-sea",eq:"bg-army",zero:"bg-army",intro:"bg-army",pick:"bg-camp"};
+const BG={combo:"bg-gym",pop:"bg-sea",table:"bg-scroll",treeF:"bg-scroll",treeH:"bg-scroll",blank:"bg-scroll",split:"bg-camp",take:"bg-camp",energy:"bg-gym",hide:"bg-jungle",merge:"bg-city",flash:"bg-sea",eq:"bg-army",zero:"bg-army",intro:"bg-army",pick:"bg-camp"};
 const rep=(h,n)=>Array.from({length:n},(_,i)=>h(i)).join("");
 const NB=(v,c="")=>`<div class="nbox ${c}">${v}</div>`,QB=`<div class="qbox">?</div>`;
 function takeScene(n,a,reveal){
@@ -605,9 +674,94 @@ function stageHTML(q,reveal){
         <div style="display:flex;flex-direction:column;align-items:center">${NB(n,"red")}
         <svg viewBox="0 0 220 60" style="width:220px;height:60px"><path d="M110 4 L44 56 M110 4 L176 56" stroke="#8A5A33" stroke-width="8" stroke-linecap="round"/></svg>
         <div style="display:flex;gap:60px">${NB(a)}${NB(b)}</div></div></div></div>`;
+    case"table":return tableHTML(q)+boss;
+    case"combo":{const x=q.seq[Math.min(q.k,n)];return`<div class="combo"><div class="ch">${n} 的好朋友</div>
+      <div class="crow"><div class="cbig" key="${q.k}">${x}</div><span class="cand">和</span>${q.done?NB(n-x,"g"):QB}</div>
+      <div class="cmeter">${q.combo>1?`🔥 连击 ×${q.combo}`:"&nbsp;"}</div>${q.done?"":`<div class="ctime"><i style="animation-name:ctime${q.k%2}"></i></div>`}
+      <div class="cdots">${q.seq.map((v,i)=>`<u class="${i<q.k?"on":""}"></u>`).join("")}</div></div>`}
+    case"pop":return`<div class="popf">${q.items.map((it,i)=>`<button class="bub ${it.gone?"gone":""} ${q.sel===i?"sel":""}" data-i="${i}" style="left:${it.x}%;top:${it.y}%;animation-delay:${(i*.37%2).toFixed(2)}s">${it.v}</button>`).join("")}</div>
+      <div class="total" style="bottom:12px">合起来是 ${n}</div>`;
     case"flash":return`<div class="sea" id="sea"></div>`;
   }
 }
+/* 课本 48 页“分一分，填一填”的表：左边是 n，上面一行 0～n，下面一行一格一格填 */
+function tableHTML(q){
+  const n=q.n;let cells="";
+  q.top.forEach((t,i)=>{const done=i<q.k,cur=i===q.k&&!q.done;cells+=`<div class="tt">${t}</div><div class="tb ${done||q.done?"ok":""} ${cur?"cur":""}">${done||q.done?n-t:cur?"?":""}</div>`});
+  return`<div class="pop ftable ${n>6?"many":""}"><div class="fn">${n}</div><div class="fgrid">${cells}</div></div>`;
+}
+/* 答错两次时在画面下方“画一画”：画 n 个圈，减法把拿走的划掉 */
+function dotsHint(q){
+  let html="";const n=q.n,a=q.a,b=q.b;
+  if(q.mode==="zero"){const [x,op,y]=q.L;const k=Math.max(x,y);html=Array.from({length:k},(_,i)=>`<i class="b ${op==="−"&&i>=k-y?"x":""}"></i>`).join("")}
+  else if(q.mode==="treeH"||q.mode==="treeF"||(q.mode==="eq"&&q.op==="+")||(q.mode==="blank"&&q.form==="+"))html=Array.from({length:n},(_,i)=>`<i class="${i<a?"b":"o"}"></i>`).join("");  /* 合/分：前 a 个蓝、后面橙 */
+  else if(q.mode==="blank")html=Array.from({length:n},(_,i)=>`<i class="b ${i>=a?"x":""}"></i>`).join("");   /* n−( )=a：划掉的是要填的数，剩 a 个 */
+  else html=Array.from({length:n},(_,i)=>`<i class="b ${i>=n-a?"x":""}"></i>`).join("");                     /* n−a：划掉 a 个 */
+  return`<div class="dhint">✏️ ${html}</div>`;
+}
+/* 连续几格的题（排排队表、连击、消消乐）做完时统一结算 */
+function multiDone(q,res,speech){
+  q.done=true;if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
+  $("#stage").innerHTML=stageHTML(q,true);const crit=res==="f";hitFx(crit);crit?sndCrit():sndHit();
+  $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⚡ 暴击！":"✅ 完成！";$("#fb").hidden=false;
+  setTimeout(()=>say((crit?"暴击！":"完成！")+speech),crit?650:150);
+  B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
+}
+function floatText(t,big){const st=$("#stage").getBoundingClientRect(),d=document.createElement("div");d.className="dmg";d.textContent=t;d.style.left=(st.left+st.width/2-60)+"px";d.style.top=(st.top+st.height*.62)+"px";d.style.color="#FFE14D";if(big)d.style.fontSize="56px";document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
+/* 好朋友数连击：0～n 打乱顺序，看到一个马上说出另一个；3 秒内答对连击 +1 */
+function comboAnswer(q,btn){
+  const x=q.seq[q.k],n=q.n;
+  const next=res=>{
+    if(res!=="f"){q.allFast=false;q.combo=0}else{q.combo++;q.best=Math.max(q.best,q.combo)}
+    if(res==="w")q.anyWrong=true;
+    if(x>0&&x<n)record(`${n}|f|${x}`,res,false);
+    if(res==="f"){tone(520+q.combo*70,.1,"square",.08);if(q.combo>1)floatText(`连击 ×${q.combo}`,q.combo>=4)}else tone(500,.08,"triangle",.1);
+    q.k++;q.ct=0;
+    if(q.k>n){multiDone(q,q.anyWrong?"w":q.allFast?"f":"s",`最高连击${q.best}！${n}的好朋友全找到了！`);return}
+    q.ans=n-q.seq[q.k];q.t0=Date.now();$("#stage").innerHTML=stageHTML(q);$("#fb").hidden=true;
+  };
+  if(btn.dataset.v===String(n-x)){const secs=q.t0?(Date.now()-q.t0)/1000:0;next(q.ct>0?"w":secs<=3?"f":"s")}
+  else{q.ct++;q.combo=0;sndNo();$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
+    say(`${x}的好朋友是几？`);if(q.ct>=2){say(`${x}和${n-x}是好朋友。`);next("w")}}
+}
+/* 找朋友消消乐：点两个泡泡，合起来是 n 就消掉 */
+$("#stage").addEventListener("click",e=>{
+  const b=e.target.closest(".bub");if(!b||!B)return;const q=B.qs[B.i];if(!q||q.mode!=="pop"||q.done)return;
+  const i=+b.dataset.i,n=q.n;
+  if(q.sel===null){q.sel=i;sndPick()}
+  else if(q.sel===i){q.sel=null}
+  else{const A=q.items[q.sel],C=q.items[i];
+    if(A.v+C.v===n){A.gone=C.gone=true;q.sel=null;noise(.12,.25,0,2500);tone(880,.12,"triangle",.12);floatText(`${A.v} 和 ${C.v}`)}
+    else{q.miss++;q.sel=null;sndNo();say(`${A.v}和${C.v}合起来不是${n}，再找找！`);b.classList.add("bad")}
+  }
+  if(q.items.every(it=>it.gone)){multiDone(q,q.miss?"s":"f",`泡泡全消掉了！`);return}
+  if(!b.classList.contains("bad"))$("#stage").innerHTML=stageHTML(q);else setTimeout(()=>{if(!q.done)$("#stage").innerHTML=stageHTML(q)},400);
+});
+function tableAnswer(q,btn){
+  const top=q.top[q.k],n=q.n;
+  /* 填好当前这一格（res：f 快、s 慢、w 错过），然后走到下一格；最后一格填完算这道题做完 */
+  const fill=res=>{
+    if(res!=="f")q.allFast=false;if(res==="w")q.anyWrong=true;
+    if(top>0&&top<n)record(`${n}|f|${top}`,res,false);
+    q.k++;q.ct=0;tone(660+q.k*60,.09,"triangle",.12);
+    if(q.k>n){q.done=true;
+      const r2=q.anyWrong?"w":q.allFast?"f":"s";if(r2==="f")B.fast++;else if(r2==="s")B.slow++;else B.wrong++;
+      $("#stage").innerHTML=stageHTML(q,true);const crit=r2==="f";hitFx(crit);crit?sndCrit():sndHit();
+      $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⚡ 暴击！":"✅ 填完了！";$("#fb").hidden=false;
+      setTimeout(()=>say((crit?"暴击！":"填完了！")+`${n}一共有${n+1}种分法！`),crit?650:150);
+      B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;return}
+    q.ans=n-q.top[q.k];q.t0=Date.now();$("#stage").innerHTML=stageHTML(q);$("#stage .pop").style.animation="none";
+  };
+  if(btn.dataset.v===String(n-top)){
+    const secs=q.t0?(Date.now()-q.t0)/1000:0;$("#fb").hidden=true;
+    fill(q.ct>0?"w":secs<=3?"f":"s");
+  }else{
+    q.ct++;sndNo();$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
+    say(`${n}分成${top}和几？`+(q.k>0?"上面多1，下面就少1。":""));
+    if(q.ct>=2){say(`${n}分成${top}和${n-top}。`);fill("w")}
+  }
+}
+
 function placeSea(q){
   const sea=$("#sea");if(!sea)return;const small=q.n>5,tall=q.s==="wuzei",w=tall?(small?70:96):(small?110:150),h=tall?(small?88:120):(small?66:90),W_=sea.clientWidth,H=sea.clientHeight;
   const pts=[];let g=0;
@@ -622,6 +776,8 @@ const answerable=()=>B.qs.filter(q=>!q.intro).length;
 const answeredSoFar=()=>B.qs.slice(0,B.i).filter(q=>!q.intro).length;
 function startBattle(lv){
   if(!KID){askName();return}
+  if(typeof lv.n!=="number"){B={lv,special:true,qs:lv.n==="凑十"?buildTen():buildReview(),i:0,fast:0,slow:0,wrong:0};
+    openBattle(lv.name,`${lv.name} 来了！`,lv.n==="凑十"?"家长：凑十关专练 10 的分与合（几和几凑成 10），下学期进位加法全靠它。":"家长：大复习从 2～10 里挑还没会的题，都没有图。",`${lv.name}来了！${kid()}，开战！`);return}
   const exam=numReady(lv.n)&&!passed.includes(lv.n);
   B={lv,exam,qs:exam?buildExam(lv):buildBattle(lv),i:0,fast:0,slow:0,wrong:0};
   openBattle(exam?`${lv.name} · 决战`:lv.name,exam?`决战！`:`${lv.name} 来了！`,
@@ -640,8 +796,9 @@ function openBattle(name,title,note,speech){
 }
 function hpDraw(){$("#hp").style.width=Math.max(0,100-100*answeredSoFar()/(answerable()+(B.exam||B.probe?0:1)))+"%"}
 function padHTML(q){
+  if(q.mode==="pop"){$("#pad").className="pad";return""}
   if(q.choices){$("#pad").className="pad choice";return q.choices.map(c=>`<button data-v="${c}">${c}</button>`).join("")}
-  const max=Math.max(5,B.lv.n,q.ans);$("#pad").className="pad "+(max>5?"ten":"five");
+  const max=Math.max(5,lvN(B.lv),q.ans);$("#pad").className="pad "+(max>5?"ten":"five");
   return Array.from({length:max+1},(_,i)=>`<button data-v="${i}">${i}</button>`).join("");
 }
 function ask(){
@@ -690,6 +847,8 @@ function hitFx(crit){
 }
 $("#pad").addEventListener("click",e=>{
   const btn=e.target.closest("button");if(!btn||!B)return;const q=B.qs[B.i];if(q.done||q.intro)return;
+  if(q.mode==="table"){tableAnswer(q,btn);return}
+  if(q.mode==="combo"){comboAnswer(q,btn);return}
   q.tries++;
   if(btn.dataset.v===String(q.ans)){
     q.done=true;btn.classList.add("ok");
@@ -706,7 +865,7 @@ $("#pad").addEventListener("click",e=>{
     btn.classList.add("no");sndNo();
     $("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
     say("差一点！"+q.tip.replace(/\s/g,""));
-    if(q.tries>=2&&!q.choices){if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}}
+    if(q.tries>=2&&!q.choices){if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true)+dotsHint(q);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}}
   }
 });
 function sentenceOf(q){
@@ -755,7 +914,7 @@ let R=null;
 function startReverse(){
   R={n:0,pos:[],phase:"pick"};show("rev");
   $("#fl").innerHTML=art("flag","#3B82F6");$("#fr").innerHTML=art("flag","#F28C28");
-  const max=Math.max(4,B.lv.n);
+  const max=Math.max(4,lvN(B.lv));
   $("#revPick").innerHTML=Array.from({length:max-1},(_,i)=>`<button data-n="${i+2}">${i+2}</button>`).join("");
   $("#revPick").hidden=false;$("#field").hidden=true;$("#revQ").hidden=true;$("#revBar").innerHTML="";
   $("#revStep").textContent="派几个兵？👇";
@@ -851,7 +1010,7 @@ function finish(){
   $("#wBoss").className="fall";$("#wBoss").innerHTML=art(lv.art);$("#wTitle").textContent=`打退了${lv.name}！`;
   $("#wStats").innerHTML=`<div>⚡ ${B.fast}</div><div>✅ ${B.slow}</div><div>🔁 ${B.wrong}</div>`;
   $("#wCard").hidden=false;$("#wCard").innerHTML=`<div class="pic">${art(c[0])}</div><b>${c[1]}</b>`;
-  $("#wNote").textContent=numReady(lv.n)?`${lv.n} 的题全会了！下次决战 ⚔️`:`${lv.n}：会了 ${numCount(lv.n)} / ${factsOf(lv.n).length}`;
+  $("#wNote").textContent=typeof lv.n!=="number"?"":numReady(lv.n)?`${lv.n} 的题全会了！下次决战 ⚔️`:`${lv.n}：会了 ${numCount(lv.n)} / ${factsOf(lv.n).length}`;
   teaser();show("win");
   const wb=$("#wBoss");wb.style.animation="none";void wb.offsetWidth;wb.style.animation="";
   sndWin();confetti();
