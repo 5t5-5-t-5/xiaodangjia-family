@@ -174,6 +174,19 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .critfx .spark{position:absolute;width:18px;height:18px;border-radius:4px;background:#FFD23F;animation:spark .9s ease-out forwards}
 @keyframes spark{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
 .shake{animation:shake .5s}
+/* 龟派气功（问之叫它“哈比哈比哈比哈”） */
+.kame{position:fixed;inset:0;z-index:70;pointer-events:none;background:rgba(16,26,70,.55);animation:kfade 2.9s ease forwards;overflow:hidden}
+@keyframes kfade{0%{opacity:0}8%{opacity:1}85%{opacity:1}100%{opacity:0}}
+.kame .wk{position:absolute;left:30px;bottom:20px;width:330px;height:350px;animation:kwk 2.9s ease forwards}
+@keyframes kwk{0%{transform:scale(.6) translateY(80px)}15%{transform:none}100%{transform:none}}
+.kame .ball{position:absolute;left:310px;top:calc(100% - 250px);width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;
+  background:radial-gradient(circle,#fff 20%,#9FE6FF 50%,#3AA8FF 75%,rgba(58,168,255,0));animation:kball 2.9s ease-in forwards}
+@keyframes kball{0%{transform:scale(0)}45%{transform:scale(5)}55%{transform:scale(4)}100%{transform:scale(4)}}
+.kame .beam{position:absolute;left:310px;top:calc(100% - 250px);height:120px;margin-top:-60px;width:0;border-radius:0 60px 60px 0;
+  background:linear-gradient(#3AA8FF00,#7FD6FF 18%,#fff 40%,#fff 60%,#7FD6FF 82%,#3AA8FF00);box-shadow:0 0 40px #7FD6FF;animation:kbeam 2.9s ease-out forwards}
+@keyframes kbeam{0%,50%{width:0}66%{width:1200px}86%{width:1200px;opacity:1}100%{width:1200px;opacity:0}}
+.kame .kw{position:absolute;right:40px;top:60px;font-size:84px;font-weight:900;color:#BFF0FF;-webkit-text-stroke:3px #1C4FB8;letter-spacing:.04em;animation:kword 2.9s ease forwards;white-space:nowrap}
+@keyframes kword{0%{opacity:0;transform:scale(.4)}12%{opacity:1;transform:scale(1.1)}20%{transform:none}100%{opacity:1}}
 @keyframes shake{0%,100%{transform:none}10%{transform:translate(-14px,6px)}25%{transform:translate(12px,-8px)}40%{transform:translate(-10px,4px)}60%{transform:translate(8px,-4px)}80%{transform:translate(-4px,2px)}}
 
 /* ---------- 你来出题（拖小兵） ---------- */
@@ -386,11 +399,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113j"></script>
+<script src="art.js?v=20261113m"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113j";
+const VER="20261113m";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -418,7 +431,7 @@ const LEVELS=[
   {n:8,art:"shayu",name:"大白鲨"},
   {n:9,art:"zhangfei",name:"张飞"},
   {n:10,art:"lvbu",name:"吕布"},
-  {n:"凑十",art:"wukong",name:"悟空"},
+  {n:"凑十",art:"wukongAngry",name:"悟空"},
   {n:"进位",art:"qingtianzhu",name:"擎天柱",soon:true},
   {n:"退位",art:"beijita",name:"贝吉塔",soon:true},
   {n:"大复习",art:"meiguobing",name:"美国兵"}
@@ -427,7 +440,7 @@ const CARDS=[
   ["liubei","刘备"],["guanyu","关羽"],["zhangfei","张飞"],["zhaoyun","赵云"],["lvbu","吕布"],
   ["gesila","哥斯拉"],["jiefangjun","解放军"],["bing","古代兵"],["qingtianzhu","擎天柱"],["dahuangfeng","大黄蜂"],
   ["bawanglong","霸王龙"],["sanjiaolong","三角龙"],["mxj","抹香鲸"],["wuzei","大王乌贼"],["shayu","大白鲨"],
-  ["wukong","悟空"],["beijita","贝吉塔"]
+  ["wukongAngry","悟空"],["beijita","贝吉塔"]
 ];
 const art=(k,...a)=>(window.ART&&ART[k]?ART[k](...a):"");
 
@@ -660,7 +673,7 @@ function stageHTML(q,reveal){
         ${reveal?`<div class="row peek">${rep(()=>`<div class="fig">${art("bing","#F28C28")}</div>`,b)}</div>`:`<div class="tentbig" style="position:relative">${art("tent")}<b style="position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);font-size:70px;color:#fff;text-shadow:0 4px 0 #9A5A12">?</b></div>`}</div></div>
       <div class="total">一共 ${n} 个</div>`;
     case"energy":return`<div class="pop" style="text-align:center">
-      <div class="goku ${reveal?"aura":""}">${art("wukong",reveal)}</div>
+      <div class="goku ${reveal?"aura":""}">${reveal?art("wukongAngry"):art("wukong")}</div>
       <div class="bar ${n>5?"ten":""}">${rep(i=>`<i class="${i<a?"f":reveal?"add":""}">${i<a?"⚡":reveal?"✨":""}</i>`,n)}</div></div>`;
     case"hide":return`<div class="${many}" style="display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;z-index:1">
       <div class="row pop">${rep(()=>`<div class="dino">${art(q.d)}</div>`,a)}</div>
@@ -835,14 +848,25 @@ function ask(){
 $("#again").addEventListener("click",()=>{const q=B&&B.qs[B.i];if(q)say(q.sayT)});
 
 /* 打中：剑光 + 掉血数字；暴击：全屏闪光、光芒、大字、火花、震屏 */
+/* 悟空的龟派气功：变身大喊（双手张开、长金发）→ 蓄能量球 → 一道光波横扫全屏 */
+function kameFx(voice=true){
+  const o=document.createElement("div");o.className="kame";
+  o.innerHTML=`<div class="wk">${art("wukongAngry")}</div><div class="ball"></div><div class="beam"></div><div class="kw">哈比哈比哈比哈！</div>`;
+  document.body.appendChild(o);setTimeout(()=>o.remove(),3000);
+  tone(140,1.4,"sawtooth",.07,0,520);tone(280,1.4,"triangle",.06,0,1040);
+  setTimeout(()=>{noise(1,.45,0,300);tone(90,.8,"sawtooth",.16,0,45);const sc=$("#battle");sc.classList.remove("shake");void sc.offsetWidth;sc.classList.add("shake")},1450);
+  if(voice)say("哈比哈比哈比哈——！");
+}
+const tenLv=()=>B&&B.lv&&B.lv.n==="凑十";
 function hitFx(crit){
   const bb=$("#bBoss"),r=bb.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  if(tenLv()&&crit){kameFx(false);return}
   const s=document.createElement("div");s.className="slash";s.style.left=(cx-110)+"px";s.style.top=(cy-110)+"px";
   s.innerHTML=`<svg viewBox="0 0 100 100"><path d="M10 80 Q50 50 92 12 Q58 56 14 86Z" fill="#fff" stroke="${crit?"#FFD23F":"#9FE0FF"}" stroke-width="4"/></svg>`;
   document.body.appendChild(s);setTimeout(()=>s.remove(),500);
   const d=document.createElement("div");d.className="dmg";d.textContent=crit?"-2":"-1";d.style.left=(cx+20)+"px";d.style.top=(cy-30)+"px";if(crit){d.style.fontSize="64px";d.style.color="#FFE14D"}
   document.body.appendChild(d);setTimeout(()=>d.remove(),1000);
-  bb.classList.remove("hurt");void bb.offsetWidth;bb.classList.add("hurt");
+  if(!tenLv()){bb.classList.remove("hurt");void bb.offsetWidth;bb.classList.add("hurt")}
   if(!crit)return;
   const o=document.createElement("div");o.className="critfx";
   o.innerHTML=`<div class="flash"></div><div class="rays"></div>`+rep(i=>{const a=i/16*Math.PI*2,dist=260+rnd(200);return`<i class="spark" style="--dx:${Math.cos(a)*dist}px;--dy:${Math.sin(a)*dist}px;background:${pick(["#FFD23F","#FF7A3D","#fff","#7FE3FF"])}"></i>`},16)+`<div class="word">暴击！</div>`;
@@ -860,9 +884,10 @@ $("#pad").addEventListener("click",e=>{
     const res=q.tries>1?"w":secs<=(q.mode==="flash"?5:3)?"f":"s";
     record(q.id,res,q.pic);if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
     if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}
-    const crit=res==="f";hitFx(crit);crit?sndCrit():sndHit();
-    $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⚡ 暴击！":"✅ 打中了！";$("#fb").hidden=false;
-    setTimeout(()=>say((crit?pick(["暴击！","闪电反应！","一口就说出来了！"]):pick(["打中了！","好样的！","答对了！"]))+sentenceOf(q)),crit?650:150);
+    const crit=res==="f",kame=q.mode==="energy"||(tenLv()&&crit);
+    if(kame){kameFx(true);if(!crit)sndHit()}else{hitFx(crit);crit?sndCrit():sndHit()}
+    $("#fb").className="fb ok";$("#fb").innerHTML=kame?"💥 哈比哈比哈比哈！":crit?"⚡ 暴击！":"✅ 打中了！";$("#fb").hidden=false;
+    setTimeout(()=>say((crit?pick(["暴击！","闪电反应！","一口就说出来了！"]):pick(["打中了！","好样的！","答对了！"]))+sentenceOf(q)),kame?3000:crit?650:150);
     B.i++;hpDraw();
     $("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":B.probe?"下一个 ›":B.exam?"🏁 看结果 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
   }else{

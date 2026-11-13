@@ -42,7 +42,7 @@ function person(o){
     <circle cx="60" cy="58" r="31" fill="${face}" ${S}/>
     ${o.hair||""}
     <circle cx="41" cy="71" r="5" fill="#FF8C8C" opacity=".45"/><circle cx="79" cy="71" r="5" fill="#FF8C8C" opacity=".45"/>
-    ${brow}${eyes}${mouth}
+    ${o.faceS||brow+eyes+mouth}
     ${o.beard||""}
     ${o.front||""}`);
 }
@@ -107,6 +107,41 @@ A.gesila=()=>{const b="#3E5A52",d="#2C443D",l="#8FA58C";
   <ellipse cx="78" cy="28" rx="6" ry="4.5" fill="#FFE66D" ${S2}/><circle cx="79" cy="28.5" r="2.4" fill="${K}"/>
   <path d="M68 20 L88 26" stroke="${K}" stroke-width="4.5" stroke-linecap="round"/>
   <circle cx="102" cy="32" r="1.6" fill="${K}"/>`)};
+/* 超级赛亚人悟空·很生气（问之要的样子）：双手张开、长长的金发披到背后、抬着头大喊，金色气焰+蓝色闪电 */
+A.wukongAngry=()=>{const g="#FFD23F",gd="#F2B21B",o="#F28C28",bl="#2B4DB3",sk="#FFD9B8";
+  const bolt=(d)=>`<path d="${d}" stroke="#7FE3FF" stroke-width="3.5" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`;
+  return svg("0 0 160 170",`
+  <path d="M80 -4 Q132 14 150 70 Q162 126 140 170 L20 170 Q-2 126 10 70 Q28 14 80 -4Z" fill="${g}" opacity=".42"/>
+  <path d="M80 10 Q122 26 134 74 Q142 124 126 170 L34 170 Q18 124 26 74 Q38 26 80 10Z" fill="#FFF3A6" opacity=".6"/>
+  ${bolt("M14 30 L26 44 L16 48 L30 66")}${bolt("M148 24 L136 40 L146 44 L132 62")}${bolt("M146 112 L156 126 L148 130 L158 146")}${bolt("M6 118 L16 128 L8 134 L18 150")}
+  <path d="M50 52 L36 70 L44 76 L30 96 L42 100 L32 124 L46 124 L40 146 L60 132 L80 140 L100 132 L120 146 L114 124 L128 124 L118 100 L130 96 L116 76 L124 70 L110 52Z" fill="${g}" ${S}/>
+  <path d="M46 84 L40 100 M114 84 L120 100 M52 112 L48 126 M108 112 L112 126" stroke="${gd}" stroke-width="3" stroke-linecap="round"/>
+  <path d="M58 106 L26 104 M102 106 L134 104" stroke="${K}" stroke-width="19" stroke-linecap="round"/>
+  <path d="M58 106 L26 104 M102 106 L134 104" stroke="${sk}" stroke-width="13" stroke-linecap="round"/>
+  <path d="M58 106 L44 105 M102 106 L116 105" stroke="${K}" stroke-width="21" stroke-linecap="round"/>
+  <path d="M58 106 L44 105 M102 106 L116 105" stroke="${o}" stroke-width="15" stroke-linecap="round"/>
+  <path d="M31 104.3 L24 104 M129 104.3 L136 104" stroke="${K}" stroke-width="17" stroke-linecap="butt"/><path d="M31 104.3 L24 104 M129 104.3 L136 104" stroke="${bl}" stroke-width="11" stroke-linecap="butt"/>
+  <circle cx="16" cy="104" r="10" fill="${sk}" ${S}/><circle cx="144" cy="104" r="10" fill="${sk}" ${S}/>
+  <path d="M8 99 L1 95 M7 105 L-1 105 M9 111 L2 115 M152 99 L159 95 M153 105 L161 105 M151 111 L158 115" stroke="${K}" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M54 168 Q50 112 80 104 Q110 112 106 168Z" fill="${o}" ${S}/>
+  <path d="M68 105 L80 124 L92 105" fill="${bl}" ${S2}/>
+  <rect x="56" y="140" width="48" height="9" rx="4" fill="${bl}" ${S2}/>
+  <circle cx="94" cy="126" r="7" fill="#fff" ${S2}/><text x="94" y="130" font-size="9" text-anchor="middle" font-weight="900" fill="${K}">悟</text>
+  <rect x="72" y="88" width="16" height="18" rx="6" fill="${sk}" ${S2}/>
+  <g transform="rotate(-6 80 66)">
+    <ellipse cx="80" cy="64" rx="29" ry="30" fill="${sk}" ${S}/>
+    <path d="M50 54 L30 40 L50 38 L36 12 L62 26 L64 -2 L80 20 L96 -2 L98 26 L124 12 L110 38 L130 40 L110 54 Q104 34 80 34 Q56 34 50 54Z" fill="${g}" ${S}/>
+    <path d="M60 36 L66 50 L72 36 Z M88 36 L94 50 L100 36Z" fill="${g}" ${S2}/>
+    <path d="M58 48 L74 54 M102 48 L86 54" stroke="${K}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M62 54 L74 56 Q71 60 64 59Z" fill="#fff" ${S2}/><path d="M98 54 L86 56 Q89 60 96 59Z" fill="#fff" ${S2}/>
+    <circle cx="69" cy="55.6" r="2.2" fill="#1FA39A"/><circle cx="91" cy="55.6" r="2.2" fill="#1FA39A"/>
+    <path d="M78 48 L80 44 L82 48" stroke="${K}" stroke-width="1.8" fill="none"/>
+    <ellipse cx="80" cy="76" rx="14" ry="13" fill="#9E1F2A" ${S2}/>
+    <path d="M67 70 Q80 64 93 70 L92 73 Q80 68 68 73Z" fill="#fff"/>
+    <ellipse cx="80" cy="83" rx="7" ry="4" fill="#FF7A8A"/>
+    <circle cx="60" cy="68" r="4.5" fill="#FF8C8C" opacity=".4"/><circle cx="100" cy="68" r="4.5" fill="#FF8C8C" opacity=".4"/>
+  </g>
+  <path d="M40 22 l6 4 M120 22 l-6 4 M30 56 l8 1 M130 56 l-8 1" stroke="${K}" stroke-width="2.4" stroke-linecap="round"/>`)};
 /* 悟空（super=true 变成金发） */
 A.wukong=(sup)=>{const h=sup?"#FFD23F":"#1F1F2A";
   return person({robe:"#F28C28",trim:"#2B4DB3",belt:"#2B4DB3",sleeve:"#F28C28",brow:sup?"angry":"",mouth:sup?"shout":"",
