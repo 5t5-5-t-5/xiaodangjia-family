@@ -74,6 +74,19 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .bhead{display:flex;align-items:center;gap:14px;background:#fff;border-radius:22px;padding:8px 18px 8px 10px}
 .bhead .boss{width:76px;height:86px;flex:none;position:relative}
 .bhead .boss.hurt{animation:hurt .45s}
+.bhead .mine{width:76px;height:86px;flex:none;position:relative}
+.bhead .mine.atk{animation:atk .45s}
+@keyframes atk{40%{transform:translateX(34px) scale(1.15)}}
+.bhead .mine.pop2{animation:pop .4s}
+.vs{font-weight:900;font-size:24px;color:var(--red);font-style:italic}
+/* 队员上场 */
+.goin{position:absolute;left:10px;bottom:10px;z-index:5;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:goin 2.2s ease forwards}
+.goin .pic{width:130px;height:150px;filter:drop-shadow(0 6px 0 #0002)}
+.goin b{background:#fff;border-radius:16px;padding:8px 14px;font-size:22px;font-weight:900;margin-bottom:110px;box-shadow:0 0 0 3px var(--yellow);white-space:nowrap}
+@keyframes goin{0%{transform:translateX(-160px);opacity:0}15%{transform:none;opacity:1}80%{transform:none;opacity:1}100%{transform:translateX(-30px);opacity:0}}
+/* 首页：悟空小队 */
+.squadRow{display:flex;gap:6px;margin:4px 0 12px;position:relative;z-index:1}
+.squadRow span{width:58px;height:66px;background:#ffffff40;border-radius:14px;padding:2px}
 @keyframes hurt{0%,100%{transform:none;filter:none}15%{transform:translateX(-8px) rotate(-6deg);filter:brightness(2) saturate(.3)}45%{transform:translateX(8px) rotate(6deg)}70%{transform:translateX(-4px)}}
 .bhead .nm{font-weight:900;font-size:24px}
 .hpw{flex:1}
@@ -332,11 +345,12 @@ svg{display:block;width:100%;height:100%;overflow:visible}
     <div>
       <small id="hSub"></small>
       <b id="hName"></b>
+      <div class="squadRow" id="hSquad" hidden></div>
       <div class="hprog" id="hProg"></div>
       <button class="go" id="goBtn">⚔️ 开战！</button>
     </div>
   </div>
-  <div class="sec">🗺️ 地图 <span>（家长：每个小方块是一道小题，绿=会了 黄=还在练 红=刚答错）</span></div>
+  <div class="sec"><em id="mapT" style="font-style:normal">🗺️ 地图</em> <span>（家长：每个小方块是一道小题，绿=会了 黄=还在练 红=刚答错）</span></div>
   <div class="map" id="map"></div>
   <div class="sec">🃏 卡片 <span id="albumN"></span></div>
   <div class="album" id="album"></div>
@@ -344,7 +358,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
     <summary>👨‍👩‍👦 家长看这里：哪块熟、哪块还缺</summary>
     <div class="grid" id="grid"></div>
     <div class="legend">每个数拆成四类小题：<b>分</b>（4 分成 1 和几）、<b>合</b>（1 和 3 合成几）、<b>加</b>（1+3）、<b>减</b>（4−1）。<br>绿=会了：不看图、3 秒内答对，而且在<b>两个不同的日子</b>都做到（有图的题可能是数出来的，只算练习）。黄=还在练，红=最近一次答错，灰=还没练过。<br>每天一场按顺序：热身（看图、藏起来）→ 分与合 → 一图四式 → 复习 → 孩子出题。一个数的小题全绿后进“决战”：10 道没图的题，答对 9 道、暴击 7 道以上才通过，解锁下一个数。</div>
-    <button class="tiny" id="probeBtn">🔍 摸底（已经会的数直接跳过）</button><button class="tiny" id="nameBtn">改孩子的名字</button><button class="tiny" id="resetBtn">清空练习记录</button>
+    <button class="tiny" id="probeBtn">🔍 摸底（已经会的数直接跳过）</button><button class="tiny" id="nameBtn">改孩子的名字</button><button class="tiny" id="modeBtn"></button><button class="tiny" id="resetBtn">清空练习记录</button>
   </details>
 </section>
 
@@ -352,6 +366,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 <section class="scr" id="battle" hidden>
   <div class="bhead">
     <button class="back" id="quit">‹</button>
+    <div class="mine" id="bHero" hidden></div><span class="vs" id="bVs" hidden>VS</span>
     <div class="boss" id="bBoss"></div>
     <div class="hpw"><div class="nm" id="bName"></div><div class="hp"><i id="hp" style="width:100%"></i><em></em></div></div>
     <div class="qno" id="qno"></div>
@@ -399,11 +414,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113m"></script>
+<script src="art.js?v=20261113n"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113m";
+const VER="20261113n";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -422,7 +437,32 @@ let KID=load("kid","")||(()=>{try{return JSON.parse(localStorage.getItem("xdj:pr
 const kid=()=>KID||"小将军";
 
 /* ---------- 关卡和角色 ---------- */
-const LEVELS=[
+/* 两种玩法（2026-11-13 问之提议）：
+   team = 悟空小队出征：悟空当队长，带刘备、关羽、张飞、哥斯拉、贝吉塔、擎天柱、大黄蜂去打敌人，每种题由一个队员上场，喜欢的角色都不挨打；
+   old  = 原来的每关打一个守关人。家长区可以切换。两种玩法的练习记录、决战记录是同一份。 */
+const MODE=load("mode","team");
+const TEAM_LEVELS=[
+  {n:3,art:"meiguobing",name:"美国兵小队"},
+  {n:4,art:"meiguobing",name:"美国兵小队"},
+  {n:5,art:"meiguobing",name:"美国兵小队"},
+  {n:6,art:"zhaoyun",name:"赵云"},
+  {n:7,art:"bawanglong",name:"霸王龙"},
+  {n:8,art:"shayu",name:"大白鲨"},
+  {n:9,art:"wuzei",name:"大王乌贼"},
+  {n:10,art:"lvbu",name:"吕布"},
+  {n:"凑十",art:"meiguobing",name:"美国兵大部队"},
+  {n:"进位",art:"bawanglong",name:"霸王龙",soon:true},
+  {n:"退位",art:"shayu",name:"大白鲨",soon:true},
+  {n:"大复习",art:"lvbu",name:"敌人大集合"}
+];
+/* 每种题由哪个队员上场 */
+const SQUAD={wukong:["wukongAngry","悟空"],liubei:["liubei","刘备"],guanyu:["guanyu","关羽"],zhangfei:["zhangfei","张飞"],gesila:["gesila","哥斯拉"],beijita:["beijita","贝吉塔"],qtz:["qingtianzhu","擎天柱"],dhf:["dahuangfeng","大黄蜂"]};
+const HERO_OF={flash:"dhf",hide:"dhf",split:"liubei",table:"liubei",take:"guanyu",energy:"wukong",merge:"gesila",pop:"gesila",
+  pick:"qtz",intro:"qtz",eq:"qtz",combo:"beijita",treeF:"zhangfei",treeH:"zhangfei",blank:"zhangfei",zero:"zhangfei"};
+const HERO_SKILL={wukong:"队长",liubei:"排兵布阵",guanyu:"一刀拿走",zhangfei:"大喝一声",gesila:"合体变大",beijita:"连击快拳",qtz:"变形四式",dhf:"侦察"};
+const heroOf=q=>SQUAD[HERO_OF[q.mode]||"wukong"];
+const TEAM=MODE==="team";
+const OLD_LEVELS=[
   {n:3,art:"liubei",name:"刘备"},
   {n:4,art:"guanyu",name:"关羽"},
   {n:5,art:"gesila",name:"哥斯拉"},
@@ -436,6 +476,7 @@ const LEVELS=[
   {n:"退位",art:"beijita",name:"贝吉塔",soon:true},
   {n:"大复习",art:"meiguobing",name:"美国兵"}
 ];
+const LEVELS=TEAM?TEAM_LEVELS:OLD_LEVELS;
 const CARDS=[
   ["liubei","刘备"],["guanyu","关羽"],["zhangfei","张飞"],["zhaoyun","赵云"],["lvbu","吕布"],
   ["gesila","哥斯拉"],["jiefangjun","解放军"],["bing","古代兵"],["qingtianzhu","擎天柱"],["dahuangfeng","大黄蜂"],
@@ -502,8 +543,10 @@ const factLabel=f=>{const b=f.n-f.a;return f.t==="f"?`${f.n}→${f.a}和?`:f.t==
 const ZL={"0|+":"几+0","0|-":"几−0","0|=":"几−自己"},VL={"v|+":"合起来→用加法","v|-":"拿走→用减法"};
 function drawHome(){
   const f=focusLevel(),ready=numReady(f.n)&&!passed.includes(f.n),F=factsOf(f.n);
-  $("#hPic").innerHTML=art(f.art);$("#hName").textContent=f.name;
-  $("#hSub").textContent=ready?`第 ${f.n} 关 · 决战`:`第 ${f.n} 关`;
+  $("#hPic").innerHTML=art(TEAM?"wukongAngry":f.art);$("#hName").textContent=TEAM?"悟空小队":f.name;
+  $("#hSub").textContent=TEAM?`下一站：${f.n} · ${f.name}${ready?" · 决战":""}`:ready?`第 ${f.n} 关 · 决战`:`第 ${f.n} 关`;
+  $("#hSquad").hidden=!TEAM;$("#hSquad").innerHTML=Object.keys(SQUAD).filter(k=>k!=="wukong").map(k=>`<span>${art(SQUAD[k][0])}</span>`).join("");
+  $("#mapT").textContent=TEAM?"🗺️ 出征路线":"🗺️ 地图";$("#modeBtn").textContent=TEAM?"换成老玩法（每关打一个角色）":"换成悟空小队出征";
   $("#hProg").innerHTML=F.map(x=>`<u class="${status(x.id)}"></u>`).join("");
   $("#goBtn").textContent=ready?"⚔️ 决战！":"⚔️ 开战！";
   $("#streak").textContent=days.includes(new Date().toDateString())?"✅ 今天打过了":`🔥 ${days.length} 天`;
@@ -530,6 +573,7 @@ $("#resetBtn").addEventListener("click",()=>{if(!confirm("清空所有练习记�
 $("#probeBtn").addEventListener("click",()=>{if(!KID){askName();return}if(confirm("摸底：从 3 开始，每个数考 4 道没图的题。全部又快又对就算这个数已经会了，直接跳过，接着考下一个数；有一道没答好就停，从这个数开始练。现在开始吗？"))startProbe()});
 function askName(){$("#nameIn").value=KID;$("#nameDlg").hidden=false;setTimeout(()=>$("#nameIn").focus(),100)}
 $("#nameBtn").addEventListener("click",askName);
+$("#modeBtn").addEventListener("click",()=>{save("mode",TEAM?"old":"team");location.reload()});
 $("#nameOk").addEventListener("click",()=>{const v=$("#nameIn").value.trim();if(!v){$("#nameIn").focus();return}KID=v;save("kid",v);$("#nameDlg").hidden=true;drawHome()});
 
 /* ---------- 出题 ----------
@@ -547,8 +591,8 @@ function mk(mode,f,extra){
   switch(mode){
     case"flash":return{...q,id:"看"+n,ans:n,s:pick(["mxj","wuzei","shayu","haitun"]),t:`有几只？`,sayT:`不许数，一眼看，有几只？`,tip:`再看一次，试试把它们分成两小堆来看。`};
     case"hide":return{...q,ans:b,d:pick(["bawanglong","sanjiaolong"]),t:`🪨 后面有几只？`,sayT:`一共${n}只恐龙，外面${a}只，石头后面藏了几只？`,tip:`${a} 和几合起来是 ${n}？用手指试试。`};
-    case"take":return{...q,ans:b,id:`${n}|-|${a}`,t:`跑走 ${a} 个，还剩几个？`,sayT:`${n}个兵，跑走了${a}个，还剩几个？`,tip:`看看还站着的，一共 ${n} 个，跑走 ${a} 个。`};
-    case"split":{const g=pick(["刘备","关羽","赵云"]);return{...q,ans:b,t:`左边 ${a} 个，右边几个？`,sayT:`${g}带了${n}个兵，左边${a}个，右边几个？`,tip:`一共 ${n} 个，左边 ${a} 个，伸手指数一数。`}}
+    case"take":return{...q,ans:b,id:`${n}|-|${a}`,t:`跑走 ${a} 个，还剩几个？`,sayT:TEAM?`${n}个敌兵，关羽一刀砍过去，跑走了${a}个，还剩几个？`:`${n}个兵，跑走了${a}个，还剩几个？`,tip:`看看还站着的，一共 ${n} 个，跑走 ${a} 个。`};
+    case"split":{const g=pick(TEAM?["刘备","关羽","张飞"]:["刘备","关羽","赵云"]);return{...q,ans:b,t:`左边 ${a} 个，右边几个？`,sayT:`${g}带了${n}个兵，左边${a}个，右边几个？`,tip:`一共 ${n} 个，左边 ${a} 个，伸手指数一数。`}}
     case"energy":return{...q,ans:b,t:`还要几个 ⚡ ？`,sayT:`悟空的能量有${n}格，亮了${a}格，还要几格才能变身？`,tip:`看看暗的格子，有几格还没亮？`};
     case"merge":return{...q,ans:n,t:`一共几个？`,sayT:`${a}个擎天柱和${b}个大黄蜂集合，一共几个？`,tip:`先记住 ${a}，再接着往下数 ${b} 个。`};
     case"pick":{const plus=f.t==="v+";const A=plus?`${a} + ${b}`:`${n} − ${a}`,Wr=plus?`${Math.max(a,b)} − ${Math.min(a,b)}`:`${n} + ${a}`;
@@ -798,10 +842,11 @@ function startBattle(lv){
   B={lv,exam,qs:exam?buildExam(lv):buildBattle(lv),i:0,fast:0,slow:0,wrong:0};
   openBattle(exam?`${lv.name} · 决战`:lv.name,exam?`决战！`:`${lv.name} 来了！`,
     exam?"家长：决战 10 道题，都没有图。答对 9 道、暴击 7 道以上才算赢，赢了解锁下一关。":"",
-    exam?`决战${lv.name}！十道题，不看图，看${kid()}的真本事！`:`${lv.name}来了！${kid()}，开战！`);
+    exam?`决战${lv.name}！十道题，不看图，看${kid()}的真本事！`:TEAM?`${lv.name}来了！悟空队长：${kid()}，带上大家，出发！`:`${lv.name}来了！${kid()}，开战！`);
 }
 function openBattle(name,title,note,speech){
   const lv=B.lv;$("#bBoss").innerHTML=art(lv.art);$("#bName").textContent=name;
+  $("#bHero").hidden=$("#bVs").hidden=!TEAM;if(TEAM)$("#bHero").innerHTML=art("wukongAngry");
   show("battle");hpDraw();
   $("#stage").className="stage "+(B.exam||B.probe?"bg-gym":"bg-camp");
   $("#stage").innerHTML=`<div class="pop" style="width:280px;height:330px">${art(lv.art)}</div>`;
@@ -819,6 +864,8 @@ function padHTML(q){
 }
 function ask(){
   const q=B.qs[B.i];q.tries=0;q.done=false;q.t0=0;
+  if(TEAM){const h=heroOf(q);if(q.sayT0==null)q.sayT0=q.sayT;q.sayT=`${h[1]}，上！`+q.sayT0;
+    $("#bHero").innerHTML=art(h[0]);const m=$("#bHero");m.classList.remove("pop2");void m.offsetWidth;m.classList.add("pop2")}
   hpDraw();$("#qno").textContent=q.intro?"":`${answeredSoFar()+1}/${answerable()}`;
   $("#fb").hidden=true;$("#nextBtn").hidden=true;
   $("#askT").textContent=q.t;
@@ -833,14 +880,14 @@ function ask(){
   $("#pad").innerHTML=padHTML(q);
   if(q.mode==="flash"){
     $("#pad").style.pointerEvents="none";
-    st.innerHTML=bubbles()+stageHTML(q)+`<div class="cover" id="cover"><b>👀</b>点一下</div>`;
+    st.innerHTML=bubbles()+stageHTML(q)+`<div class="cover" id="cover"><b>👀</b>点一下</div>`;goIn(q);
     /* 一出来就能直接说/点数字；3 秒后盖住；从出来起 5 秒内答对算暴击 */
     $("#cover").onclick=()=>{$("#cover").remove();placeSea(q);tone(520,.1);q.t0=Date.now();$("#pad").style.pointerEvents="";
       setTimeout(()=>{if(q.done||B.qs[B.i]!==q)return;const s=$("#sea");if(s)s.innerHTML=`<div class="cover"><b>🌊</b></div>`;say("几只？")},3000)};
-    say("海里的朋友要出来了，看准哦！");return;
+    say(TEAM?"大黄蜂，上！去侦察，看准有几只！":"海里的朋友要出来了，看准哦！");return;
   }
   $("#pad").style.pointerEvents="";
-  st.innerHTML=stageHTML(q,false);
+  st.innerHTML=stageHTML(q,false);goIn(q);
   if(q.mode==="take"||(q.mode==="pick"&&q.view==="take"))setTimeout(()=>{st.querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run"));tone(600,.25,"triangle",.08,0,300)},700);
   say(q.sayT,()=>{if(!q.t0)q.t0=Date.now()});
   setTimeout(()=>{if(!q.t0)q.t0=Date.now()},3000);
@@ -858,7 +905,13 @@ function kameFx(voice=true){
   if(voice)say("哈比哈比哈比哈——！");
 }
 const tenLv=()=>B&&B.lv&&B.lv.n==="凑十";
+const bossIsFriend=()=>B&&B.lv&&/^wukong/.test(B.lv.art);
+function goIn(q){
+  if(!TEAM||q.intro)return;const h=heroOf(q),st=$("#stage"),d=document.createElement("div");d.className="goin";
+  d.innerHTML=`<div class="pic">${art(h[0])}</div><b>${h[1]}：看我的！</b>`;st.appendChild(d);setTimeout(()=>d.remove(),2300);
+}
 function hitFx(crit){
+  if(TEAM){const m=$("#bHero");m.classList.remove("atk");void m.offsetWidth;m.classList.add("atk")}
   const bb=$("#bBoss"),r=bb.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
   if(tenLv()&&crit){kameFx(false);return}
   const s=document.createElement("div");s.className="slash";s.style.left=(cx-110)+"px";s.style.top=(cy-110)+"px";
@@ -866,7 +919,7 @@ function hitFx(crit){
   document.body.appendChild(s);setTimeout(()=>s.remove(),500);
   const d=document.createElement("div");d.className="dmg";d.textContent=crit?"-2":"-1";d.style.left=(cx+20)+"px";d.style.top=(cy-30)+"px";if(crit){d.style.fontSize="64px";d.style.color="#FFE14D"}
   document.body.appendChild(d);setTimeout(()=>d.remove(),1000);
-  if(!tenLv()){bb.classList.remove("hurt");void bb.offsetWidth;bb.classList.add("hurt")}
+  if(!bossIsFriend()){bb.classList.remove("hurt");void bb.offsetWidth;bb.classList.add("hurt")}
   if(!crit)return;
   const o=document.createElement("div");o.className="critfx";
   o.innerHTML=`<div class="flash"></div><div class="rays"></div>`+rep(i=>{const a=i/16*Math.PI*2,dist=260+rnd(200);return`<i class="spark" style="--dx:${Math.cos(a)*dist}px;--dy:${Math.sin(a)*dist}px;background:${pick(["#FFD23F","#FF7A3D","#fff","#7FE3FF"])}"></i>`},16)+`<div class="word">暴击！</div>`;
