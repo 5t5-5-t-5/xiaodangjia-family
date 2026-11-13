@@ -230,7 +230,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .critfx .spark{position:absolute;width:18px;height:18px;border-radius:4px;background:#FFD23F;animation:spark .9s ease-out forwards}
 @keyframes spark{from{transform:translate(0,0) rotate(0);opacity:1}to{transform:translate(var(--dx),var(--dy)) rotate(540deg);opacity:0}}
 .shake{animation:shake .5s}
-/* 龟派气功（问之叫它“哈比哈比哈比哈”） */
+/* 龟派气功（孩子叫它“哈比哈比哈比哈”） */
 .kame{position:fixed;inset:0;z-index:70;pointer-events:none;background:rgba(16,26,70,.55);animation:kfade 2.9s ease forwards;overflow:hidden}
 @keyframes kfade{0%{opacity:0}8%{opacity:1}85%{opacity:1}100%{opacity:0}}
 .kame .wk{position:absolute;left:30px;bottom:20px;width:330px;height:350px;animation:kwk 2.9s ease forwards}
@@ -378,6 +378,22 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .spbar .next{flex:1}.spbar .next:disabled{opacity:.4}
 .tiny2{background:#fff;border-radius:999px;padding:16px 26px;font-size:24px;font-weight:900;box-shadow:0 0 0 3px var(--line)}
 
+/* 复习本 */
+.whead{display:flex;align-items:center;gap:12px}.whead h2{flex:1;margin:0;font-size:34px;font-weight:900}
+.wkgo{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#FFE7A8,#FFC96B);border-radius:26px;padding:12px 22px;margin:12px 0}
+.wkgo .pic{width:110px;height:130px}
+.go2{background:linear-gradient(#FFA24A,#FF7A12);color:#fff;font-size:34px;font-weight:900;border-radius:999px;padding:16px 40px;box-shadow:0 6px 0 #C2410C}
+.go2:disabled{opacity:.4}
+.wklist{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.wk{background:#fff;border-radius:20px;padding:12px 10px;text-align:center;box-shadow:0 0 0 3px var(--yellowL)}
+.wk.red{box-shadow:0 0 0 3px #FFB3B6;background:#FFF5F5}
+.wk b{display:block;font-size:34px;font-weight:900;letter-spacing:.02em}
+.wk small{display:block;font-size:13px;color:var(--soft);margin-top:4px}
+.wkempty{grid-column:1/-1;text-align:center;font-size:30px;font-weight:900;padding:40px;background:#fff;border-radius:24px}
+.wknote{margin-top:14px;font-size:14px;color:var(--soft);font-weight:500;line-height:1.6}
+.wkbtn{position:relative}
+.wkbtn em{position:absolute;right:-6px;top:-8px;background:var(--red);color:#fff;font-style:normal;border-radius:99px;padding:0 8px;font-size:15px}
+
 /* 名字 */
 .dlg{position:fixed;inset:0;background:#1F2B57aa;z-index:90;display:flex;align-items:center;justify-content:center}
 .dlg>div{background:#fff;border-radius:28px;padding:28px;width:min(440px,92vw);text-align:center}
@@ -420,7 +436,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
     <summary>👨‍👩‍👦 家长看这里：哪块熟、哪块还缺</summary>
     <div class="grid" id="grid"></div>
     <div class="legend">每个数拆成四类小题：<b>分</b>（4 分成 1 和几）、<b>合</b>（1 和 3 合成几）、<b>加</b>（1+3）、<b>减</b>（4−1）。<br>绿=会了：不看图、3 秒内答对，而且在<b>两个不同的日子</b>都做到（有图的题可能是数出来的，只算练习）。黄=还在练，红=最近一次答错，灰=还没练过。<br>每天一场按顺序：热身（看图、藏起来）→ 分与合 → 一图四式 → 复习 → 孩子出题。一个数的小题全绿后进“决战”：10 道没图的题，答对 9 道、暴击 7 道以上才通过，解锁下一个数。</div>
-    <button class="tiny" id="probeBtn">🔍 摸底（已经会的数直接跳过）</button><button class="tiny" id="nameBtn">改孩子的名字</button><button class="tiny" id="modeBtn"></button><button class="tiny" id="resetBtn">清空练习记录</button>
+    <button class="tiny" id="wkBtn2">📒 复习本（还不熟的题）</button><button class="tiny" id="probeBtn">🔍 摸底（已经会的数直接跳过）</button><button class="tiny" id="nameBtn">改孩子的名字</button><button class="tiny" id="modeBtn"></button><button class="tiny" id="resetBtn">清空练习记录</button>
   </details>
 </section>
 
@@ -459,6 +475,14 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <div class="revbar" id="revBar"></div>
 </section>
 
+<!-- 复习本 -->
+<section class="scr" id="weak" hidden>
+  <div class="whead"><button class="back" id="wkBack">‹ 回家</button><h2>📒 复习本</h2><span class="pill" id="wkN"></span></div>
+  <div class="wkgo"><div class="pic" id="wkPic"></div><button class="go2" id="wkGo">⚔️ 打这些！</button><button class="tiny2" id="wkAll">🔁 大复习（2～10 全部）</button></div>
+  <div class="wklist" id="wkList"></div>
+  <div class="wknote">家长：这里自动收集孩子还不熟的题——做过但还没“会了”的（红=上次答错，黄=答对了但慢、只在有图时对、或只有一天答得快）。“打这些！”只练这些题，不看图；两天都又快又对就会自动从本子里消失。记录只存在这台 iPad 上。</div>
+</section>
+
 <!-- 胜利 -->
 <section class="scr win" id="win" hidden>
   <div class="fall" id="wBoss"></div>
@@ -483,11 +507,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113r"></script>
+<script src="art.js?v=20261113s"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113r";
+const VER="20261113s";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -506,7 +530,7 @@ let KID=load("kid","")||(()=>{try{return JSON.parse(localStorage.getItem("xdj:pr
 const kid=()=>KID||"小将军";
 
 /* ---------- 关卡和角色 ---------- */
-/* 两种玩法（2026-11-13 问之提议）：
+/* 两种玩法（2026-11-13 孩子提议）：
    team = 悟空小队出征：悟空当队长，带刘备、关羽、张飞、哥斯拉、贝吉塔、擎天柱、大黄蜂去打敌人，每种题由一个队员上场，喜欢的角色都不挨打；
    old  = 原来的每关打一个守关人。家长区可以切换。两种玩法的练习记录、决战记录是同一份。 */
 const MODE=load("mode","team");
@@ -559,6 +583,7 @@ const OLD_LEVELS=[
   {n:"大复习",art:"meiguobing",name:"美国兵"}
 ];
 const LEVELS=TEAM?TEAM_LEVELS:OLD_LEVELS;
+const WEAK_LV={n:"复习本",art:"meiguobing",name:"复习本"};
 const CARDS=[
   ["liubei","刘备"],["guanyu","关羽"],["zhangfei","张飞"],["zhaoyun","赵云"],["lvbu","吕布"],
   ["gesila","哥斯拉"],["jiefangjun","解放军"],["bing","古代兵"],["qingtianzhu","擎天柱"],["dahuangfeng","大黄蜂"],
@@ -619,7 +644,7 @@ function say(t,done){
 const hush=()=>{try{speechSynthesis.cancel()}catch(e){}};
 
 /* ---------- 首页 ---------- */
-function show(id){for(const s of["home","battle","rev","win"])$("#"+s).hidden=s!==id;scrollTo(0,0)}
+function show(id){for(const s of["home","battle","rev","win","weak"])$("#"+s).hidden=s!==id;scrollTo(0,0)}
 const T_NAME={f:"分",h:"合","+":"加","-":"减"};
 const factLabel=f=>{const b=f.n-f.a;return f.t==="f"?`${f.n}→${f.a}和?`:f.t==="h"?`${f.a}和${b}`:f.t==="+"?`${f.a}+${b}`:`${f.n}−${f.a}`};
 const ZL={"0|+":"几+0","0|-":"几−0","0|=":"几−自己"},VL={"v|+":"合起来→用加法","v|-":"拿走→用减法"};
@@ -630,7 +655,7 @@ function drawTeamHome(f){
   <div class="tteam"><h3>我们的队伍</h3>
     <div class="tcap"><div class="pic">${art("wukongAngry")}</div><div><b>悟空</b><small>${HERO_SKILL.wukong}</small></div></div>
     <div class="tmem">${Object.keys(SQUAD).filter(k=>k!=="wukong").map(k=>`<div class="m"><div class="pic">${art(SQUAD[k][0])}</div><b>${SQUAD[k][1]}</b><i>${HERO_SKILL[k]}</i></div>`).join("")}</div>
-    <button class="trev" data-n="大复习">🔁 大复习：敌人大集合</button>
+    <button class="trev wkbtn" id="wkOpen">📒 复习本${weakList().length?`<em>${weakList().length}</em>`:""}</button>
   </div>
   <div class="troute">
     <svg class="tpath" viewBox="0 0 636 640" preserveAspectRatio="none"><path d="M40 600 C200 600 120 450 300 470 S520 520 560 400 S300 320 240 290 S120 160 330 140 S580 90 600 40" fill="none" stroke="#C99A5A" stroke-width="16" stroke-dasharray="2 22" stroke-linecap="round"/></svg>
@@ -639,6 +664,18 @@ function drawTeamHome(f){
         ${now?`<span class="here">👉</span>`:""}<div class="pic">${art(st.art)}</div><div class="chips">${st.ns.map(chip).join("")}</div><span class="nm">${st.name}</span></div>`}).join("")}
   </div>`;
 }
+function openWeak(){
+  const L=weakList();
+  $("#wkN").textContent=`${L.length} 道`;$("#wkPic").innerHTML=art("wukongAngry");$("#wkGo").disabled=!L.length;
+  const showLab=x=>x.f?(x.f.t==="f"?`${x.f.n} → ${x.f.a} 和 ?`:x.f.t==="h"?`${x.f.a} 和 ${x.f.n-x.f.a}`:x.f.t==="+"?`${x.f.a} + ${x.f.n-x.f.a}`:`${x.f.n} − ${x.f.a}`):x.label;
+  $("#wkList").innerHTML=L.length?L.map(x=>`<div class="wk ${x.red?"red":""}"><b>${showLab(x)}</b><small>${x.why}${x.w?` · 错过 ${x.w} 次`:""}</small></div>`).join("")
+    :`<div class="wkempty">🎉 本子是空的！<br><small style="font-size:18px;color:var(--soft)">做过的题都会了，或者还没开始打。</small></div>`;
+  show("weak");
+  say(L.length?`复习本里有${L.length}道题，打败它们！`:"复习本是空的，太棒了！");
+}
+$("#wkBack").addEventListener("click",()=>{hush();drawHome();show("home")});
+$("#wkGo").addEventListener("click",()=>startBattle(WEAK_LV));
+$("#wkAll").addEventListener("click",()=>startBattle(LEVELS.find(l=>l.n==="大复习")));
 function drawHome(){
   const f=focusLevel(),ready=numReady(f.n)&&!passed.includes(f.n),F=factsOf(f.n);
   $("#hPic").innerHTML=art(TEAM?"wukongAngry":f.art);$("#hName").textContent=TEAM?"悟空小队":f.name;
@@ -664,7 +701,7 @@ function drawHome(){
     return`<div class="gnum"><b>${n}</b><span>${passed.includes(n)?"🏆 决战通过":numReady(n)?"⚔️ 可以决战了":`会了 ${numCount(n)}/${F.length}`}</span></div>`+
       ["f","h","+","-"].map(t=>`<div class="grow"><i>${T_NAME[t]}</i>${F.filter(x=>x.t===t).map(x=>`<span class="cell ${status(x.id)}">${factLabel(x)}</span>`).join("")}</div>`).join("")}).join("");
 }
-$("#tHome").addEventListener("click",e=>{const b=e.target.closest(".chip,.trev");if(!b)return;
+$("#tHome").addEventListener("click",e=>{if(e.target.closest("#wkOpen")){openWeak();return}const b=e.target.closest(".chip,.trev");if(!b)return;
   const l=LEVELS.find(l=>String(l.n)===b.dataset.n);if(!l)return;
   if(l.soon){say(`${l.n}是下学期才学的，到时候再来打！`);alert(`「${l.n}」是 20 以内的${l.n==="进位"?"进位加法":"退位减法"}，北师大版要到一年级下册才学。到时候再把这一站做出来。`);return}
   startBattle(l)});
@@ -676,6 +713,7 @@ $("#resetBtn").addEventListener("click",()=>{if(!confirm("清空所有练习记�
 $("#probeBtn").addEventListener("click",()=>{if(!KID){askName();return}if(confirm("摸底：从 3 开始，每个数考 4 道没图的题。全部又快又对就算这个数已经会了，直接跳过，接着考下一个数；有一道没答好就停，从这个数开始练。现在开始吗？"))startProbe()});
 function askName(){$("#nameIn").value=KID;$("#nameDlg").hidden=false;setTimeout(()=>$("#nameIn").focus(),100)}
 $("#nameBtn").addEventListener("click",askName);
+$("#wkBtn2").addEventListener("click",openWeak);
 $("#modeBtn").addEventListener("click",()=>{save("mode",TEAM?"old":"team");location.reload()});
 $("#nameOk").addEventListener("click",()=>{const v=$("#nameIn").value.trim();if(!v){$("#nameIn").focus();return}KID=v;save("kid",v);$("#nameDlg").hidden=true;drawHome()});
 
@@ -749,6 +787,30 @@ function buildReview(){
   for(let k=0;k<12;k++){const f=wpick(pool,used);used.push(f.id);qs.push(bareQ(f))}
   const z=wpick(ZERO);qs.splice(4,0,mk("zero",{...z,k:1+rnd(10)}));
   const v=wpick(VIEW),n=4+rnd(6),a=1+rnd(n-1);qs.splice(8,0,mk("pick",{id:v.id,t:v.t,n,a:v.t==="v+"?Math.min(a,n-a):a}));
+  return qs;
+}
+/* ---------- 复习本：把还不熟的题放在一处 ----------
+   “不熟”= 做过但还没“会了”：上次答错（红）、答对但慢、只在有图时对过、或者只有一天答得快（黄）。
+   孩子在首页点“📒 复习本”看到这些题，按“打这些！”就只练它们；会了自动从本子里消失。 */
+function parseFact(id){const m=/^(\d+)\|([fh+-])\|(\d+)$/.exec(id);if(!m)return null;const n=+m[1],t=m[2],a=+m[3];
+  if(t==="h"&&a>n-a)return null;if(a<1||a>=n)return null;return{id,n,t,a}}
+function weakInfo(id){const h=stats[id]||[];if(!h.length||mastered(id))return null;
+  const np=h.filter(x=>!x.p),last=h[h.length-1],w=h.filter(x=>x.r==="w").length;
+  const why=last.r==="w"?"上次答错":!np.length?"只在有图时做对":np[np.length-1].r==="s"?"答对了但有点慢":np[np.length-1].r==="w"?"不看图时答错":"还差一天（要两天都又快又对）";
+  return{id,red:last.r==="w",w,why,d:last.d}}
+function weakList(){
+  const out=[];for(const id of Object.keys(stats)){
+    const f=parseFact(id),z=ZERO.find(x=>x.id===id),v=VIEW.find(x=>x.id===id);if(!f&&!z&&!v)continue;
+    const i=weakInfo(id);if(!i)continue;
+    out.push({...i,f,z,v,label:f?factLabel(f):z?ZL[id]:VL[id]})}
+  return out.sort((a,b)=>(b.red-a.red)||(b.w-a.w)||(a.d<b.d?-1:1));
+}
+function buildWeak(){
+  const L=weakList().slice(0,12),qs=[];
+  for(const x of L){
+    if(x.f)qs.push(bareQ(x.f));
+    else if(x.z)qs.push(mk("zero",{...x.z,k:1+rnd(10)}));
+    else{const n=4+rnd(6),a=1+rnd(n-1);qs.push(mk("pick",{id:x.v.id,t:x.v.t,n,a:x.v.t==="v+"?Math.min(a,n-a):a}))}}
   return qs;
 }
 const bareQ=f=>f.t==="f"?mk(Math.random()<.5?"treeF":"blank",f):f.t==="h"?mk("treeH",f):mk("eq",f);
@@ -962,14 +1024,14 @@ function pickSquad(lv){
 /* 悟空小队玩法：孩子每题自己点队员；最后一招是悟空的元气弹（能量格凑满 n，还差几格） */
 function addFinal(){
   if(!TEAM)return;B.team=true;
-  const N=typeof B.lv.n==="number"?B.lv.n:10,a=1+rnd(N-1),q=mk("energy",{n:N,a,id:`${N}|f|${a}`});
+  const N=typeof B.lv.n==="number"?B.lv.n:B.lv.n==="凑十"?10:Math.min(10,Math.max(5,...B.qs.map(q=>+q.n||0))),a=1+rnd(N-1),q=mk("energy",{n:N,a,id:`${N}|f|${a}`});
   q.last=true;q.hero="wukong";q.t="元气弹！还差几格？";
   q.sayT=`最后一招，元气弹！大家把能量给悟空，要凑满${N}格，已经有${a}格，还差几格？`;
   B.qs.push(q);
 }
 function startBattle0(lv){
-  if(typeof lv.n!=="number"){B={lv,special:true,qs:lv.n==="凑十"?buildTen():buildReview(),i:0,fast:0,slow:0,wrong:0};addFinal();
-    openBattle(lv.name,`${lv.name} 来了！`,lv.n==="凑十"?"家长：凑十关专练 10 的分与合（几和几凑成 10），下学期进位加法全靠它。":"家长：大复习从 2～10 里挑还没会的题，都没有图。",`${lv.name}来了！${kid()}，开战！`);return}
+  if(typeof lv.n!=="number"){B={lv,special:true,qs:lv.n==="凑十"?buildTen():lv.n==="复习本"?buildWeak():buildReview(),i:0,fast:0,slow:0,wrong:0};addFinal();
+    openBattle(lv.name,`${lv.name} 来了！`,lv.n==="凑十"?"家长：凑十关专练 10 的分与合（几和几凑成 10），下学期进位加法全靠它。":lv.n==="复习本"?"家长：只练复习本里还不熟的题（最多 12 道），都没有图。":"家长：大复习从 2～10 里挑还没会的题，都没有图。",`${lv.name}来了！${kid()}，开战！`);return}
   const exam=numReady(lv.n)&&!passed.includes(lv.n);
   B={lv,exam,qs:exam?buildExam(lv):buildBattle(lv),i:0,fast:0,slow:0,wrong:0};if(!exam)addFinal();
   openBattle(exam?`${lv.name} · 决战`:lv.name,exam?`决战！`:`${lv.name} 来了！`,
@@ -1228,14 +1290,14 @@ function teaser(){const nx=focusLevel(),ready=numReady(nx.n)&&!passed.includes(n
 /* 平时一场：守关人被打退，得一张卡 */
 function finish(){
   const lv=B.lv;markDay();const c=giveCard(lv);
-  $("#wBoss").className="fall";$("#wBoss").innerHTML=art(lv.art);$("#wTitle").textContent=`打退了${lv.name}！`;
+  $("#wBoss").className="fall";$("#wBoss").innerHTML=art(lv.art);$("#wTitle").textContent=lv.n==="复习本"?"复习本打完了！":`打退了${lv.name}！`;
   $("#wStats").innerHTML=`<div>⚡ ${B.fast}</div><div>✅ ${B.slow}</div><div>🔁 ${B.wrong}</div>`;
   $("#wCard").hidden=false;$("#wCard").innerHTML=`<div class="pic">${art(c[0])}</div><b>${c[1]}</b>`;
   $("#wNote").textContent=typeof lv.n!=="number"?"":numReady(lv.n)?`${lv.n} 的题全会了！下次决战 ⚔️`:`${lv.n}：会了 ${numCount(lv.n)} / ${factsOf(lv.n).length}`;
   teaser();show("win");
   const wb=$("#wBoss");wb.style.animation="none";void wb.offsetWidth;wb.style.animation="";
   sndWin();confetti();
-  say(`太厉害了！打退了${lv.name}！${kid()}得到一张${c[1]}卡片！`);
+  say(`太厉害了！${lv.n==="复习本"?"复习本打完了":"打退了"+lv.name}！${kid()}得到一张${c[1]}卡片！`);
 }
 /* 决战：10 题答对 9 道、暴击 7 道以上才通过 */
 function finishExam(){
