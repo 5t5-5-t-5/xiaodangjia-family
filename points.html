@@ -441,7 +441,10 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .drow .dtx b{display:block;font-size:15px;font-weight:700}
 #diary .drow .dtx b i{font-style:normal;color:#fff;border-radius:99px;padding:1px 8px;font-size:13px;margin-left:6px;font-weight:600;white-space:nowrap;display:inline-block}
 #diary .drow .dtx span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;color:var(--soft);line-height:1.5;margin-top:2px}
-#diary .drow .dgo{flex:none;font-size:14px;font-weight:700;color:var(--q2);background:#fff;border-radius:99px;padding:7px 12px}
+#diary .drow .dacts{flex:none;display:flex;align-items:center;gap:6px}
+#diary .drow .dgo{border:0;font:700 13.5px/1 inherit;color:var(--q2);background:#fff;border-radius:99px;padding:8px 12px;cursor:pointer}
+#diary .drow .ddel{border:0;font:700 13.5px/1 inherit;color:#C4453A;background:#FFEAE7;border-radius:99px;padding:8px 11px;cursor:pointer}
+#diary .drow .ddel:active{background:#FFD8D2}
 /* 统一的高光日记录入/修改大弹窗：iPad 宽屏左右双栏（左拍立得重点图、右引导式输入），手机宽幅卡片 */
 .dyed{position:fixed;inset:0;z-index:45;background:rgba(36,24,12,.52);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);display:grid;place-items:center;padding:max(14px,env(safe-area-inset-top,0px)) max(14px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));overflow-y:auto;color:#2B2A3A;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
 .dyed[hidden]{display:none}
@@ -513,7 +516,8 @@ details.parent summary::-webkit-details-marker{display:none}
 .ed-wx{display:inline-flex;gap:4px}
 .ed-wx button{border:1.5px solid transparent;background:#F6F1E7;border-radius:99px;width:34px;height:32px;font-size:17px;padding:0;display:grid;place-items:center;opacity:.68;cursor:pointer;transition:all .15s}
 .ed-wx button.on{opacity:1;background:#FFF0C2;border-color:#F2B33D;transform:scale(1.08)}
-.dyed .eddel{border:0;background:none;color:#C95B50;font:600 13.5px/1 inherit;padding:6px 4px;cursor:pointer;opacity:.85}
+.dyed .eddel{border:1px solid #F2C4BE;background:#FFF1EF;color:#C4453A;border-radius:99px;font:700 13px/1 inherit;padding:7px 12px;cursor:pointer}
+.dyed .eddel:active{background:#FFE2DE}
 @media (max-width:759px){
   .dyed{padding:10px}
   .dycard{max-height:calc(100svh - 20px);border-radius:24px}
@@ -629,7 +633,14 @@ details.parent summary::-webkit-details-marker{display:none}
 #diary .stamp span{font-size:calc(3.8*var(--u));margin-top:calc(.4*var(--u))}
 #diary .dmeas{position:fixed;left:-4000px;top:0;width:1000px;height:676px;container-type:inline-size;visibility:hidden;pointer-events:none;z-index:-1}#diary .dmeas .dfoot,#diary .dmeas .dbody{flex:none!important}
 #diary .fs1 .dbody{font-size:calc(3.25*var(--u))}#diary .fs2 .dbody{font-size:calc(3.1*var(--u))}#diary .fs3 .dbody{font-size:calc(2.95*var(--u))}#diary .fs4 .dbody{font-size:calc(2.8*var(--u))}#diary .cont .dbody{text-indent:0}#diary .dbody{text-align:justify;text-justify:inter-character}#diary .pmore .dbody{text-align-last:justify}#diary .endp2 .dpic{width:calc(14*var(--u))}#diary .endp2 .stamp{width:calc(13*var(--u));height:calc(13*var(--u));margin-top:calc(.4*var(--u))}#diary .endp2 .stamp i{font-size:calc(4*var(--u))}#diary .endp2 .stamp span{font-size:calc(2.8*var(--u))}#diary .endp2 .stamp.s4 span{font-size:calc(1.9*var(--u))}
-#diary .dpg{margin-left:auto;font-size:calc(1.8*var(--u));color:#9AA3B8;padding-left:calc(1*var(--u))}
+#diary .dpg{font-size:calc(1.8*var(--u));color:#9AA3B8}
+#diary .dh-r{margin-left:auto;display:inline-flex;align-items:center;gap:calc(.6*var(--u));align-self:center}
+#diary .dh-b{border:1px solid rgba(175,148,112,.38);background:rgba(255,250,240,.9);color:#6E5A42;border-radius:99px;padding:calc(.32*var(--u)) calc(.85*var(--u));font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;font-size:calc(1.5*var(--u));font-weight:700;line-height:1.25;cursor:pointer;display:inline-flex;align-items:center;gap:calc(.25*var(--u));transition:opacity .18s}
+#diary .dh-b.dh-del{color:#B9443A;border-color:rgba(205,118,108,.4);background:rgba(255,243,241,.92)}
+#diary .dh-b:active{transform:scale(.95)}
+#diary .dmeas .dh-b{display:none}
+#diary.imm .dh-b{font-size:calc(1.38*var(--u));padding:calc(.36*var(--u)) calc(.8*var(--u))}
+#diary.imm.bar-on .dh-b,#diary.imm:has(.dybar.on) .dh-b{opacity:0;pointer-events:none}
 #diary .dmore{position:absolute;right:calc(3.6*var(--u));bottom:calc(.5*var(--u));font-size:calc(2*var(--u));line-height:1.5;color:var(--cloth);font-weight:600;text-align:right}#diary.imm .dmore{right:calc(3.4*var(--u));bottom:calc(.3*var(--u))}
 #diary .stamp.s4 span{font-size:calc(2.5*var(--u));white-space:nowrap;margin-top:0}#diary .long .stamp.s4 span{font-size:calc(2*var(--u))}#diary .long2 .stamp.s4 span{font-size:calc(1.75*var(--u))}#diary .stamp.s4 i{transform:scale(.8);margin:calc(-.8*var(--u)) 0 calc(-.6*var(--u))}
 #diary .toc h3{position:relative;margin:0;height:calc(var(--line) * 2);display:flex;align-items:center;justify-content:center;font-family:var(--penf);font-weight:400;font-size:calc(3.6*var(--u));color:var(--cloth);flex:none}
@@ -722,10 +733,13 @@ details.parent summary::-webkit-details-marker{display:none}
 /* 手机整屏阅读：有照片的日记，照片放在第一页日期下面（读的时候先看到照片，想起那天的事），文字接在照片下面 */
 #diary.imm:not(.wide) .pph .dfoot{order:0;align-self:stretch;justify-content:center;align-items:center;height:calc(var(--line) * 6);margin:0;flex:none}
 #diary.imm:not(.wide) .pph .dfoot .dpic{margin:0 calc(4*var(--u)) 0 0}
-#diary .dybar button{border:0;border-radius:999px;font:700 15px/1 inherit;font-family:inherit;padding:10px 13px;background:#F1E6D2;color:#5A4A36;white-space:nowrap}
-#diary .dybar #dyBarAdd{background:#FFE294;color:#5A3600}
+#diary .dybar button{border:0;border-radius:999px;font:700 14.5px/1 inherit;font-family:inherit;padding:9px 12px;background:#F1E6D2;color:#5A4A36;white-space:nowrap}
+#diary .dybar button[hidden]{display:none}
+#diary .dybar #dyBarAdd,#diary .dybar #dyBarEdit{background:#FFE294;color:#5A3600}
+#diary .dybar #dyBarDel{background:#FFE8E5;color:#B9382C}
 #diary .dybar #dyBarRead{background:var(--q2);color:#fff}
-#diary .dybar span{flex:1;min-width:0;text-align:center;font-size:14px;font-weight:600;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#diary .dybar>span{flex:1;min-width:0;text-align:center;font-size:14px;font-weight:600;color:var(--soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:520px){#diary.imm .dybar{gap:6px;padding-inline:10px}#diary .dybar button{font-size:13px;padding:8px 9px}#diary .dybar .rlg{display:none}}
 /* ---------- iPad：左边卡片固定，右边格子 ---------- */
 @media (min-width:760px){
   .wrap{max-width:1180px;display:grid;grid-template-columns:minmax(300px,36%) 1fr;gap:28px;align-items:start;padding-top:24px}
@@ -1103,7 +1117,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid" type="button">🧒 小朋友</button><button class="mini" data-vs="normal" type="button">🙂 普通</button><button class="mini" data-vs="robot" type="button">🤖 机器人</button><button class="mini" data-vs="captain" type="button">🦾 机器人队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月12日 14:56</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月13日 12:47</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1136,7 +1150,7 @@ details.parent summary{background:none}
   <div class="dtop"><button class="dclose" id="dyClose" type="button"><span class="lg">📕 合上</span><span class="sm">‹ 返回</span></button><h2><span class="kidn">宝贝</span>的高光日记</h2><button class="dwrite" id="dyTopAdd" type="button">✍️ 写日记</button></div>
   <div class="stage"><div class="book closed" id="dyBook" aria-label="高光日记"><div class="boards"></div><div class="half l" id="dyL"></div><div class="half r" id="dyR"></div></div></div>
   <div class="dybig" id="dyBig" hidden><div class="bp"><img id="dyBigImg" alt=""><span class="bst" id="dyBigSt"></span></div><div class="cap" id="dyBigCap"></div><div class="x">点一下关掉</div></div>
-  <div class="dybar" id="dyBar"><button type="button" id="dyBack">‹ 返回</button><span id="dyBarPos"></span><button type="button" id="dyBarAdd">✍️ 写日记</button><button type="button" id="dyBarRead">🔊 念给我听</button></div>
+  <div class="dybar" id="dyBar"><button type="button" id="dyBack">‹ 返回</button><span id="dyBarPos"></span><button type="button" id="dyBarEdit" hidden>✏️ 修改</button><button type="button" id="dyBarDel" hidden>🗑 删除</button><button type="button" id="dyBarAdd">✍️ 写日记</button><button type="button" id="dyBarRead">🔊 念<i class="rlg" style="font-style:normal">给我听</i></button></div>
   <div class="ctrl"><button id="dyPrev" type="button" aria-label="上一页">◀<span class="lg"> 上一页</span></button><span class="pos" id="dyPos"></span><button id="dyNext" type="button" aria-label="下一页"><span class="lg">下一页 </span>▶</button><button class="read" id="dyRead" type="button">🔊<span class="lg2"> 念给我听</span></button></div>
   <details class="dedit" id="dyEdit"><summary>👩 家长：改日记、删日记</summary>
     <div class="drows" id="dyRows"></div>
@@ -1696,7 +1710,7 @@ async function initStore(){
    每次切换家庭码都会彻底清空上一家的本地残留，保证家庭与家庭之间 100% 独立、绝不串数据。 */
 const MODE="family",API="https://eelyepkkkazgztdcnicu.supabase.co",APIKEY="sb_publishable_eGBwA1L2QycoBc9XQnzY1Q_LW-ra8ip";
 /* 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="0d3392a408";
+const BUILD="ed1339b324";
 if(MODE==="family"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const setSync=t=>{const el=$("#status");if(el)el.textContent=t};
@@ -1717,16 +1731,22 @@ function resetFamilyLocal(code,maps){
 const gs={
   busy:false,again:false,
   queue(col,id,data){const p=lsGet("pend",[]);p.push([col,id,data]);lsSet("pend",p);this.sync()},
+  busyAt:0,
   async rpc(fn,args){
-    const r=await fetch(API+"/rest/v1/rpc/"+fn,{method:"POST",cache:"no-store",headers:{apikey:APIKEY,Authorization:"Bearer "+APIKEY,"Content-Type":"application/json"},body:JSON.stringify(args)});
+    /* 手机把页面放到后台时，正在进行的请求可能永远不回来，同步就一直卡住；最多等 15 秒 */
+    const ac=typeof AbortController==="function"?new AbortController():null,tm=ac&&setTimeout(()=>ac.abort(),15000);
+    let r;
+    try{r=await fetch(API+"/rest/v1/rpc/"+fn,{method:"POST",cache:"no-store",signal:ac?ac.signal:undefined,headers:{apikey:APIKEY,Authorization:"Bearer "+APIKEY,"Content-Type":"application/json"},body:JSON.stringify(args)})}
+    finally{if(tm)clearTimeout(tm)}
     if(!r.ok){let m="";try{m=(await r.json()).message||""}catch(e){}throw /nofam/.test(m)?"nofam":r.status}
     return r.status===204?null:r.json()},
   async sync(){
     const fam=lsGet("fam","");
     if(!fam)return;
     if(!API){setSync("记录保存在这台设备上（多台设备同步还没开通）");return}
-    if(this.busy){this.again=true;return}
-    this.busy=true;
+    /* 上一次同步卡了 40 秒以上（被手机挂起过），不再等它，直接重新同步 */
+    if(this.busy&&Date.now()-this.busyAt<40000){this.again=true;return}
+    this.busy=true;this.busyAt=Date.now();const run=this.busyAt;
     try{
       const sameFam=lsGet("famOk","")===fam;
       if(!sameFam)lsSet("pend",[]);
@@ -1739,6 +1759,7 @@ const gs={
       /* 取回上次之后别的设备的改动（每个页面各记各的“上次”） */
       const sk="since:"+PAGE+":"+fam,since=sameFam?lsGet(sk,null):null;
       const res=await this.rpc("xdj_pull",{p_fam:fam,p_since:since,p_cols:COLS});
+      if(run!==this.busyAt)return;  /* 这是一次被挂起后才回来的旧同步，已经有新的接手了 */
       const maps={};for(const c of COLS)maps[c]=sameFam?localGet(c):{};
       for(const r of res.rows||[]){if(!maps[r.col])continue;if(r.data===null)delete maps[r.col][r.id];else maps[r.col][r.id]=r.data}
       for(const[c,i,d]of lsGet("pend",[])){if(!maps[c])continue;if(d===null)delete maps[c][i];else maps[c][i]=d}
@@ -1748,7 +1769,7 @@ const gs={
     }catch(e){
       if(e==="nofam")setSync("这个家庭码不对，请在「家长看这里」重新输入");
       else setSync("暂时没连上网，记录先存在这台设备上，连上网会自动同步");
-    }finally{this.busy=false;if(this.again){this.again=false;this.sync()}}
+    }finally{if(run===this.busyAt){this.busy=false;if(this.again){this.again=false;this.sync()}}}
   },
   start(){
     this.sync();
@@ -2521,7 +2542,7 @@ const Diary=(()=>{
       case"diary":{const m=p.m,[,mo,da]=md(m.date),q=dqOf(m.q),multi=p.txt!=null,txt=multi?p.txt:(m.text||"（还没写）"),L=txt.length,last=!multi||p.last;
         const size=multi?(p.size||"")+(p.first?"":" cont")+(last&&p.n>1?" endp2":""):p.size!=null?p.size:L>65?" long2":L>55?" long":"";
         const foot=p.side||(last&&!p.nofoot);
-        return`<div class="${cls} diary${size}${last||p.sig?"":" pmore"}${p.solo?" psolo":""}${foot&&!p.solo?" plast":""}${foot&&m.photo&&!p.solo?" pph":""}"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b>${multi&&p.n>1?`<span class="dpg">${p.k||1}/${p.n||1}</span>`:""}</div>${foot?`
+        return`<div class="${cls} diary${size}${last||p.sig?"":" pmore"}${p.solo?" psolo":""}${foot&&!p.solo?" plast":""}${foot&&m.photo&&!p.solo?" pph":""}"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b><span class="dh-r">${multi&&p.n>1?`<span class="dpg">${p.k||1}/${p.n||1}</span>`:""}<button type="button" class="dh-b" data-edit-diary="${esc(m.id)}" aria-label="修改这篇日记">✏️ 改</button><button type="button" class="dh-b dh-del" data-del-diary="${esc(m.id)}" aria-label="删除这篇日记">🗑 删</button></span></div>${foot?`
         <div class="dfoot">${(st=>m.photo?`<span class="dpic" data-id="${m.id}" role="button" aria-label="看大图"><img src="${m.photo}" alt="">${st}</span>`:st)(`<span class="stamp${q.name.length>3?" s4":""}" style="--c:${q.c}"><i>${esc(q.ic)}</i><span>${esc(q.name)}</span></span>`)}</div>`:""}
         <div class="dbody">${esc(txt)}</div>${(last?!p.solo:p.sig)?`<div class="dsign">—— 爸爸妈妈记 <span class="emo">✍️</span></div>`:""}${last?"":`<div class="dmore">${p.sig?"翻页看照片 ▸":"还没完，翻页接着看 ▸"}</div>`}${pno(i,side)}</div>`}
       case"blank":return`<div class="${cls} diary"><div class="dhead"><b>　</b>月<b>　</b>日　星期<b>　</b>　天气<b>　</b></div><div class="dbody" style="opacity:.55">下一个高光时刻，会写在这里……</div><button type="button" class="dy-inadd" data-add-diary="1">✍️ 现在写一篇高光日记</button>${pno(i,side)}</div>`;
@@ -2540,7 +2561,7 @@ const Diary=(()=>{
   const ONE=()=>oneMQ.matches;
   /* 手机：点封面 → 从封面放大成整屏的书页（像微信读书）；左右滑或点两边翻页；点中间出现“返回” */
   let imm=false,immFrom=null,barT=0;const ibar=$("#dyBar");
-  function showBar(on,auto){ibar.classList.toggle("on",on);clearTimeout(barT);if(on&&auto)barT=setTimeout(()=>ibar.classList.remove("on"),2600)}
+  function showBar(on,auto){ibar.classList.toggle("on",on);root.classList.toggle("bar-on",!!on);clearTimeout(barT);if(on&&auto)barT=setTimeout(()=>{ibar.classList.remove("on");root.classList.remove("bar-on")},2600)}
   /* 打开动画：像镜头慢慢推近这本书——书页从封面的位置、跟着封面一起放大到铺满屏幕，
      封面同时沿书脊慢慢翻开、变淡；返回时倒着放一遍。用一条时间线让封面和书页始终对齐 */
   function coverFly(r){/* 在封面原来的位置放一本一样的封面 */
@@ -2595,11 +2616,14 @@ const Diary=(()=>{
   $("#dyBack").addEventListener("click",()=>exitImm());
   $("#dyBarRead").addEventListener("click",()=>$("#dyRead").click());
   addEventListener("resize",()=>{if(!open||busy)return;if(imm&&!ONE()){exitImm(true);return}if(imm){setK();build();show()}});
+  const curEntry=()=>{if(cur<1||!S[cur])return null;const p=ONE()?S[cur][1]:(S[cur][0]&&S[cur][0].t==="diary"?S[cur][0]:S[cur][1]);return p&&p.t==="diary"?p.m:null};
   function show(){
     setStatic(cur,cur);const one=ONE();
     book.classList.toggle("closed",cur<0);book.style.transform=cur<0&&!one?"translateX(-25%)":"";
     book.classList.toggle("one",one);
     prevB.disabled=cur<0;nextB.disabled=cur>=LAST;
+    const cm=curEntry();
+    $("#dyBarEdit").hidden=!cm;$("#dyBarDel").hidden=!cm;$("#dyBarAdd").hidden=!!cm;
     const lab=p=>!p?"":p.t==="diary"?`${dqOf(p.m.q).ic} ${md(p.m.date)[1]}月${md(p.m.date)[2]}日`:p.t==="blank"?"✏️ 下一篇":"";
     const pv=cur<0?"📕 封面":cur===0?"📑 目录":(one?lab(S[cur][1]):[...new Set([lab(S[cur][0]),lab(S[cur][1])].filter(Boolean))].join("　"))||"⭐ 未完待续";
     posEl.textContent=pv;const bp=$("#dyBarPos");if(bp)bp.textContent=pv+(one&&cur>0?`　${cur} / ${LAST}`:"");
@@ -2718,6 +2742,10 @@ const Diary=(()=>{
   let drag=null;
   book.addEventListener("pointerdown",e=>{
     if(busy)return;
+    const edB=e.target.closest("[data-edit-diary]");
+    if(edB){drag={editDiary:edB.dataset.editDiary,id:e.pointerId,x0:e.clientX,y0:e.clientY};return}
+    const delB=e.target.closest("[data-del-diary]");
+    if(delB){drag={delDiary:delB.dataset.delDiary,id:e.pointerId,x0:e.clientX,y0:e.clientY};return}
     const addB=e.target.closest("[data-add-diary]");
     if(addB){drag={addDiary:true,id:e.pointerId,x0:e.clientX,y0:e.clientY};return}
     const tocLi=e.target.closest(".toc li[data-id]");
@@ -2732,7 +2760,7 @@ const Diary=(()=>{
     drag={dir,x0:e.clientX,y0:e.clientY,t0:performance.now(),r,moved:false,id:e.pointerId,cover:coverFlip(dir)||useLeaf()};
   });
   book.addEventListener("pointermove",e=>{
-    if(!drag||e.pointerId!==drag.id||drag.tapCover||drag.pic||drag.toc||drag.addDiary)return;const dx=e.clientX-drag.x0,dy=e.clientY-drag.y0,r=drag.r,W=r.width/2;
+    if(!drag||e.pointerId!==drag.id||drag.tapCover||drag.pic||drag.toc||drag.addDiary||drag.editDiary||drag.delDiary)return;const dx=e.clientX-drag.x0,dy=e.clientY-drag.y0,r=drag.r,W=r.width/2;
     if(!drag.moved){if(Math.hypot(dx,dy)<8)return;
       if(!drag.dir){if(Math.abs(dy)>Math.abs(dx)){drag=null;return}const d=dx<0?1:-1,to=cur+d;if(to<0||to>LAST){drag=null;return}drag.dir=d;showBar(false)}drag.moved=true;busy=true;rustle();try{book.setPointerCapture(e.pointerId)}catch(_){}
       if(drag.cover)makeLeaf(drag.dir);else startCurl(drag.dir,(drag.y0-r.top)>r.height/2?r.height:0)}
@@ -2741,6 +2769,8 @@ const Diary=(()=>{
   });
   function endDrag(e){
     if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;
+    if(d.editDiary){if(Math.hypot(e.clientX-d.x0,e.clientY-d.y0)<12)edOpen(d.editDiary);return}
+    if(d.delDiary){if(Math.hypot(e.clientX-d.x0,e.clientY-d.y0)<12)delDiary(d.delDiary);return}
     if(d.addDiary){if(Math.hypot(e.clientX-d.x0,e.clientY-d.y0)<12)edOpen();return}
     if(d.toc){if(Math.hypot(e.clientX-d.x0,e.clientY-d.y0)<12)goTo(d.toc,true);return}
     if(d.pic){if(Math.hypot(e.clientX-d.x0,e.clientY-d.y0)<12)showBig(d.pic);return}
@@ -2779,7 +2809,7 @@ const Diary=(()=>{
   function renderEditor(){
     const box=$("#dyRows");if(!$("#dyEdit").open)return;
     box.innerHTML=diaryList().slice().reverse().map(d=>{const[,mo,da]=md(d.date),q=dqOf(d.q);
-      return`<button type="button" class="drow" data-id="${d.id}"><span class="dth">${d.photo?`<img src="${d.photo}" alt="">`:esc(q.ic)}</span><span class="dtx"><b>${mo}月${da}日 星期${wdOf(d.date)}<i style="background:${q.c}">${esc(q.ic)} ${esc(q.name)}</i></b><span>${esc(d.text||"（还没写）")}</span></span><span class="dgo">修改 ›</span></button>`}).join("")
+      return`<div class="drow" data-id="${d.id}"><span class="dth">${d.photo?`<img src="${d.photo}" alt="">`:esc(q.ic)}</span><span class="dtx"><b>${mo}月${da}日 星期${wdOf(d.date)}<i style="background:${q.c}">${esc(q.ic)} ${esc(q.name)}</i></b><span>${esc(d.text||"（还没写）")}</span></span><span class="dacts"><button type="button" class="dgo" data-ed="${d.id}">修改</button><button type="button" class="ddel" data-del="${d.id}">🗑 删除</button></span></div>`}).join("")
       ||`<div class="dhint">还没有日记。点上面的“✍️ 写日记”或下面的按钮写第一篇吧！</div>`;
   }
   $("#dyEdit").addEventListener("toggle",renderEditor);
@@ -2848,10 +2878,26 @@ const Diary=(()=>{
     PCACHE.clear();setK();build();const n=START[id];if(!n)return;
     if(anim&&n!==cur&&!busy)curlTo(n);else{cur=n;show();showBar(true,true)}
   }
-  $("#dyRows").addEventListener("click",e=>{const r=e.target.closest(".drow");if(r)edOpen(r.dataset.id)});
+  async function delDiary(id){
+    const m=state.diary[id];if(!m)return false;
+    const[,mo,da]=md(m.date),q=dqOf(m.q);
+    if(!confirm(`确定要删掉 ${mo}月${da}日「${q.name}」这篇高光日记吗？\n删掉后不能恢复。`))return false;
+    if(!ed.hidden)edClose();
+    PCACHE.clear();
+    if(open&&cur>0)cur=0;
+    await del("diary",id);
+    if(open){if(imm)setK();build();show();renderEditor();if(imm)showBar(true,true)}
+    return true;
+  }
+  $("#dyRows").addEventListener("click",e=>{
+    const delB=e.target.closest("[data-del]");if(delB){delDiary(delB.dataset.del);return}
+    const r=e.target.closest(".drow");if(r)edOpen(r.dataset.id);
+  });
   $("#dyAdd").addEventListener("click",()=>edOpen());
   $("#dyTopAdd").addEventListener("click",()=>edOpen());
   $("#dyBarAdd").addEventListener("click",()=>{showBar(false);edOpen()});
+  $("#dyBarEdit").addEventListener("click",()=>{const cm=curEntry();if(cm){showBar(false);edOpen(cm.id)}});
+  $("#dyBarDel").addEventListener("click",()=>{const cm=curEntry();if(cm)delDiary(cm.id)});
   $("#edQ").addEventListener("click",e=>{
     const b=e.target.closest("button");if(!b||!E)return;
     if(b.dataset.q==="+"){edCust.hidden=!edCust.hidden;if(!edCust.hidden){edCustIn.value=E.q&&E.q.startsWith("c:")?E.q.slice(2):"";edCustIn.focus()}return}
@@ -2896,8 +2942,7 @@ const Diary=(()=>{
     if(open)goTo(id,true);
     if(isNew)say("写进高光日记啦！");
   });
-  $("#edDel").addEventListener("click",async()=>{if(!E||!E.id)return;if(!confirm("删掉这一篇日记吗？删掉就找不回来了。"))return;
-    const id=E.id;edClose();await del("diary",id);renderEditor()});
+  $("#edDel").addEventListener("click",()=>{if(E&&E.id)delDiary(E.id)});
   function openDiary(){XDJCaptainVoice.warmDiary();cur=-1;open=true;root.hidden=false;build();root.scrollTop=0;document.body.style.overflow="hidden";show();renderEditor()}
   function closeDiary(){stopSpeech();if(imm)exitImm(true);if(busy)return;if(!ed.hidden)edClose();open=false;root.hidden=true;document.body.style.overflow=""}
   $("#diaryGo").addEventListener("click",openDiary);$("#dyClose").addEventListener("click",closeDiary);
