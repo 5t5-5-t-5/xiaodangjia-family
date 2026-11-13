@@ -25,6 +25,30 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .back{font-size:20px;font-weight:800;color:var(--soft);padding:6px 4px}
 
 /* ---------- 首页 ---------- */
+#home.team .hero,#home.team .oldonly{display:none}
+#home.team .thome{display:flex!important}
+.thome{gap:16px;height:650px;margin-bottom:14px;border-radius:26px;padding:14px;background:linear-gradient(#BFE6FF,#E8F7FF 55%,#DDF0C8 55%,#CBE7A8)}
+.tteam{width:330px;flex:none;background:#ffffffd9;border-radius:22px;padding:12px;display:flex;flex-direction:column}
+.tteam h3{margin:0 0 6px;font-size:22px}
+.tcap{display:flex;align-items:center;gap:10px;background:#FFF1D6;border-radius:16px;padding:6px 8px}
+.tcap .pic{width:96px;height:104px}.tcap b{font-size:26px;font-weight:900}.tcap small{display:block;color:#B26A00;font-size:14px;font-weight:800}
+.tmem{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:8px}
+.tmem .m{background:#F3F6FB;border-radius:14px;padding:4px 2px;text-align:center}
+.tmem .pic{height:80px}.tmem b{display:block;font-size:15px}.tmem i{font-style:normal;font-size:12px;color:var(--blue);font-weight:800}
+.trev{margin-top:auto;background:#fff;border-radius:16px;padding:10px;font-size:18px;font-weight:900;box-shadow:0 0 0 3px #E4D9C6}
+.troute{flex:1;position:relative}
+.tpath{position:absolute;inset:0;width:100%;height:100%}
+.tst{position:absolute;width:150px;text-align:center}
+.tst .pic{height:104px;filter:drop-shadow(0 3px 0 #0001)}
+.tst .chips{display:flex;gap:6px;justify-content:center;margin-top:-4px}
+.chip{background:#fff;border:3px solid var(--orange);border-radius:99px;min-width:46px;padding:2px 10px;font-size:22px;font-weight:900;color:var(--orange)}
+.chip.now{background:var(--orange);color:#fff;box-shadow:0 4px 0 #C2410C}
+.chip.done{border-color:var(--green);color:var(--green)}
+.chip.soon{border-color:#A99BEA;color:#7B68D8;font-size:17px}
+.tst .nm{display:block;font-size:14px;font-weight:800;color:#4A4A5A;margin-top:2px}
+.tst.done .pic{opacity:.45}
+.tst.soon .pic{opacity:.5;height:70px}
+.tst .here{position:absolute;left:-26px;top:30px;font-size:34px;animation:bob 1.2s ease-in-out infinite}
 .top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .top h1{margin:0;font-size:30px;font-weight:900;flex:1;letter-spacing:.02em}
 .pill{background:#fff;border-radius:999px;padding:8px 16px;font-weight:800;font-size:17px}
@@ -79,10 +103,29 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 @keyframes atk{40%{transform:translateX(34px) scale(1.15)}}
 .bhead .mine.pop2{animation:pop .4s}
 .vs{font-weight:900;font-size:24px;color:var(--red);font-style:italic}
+/* 下面的队员栏：每一题孩子点一个队员上场 */
+#battle.team .stage{min-height:392px}
+#battle.team .arena{margin-top:10px}
+#battle.team .pad.ten button{height:66px}
+#battle.team .pad button{height:80px}
+.bench{display:flex;gap:8px;margin-top:10px;background:#fff;border-radius:22px;padding:8px 10px;position:relative}
+.bench .h{flex:1;text-align:center;border-radius:16px;padding:4px 2px 2px;box-shadow:0 0 0 2px #E4E8F0;transition:transform .15s;position:relative}
+.bench .h .pic{height:84px}.bench .h b{font-size:15px;font-weight:900}
+.bench .h.go{box-shadow:0 0 0 4px var(--yellow);transform:translateY(-8px);background:#FFF8E0}
+.bench .h.rest{opacity:.35;filter:grayscale(1)}
+.bench .h.rest::after{content:"💤";position:absolute;right:4px;top:0;font-size:18px}
+.bench.choose .h:not(.rest){animation:wiggle 1s ease-in-out infinite}
+.bench.choose .h:not(.rest):nth-child(2n){animation-delay:.3s}
+@keyframes wiggle{0%,100%{transform:none}50%{transform:translateY(-6px)}}
+.bench:not(.choose){pointer-events:none}
+.pickme{text-align:center}
+.pickme .pic{width:230px;height:260px;margin:0 auto}
+.pickme b{display:block;font-size:44px;font-weight:900;margin-top:6px}
+.pickme span{font-size:46px;display:inline-block;animation:bob 1s ease-in-out infinite}
 /* 队员上场 */
-.goin{position:absolute;left:10px;bottom:10px;z-index:5;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:goin 2.2s ease forwards}
-.goin .pic{width:130px;height:150px;filter:drop-shadow(0 6px 0 #0002)}
-.goin b{background:#fff;border-radius:16px;padding:8px 14px;font-size:22px;font-weight:900;margin-bottom:110px;box-shadow:0 0 0 3px var(--yellow);white-space:nowrap}
+.goin{position:absolute;left:10px;top:10px;z-index:5;display:flex;align-items:flex-end;gap:4px;pointer-events:none;animation:goin 2.2s ease forwards}
+.goin .pic{width:96px;height:110px;filter:drop-shadow(0 6px 0 #0002)}
+.goin b{background:#fff;border-radius:16px;padding:6px 12px;font-size:20px;font-weight:900;margin-bottom:70px;box-shadow:0 0 0 3px var(--yellow);white-space:nowrap}
 @keyframes goin{0%{transform:translateX(-160px);opacity:0}15%{transform:none;opacity:1}80%{transform:none;opacity:1}100%{transform:translateX(-30px);opacity:0}}
 /* 首页：悟空小队 */
 .squadRow{display:flex;gap:6px;margin:4px 0 12px;position:relative;z-index:1}
@@ -340,6 +383,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 <!-- 首页 -->
 <section class="scr" id="home">
   <div class="top"><h1>⚔️ 数学大作战</h1><span class="pill" id="streak"></span></div>
+  <div class="thome" id="tHome" hidden></div>
   <div class="hero">
     <div class="pic" id="hPic"></div>
     <div>
@@ -350,8 +394,8 @@ svg{display:block;width:100%;height:100%;overflow:visible}
       <button class="go" id="goBtn">⚔️ 开战！</button>
     </div>
   </div>
-  <div class="sec"><em id="mapT" style="font-style:normal">🗺️ 地图</em> <span>（家长：每个小方块是一道小题，绿=会了 黄=还在练 红=刚答错）</span></div>
-  <div class="map" id="map"></div>
+  <div class="sec oldonly"><em id="mapT" style="font-style:normal">🗺️ 地图</em> <span>（家长：每个小方块是一道小题，绿=会了 黄=还在练 红=刚答错）</span></div>
+  <div class="map oldonly" id="map"></div>
   <div class="sec">🃏 卡片 <span id="albumN"></span></div>
   <div class="album" id="album"></div>
   <details class="parent">
@@ -380,6 +424,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
       <button class="next" id="nextBtn" hidden>下一题 ›</button>
     </div>
   </div>
+  <div class="bench" id="bench" hidden></div>
 </section>
 
 <!-- 你来出题 -->
@@ -414,11 +459,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113n"></script>
+<script src="art.js?v=20261113p"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113n";
+const VER="20261113p";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -448,19 +493,30 @@ const TEAM_LEVELS=[
   {n:6,art:"zhaoyun",name:"赵云"},
   {n:7,art:"bawanglong",name:"霸王龙"},
   {n:8,art:"shayu",name:"大白鲨"},
-  {n:9,art:"wuzei",name:"大王乌贼"},
-  {n:10,art:"lvbu",name:"吕布"},
-  {n:"凑十",art:"meiguobing",name:"美国兵大部队"},
+  {n:9,art:"lvbu",name:"吕布"},
+  {n:10,art:"wuzei",name:"大王乌贼"},
+  {n:"凑十",art:"wuzei",name:"大王乌贼"},
   {n:"进位",art:"bawanglong",name:"霸王龙",soon:true},
   {n:"退位",art:"shayu",name:"大白鲨",soon:true},
-  {n:"大复习",art:"lvbu",name:"敌人大集合"}
+  {n:"大复习",art:"meiguobing",name:"敌人大集合"}
+];
+/* 出征图上的站（照样稿第一版：左边队伍，右边弯弯的路线） */
+const STATIONS=[
+  {ns:[3,4,5],art:"meiguobing",name:"美国兵小队",x:-6,y:500},
+  {ns:[6],art:"zhaoyun",name:"赵云",x:200,y:384},
+  {ns:[7],art:"bawanglong",name:"霸王龙",x:460,y:300},
+  {ns:[8],art:"shayu",name:"大白鲨",x:130,y:200},
+  {ns:[9],art:"lvbu",name:"吕布",x:330,y:120},
+  {ns:[10,"凑十"],art:"wuzei",name:"大王乌贼（10 条腿）",x:470,y:-8},
+  {ns:["进位","退位"],art:"bawanglong",name:"下学期：敌人大集合",x:10,y:10,soon:true}
 ];
 /* 每种题由哪个队员上场 */
 const SQUAD={wukong:["wukongAngry","悟空"],liubei:["liubei","刘备"],guanyu:["guanyu","关羽"],zhangfei:["zhangfei","张飞"],gesila:["gesila","哥斯拉"],beijita:["beijita","贝吉塔"],qtz:["qingtianzhu","擎天柱"],dhf:["dahuangfeng","大黄蜂"]};
 const HERO_OF={flash:"dhf",hide:"dhf",split:"liubei",table:"liubei",take:"guanyu",energy:"wukong",merge:"gesila",pop:"gesila",
   pick:"qtz",intro:"qtz",eq:"qtz",combo:"beijita",treeF:"zhangfei",treeH:"zhangfei",blank:"zhangfei",zero:"zhangfei"};
-const HERO_SKILL={wukong:"队长",liubei:"排兵布阵",guanyu:"一刀拿走",zhangfei:"大喝一声",gesila:"合体变大",beijita:"连击快拳",qtz:"变形四式",dhf:"侦察"};
-const heroOf=q=>SQUAD[HERO_OF[q.mode]||"wukong"];
+const HERO_SKILL={wukong:"队长 · 元气弹",liubei:"排兵布阵",guanyu:"一刀拿走",zhangfei:"大喝一声",gesila:"合体变大",beijita:"连击快拳",qtz:"变形四式",dhf:"侦察一眼看"};
+const heroKey=q=>q.hero||HERO_OF[q.mode]||"wukong";
+const heroOf=q=>SQUAD[heroKey(q)];
 const TEAM=MODE==="team";
 const OLD_LEVELS=[
   {n:3,art:"liubei",name:"刘备"},
@@ -541,10 +597,27 @@ function show(id){for(const s of["home","battle","rev","win"])$("#"+s).hidden=s!
 const T_NAME={f:"分",h:"合","+":"加","-":"减"};
 const factLabel=f=>{const b=f.n-f.a;return f.t==="f"?`${f.n}→${f.a}和?`:f.t==="h"?`${f.a}和${b}`:f.t==="+"?`${f.a}+${b}`:`${f.n}−${f.a}`};
 const ZL={"0|+":"几+0","0|-":"几−0","0|=":"几−自己"},VL={"v|+":"合起来→用加法","v|-":"拿走→用减法"};
+function drawTeamHome(f){
+  const lv=n=>LEVELS.find(l=>l.n===n);
+  const chip=n=>{const l=lv(n);const c=l.soon?"soon":passed.includes(n)?"done":l===f?"now":"";return`<button class="chip ${c}" data-n="${n}">${n}</button>`};
+  $("#tHome").innerHTML=`
+  <div class="tteam"><h3>我们的队伍</h3>
+    <div class="tcap"><div class="pic">${art("wukongAngry")}</div><div><b>悟空</b><small>${HERO_SKILL.wukong}</small></div></div>
+    <div class="tmem">${Object.keys(SQUAD).filter(k=>k!=="wukong").map(k=>`<div class="m"><div class="pic">${art(SQUAD[k][0])}</div><b>${SQUAD[k][1]}</b><i>${HERO_SKILL[k]}</i></div>`).join("")}</div>
+    <button class="trev" data-n="大复习">🔁 大复习：敌人大集合</button>
+  </div>
+  <div class="troute">
+    <svg class="tpath" viewBox="0 0 636 640" preserveAspectRatio="none"><path d="M40 600 C200 600 120 450 300 470 S520 520 560 400 S300 320 240 290 S120 160 330 140 S580 90 600 40" fill="none" stroke="#C99A5A" stroke-width="16" stroke-dasharray="2 22" stroke-linecap="round"/></svg>
+    ${STATIONS.map(st=>{const all=st.ns.every(n=>passed.includes(n)),now=st.ns.some(n=>lv(n)===f);
+      return`<div class="tst ${st.soon?"soon":""} ${all?"done":""} ${now?"now":""}" style="left:${st.x}px;top:${st.y}px">
+        ${now?`<span class="here">👉</span>`:""}<div class="pic">${art(st.art)}</div><div class="chips">${st.ns.map(chip).join("")}</div><span class="nm">${st.name}</span></div>`}).join("")}
+  </div>`;
+}
 function drawHome(){
   const f=focusLevel(),ready=numReady(f.n)&&!passed.includes(f.n),F=factsOf(f.n);
   $("#hPic").innerHTML=art(TEAM?"wukongAngry":f.art);$("#hName").textContent=TEAM?"悟空小队":f.name;
   $("#hSub").textContent=TEAM?`下一站：${f.n} · ${f.name}${ready?" · 决战":""}`:ready?`第 ${f.n} 关 · 决战`:`第 ${f.n} 关`;
+  $("#home").classList.toggle("team",TEAM);if(TEAM)drawTeamHome(f);
   $("#hSquad").hidden=!TEAM;$("#hSquad").innerHTML=Object.keys(SQUAD).filter(k=>k!=="wukong").map(k=>`<span>${art(SQUAD[k][0])}</span>`).join("");
   $("#mapT").textContent=TEAM?"🗺️ 出征路线":"🗺️ 地图";$("#modeBtn").textContent=TEAM?"换成老玩法（每关打一个角色）":"换成悟空小队出征";
   $("#hProg").innerHTML=F.map(x=>`<u class="${status(x.id)}"></u>`).join("");
@@ -565,6 +638,10 @@ function drawHome(){
     return`<div class="gnum"><b>${n}</b><span>${passed.includes(n)?"🏆 决战通过":numReady(n)?"⚔️ 可以决战了":`会了 ${numCount(n)}/${F.length}`}</span></div>`+
       ["f","h","+","-"].map(t=>`<div class="grow"><i>${T_NAME[t]}</i>${F.filter(x=>x.t===t).map(x=>`<span class="cell ${status(x.id)}">${factLabel(x)}</span>`).join("")}</div>`).join("")}).join("");
 }
+$("#tHome").addEventListener("click",e=>{const b=e.target.closest(".chip,.trev");if(!b)return;
+  const l=LEVELS.find(l=>String(l.n)===b.dataset.n);if(!l)return;
+  if(l.soon){say(`${l.n}是下学期才学的，到时候再来打！`);alert(`「${l.n}」是 20 以内的${l.n==="进位"?"进位加法":"退位减法"}，北师大版要到一年级下册才学。到时候再把这一站做出来。`);return}
+  startBattle(l)});
 $("#map").addEventListener("click",e=>{const b=e.target.closest(".node");if(!b)return;const l=LEVELS.find(l=>String(l.n)===b.dataset.n);
   if(l.soon){say(`${l.name}这一关是20以内的${l.n}，下学期才学，到时候再来！`);alert(`「${l.n}」是 20 以内的${l.n==="进位"?"进位加法":"退位减法"}，北师大版要到一年级下册才学。到时候再把这一关做出来。`);return}
   startBattle(l)});
@@ -633,8 +710,8 @@ function familyOf(n){
 function buildTen(){
   const F=factsOf(10),fs=F.filter(f=>f.t==="f"),used=[],take=L=>{const f=wpick(L,used);used.push(f.id);return f};
   const qs=[mk("energy",take(fs)),mk("table",{n:10,a:0}),mk("combo",{n:10,a:0}),mk("treeF",take(fs)),mk("blank",take(fs)),mk("energy",take(fs)),mk("treeF",take(fs)),mk("blank",take(fs))];
-  const fam=familyOf(10);qs.push(mk("intro",{n:10,a:fam.a,id:"intro"}));
-  for(const id of fam.ids){const [, t, a]=id.split("|");qs.push(mk("eq",{id,n:10,t,a:+a}))}
+  const fam=familyOf(10);qs.push(mk("intro",{n:10,a:fam.a,id:"intro"},{famOf:1}));
+  for(const id of fam.ids){const [, t, a]=id.split("|");qs.push(mk("eq",{id,n:10,t,a:+a},{famOf:1}))}
   qs.push(mk("pop",{n:10,a:0}));
   return qs;
 }
@@ -664,8 +741,8 @@ function buildBattle(lv){
   qs.push(mk("treeH",take("h")));
   qs.push(mk("blank",take("f")));
   const fam=familyOf(n);                                         /* ⑤ 一图四式 */
-  qs.push(mk("intro",{n,a:fam.a,id:"intro"}));
-  for(const id of fam.ids){const [, t, a]=id.split("|");qs.push(mk("eq",{id,n,t,a:+a}))}
+  qs.push(mk("intro",{n,a:fam.a,id:"intro"},{famOf:1}));
+  for(const id of fam.ids){const [, t, a]=id.split("|");qs.push(mk("eq",{id,n,t,a:+a},{famOf:1}))}
   let pool=[];for(let m=2;m<n;m++)pool.push(...factsOf(m).filter(f=>!mastered(f.id)));   /* ⑥ 复习 + 0 */
   if(!pool.length)pool=F.filter(f=>!used.includes(f.id));
   for(let k=0;k<1&&pool.length;k++){const f=wpick(pool,used);used.push(f.id);qs.push(bareQ(f))}
@@ -836,10 +913,21 @@ const answerable=()=>B.qs.filter(q=>!q.intro).length;
 const answeredSoFar=()=>B.qs.slice(0,B.i).filter(q=>!q.intro).length;
 function startBattle(lv){
   if(!KID){askName();return}
-  if(typeof lv.n!=="number"){B={lv,special:true,qs:lv.n==="凑十"?buildTen():buildReview(),i:0,fast:0,slow:0,wrong:0};
+  startBattle0(lv);
+}
+/* 悟空小队玩法：孩子每题自己点队员；最后一招是悟空的元气弹（能量格凑满 n，还差几格） */
+function addFinal(){
+  if(!TEAM)return;B.pick=true;
+  const N=typeof B.lv.n==="number"?B.lv.n:10,a=1+rnd(N-1),q=mk("energy",{n:N,a,id:`${N}|f|${a}`});
+  q.last=true;q.hero="wukong";q.t="元气弹！还差几格？";
+  q.sayT=`最后一招，元气弹！大家把能量给悟空，要凑满${N}格，已经有${a}格，还差几格？`;
+  B.qs.push(q);
+}
+function startBattle0(lv){
+  if(typeof lv.n!=="number"){B={lv,special:true,qs:lv.n==="凑十"?buildTen():buildReview(),i:0,fast:0,slow:0,wrong:0};addFinal();
     openBattle(lv.name,`${lv.name} 来了！`,lv.n==="凑十"?"家长：凑十关专练 10 的分与合（几和几凑成 10），下学期进位加法全靠它。":"家长：大复习从 2～10 里挑还没会的题，都没有图。",`${lv.name}来了！${kid()}，开战！`);return}
   const exam=numReady(lv.n)&&!passed.includes(lv.n);
-  B={lv,exam,qs:exam?buildExam(lv):buildBattle(lv),i:0,fast:0,slow:0,wrong:0};
+  B={lv,exam,qs:exam?buildExam(lv):buildBattle(lv),i:0,fast:0,slow:0,wrong:0};if(!exam)addFinal();
   openBattle(exam?`${lv.name} · 决战`:lv.name,exam?`决战！`:`${lv.name} 来了！`,
     exam?"家长：决战 10 道题，都没有图。答对 9 道、暴击 7 道以上才算赢，赢了解锁下一关。":"",
     exam?`决战${lv.name}！十道题，不看图，看${kid()}的真本事！`:TEAM?`${lv.name}来了！悟空队长：${kid()}，带上大家，出发！`:`${lv.name}来了！${kid()}，开战！`);
@@ -847,13 +935,14 @@ function startBattle(lv){
 function openBattle(name,title,note,speech){
   const lv=B.lv;$("#bBoss").innerHTML=art(lv.art);$("#bName").textContent=name;
   $("#bHero").hidden=$("#bVs").hidden=!TEAM;if(TEAM)$("#bHero").innerHTML=art("wukongAngry");
+  $("#battle").classList.toggle("team",!!B.pick);$("#bench").hidden=!B.pick;if(B.pick)drawBench();
   show("battle");hpDraw();
   $("#stage").className="stage "+(B.exam||B.probe?"bg-gym":"bg-camp");
   $("#stage").innerHTML=`<div class="pop" style="width:280px;height:330px">${art(lv.art)}</div>`;
   $("#askT").textContent=title;$("#askSay").textContent=note;
   $("#pad").innerHTML="";$("#fb").hidden=true;$("#nextBtn").hidden=true;$("#qno").textContent="";
   tone(196,.4,"sawtooth",.08);tone(147,.6,"sawtooth",.08,.3);
-  say(speech,()=>ask());
+  say(speech,()=>nextQ());
 }
 function hpDraw(){$("#hp").style.width=Math.max(0,100-100*answeredSoFar()/(answerable()+(B.exam||B.probe?0:1)))+"%"}
 function padHTML(q){
@@ -864,6 +953,7 @@ function padHTML(q){
 }
 function ask(){
   const q=B.qs[B.i];q.tries=0;q.done=false;q.t0=0;
+  if(B.pick)drawBench(false);
   if(TEAM){const h=heroOf(q);if(q.sayT0==null)q.sayT0=q.sayT;q.sayT=`${h[1]}，上！`+q.sayT0;
     $("#bHero").innerHTML=art(h[0]);const m=$("#bHero");m.classList.remove("pop2");void m.offsetWidth;m.classList.add("pop2")}
   hpDraw();$("#qno").textContent=q.intro?"":`${answeredSoFar()+1}/${answerable()}`;
@@ -884,7 +974,7 @@ function ask(){
     /* 一出来就能直接说/点数字；3 秒后盖住；从出来起 5 秒内答对算暴击 */
     $("#cover").onclick=()=>{$("#cover").remove();placeSea(q);tone(520,.1);q.t0=Date.now();$("#pad").style.pointerEvents="";
       setTimeout(()=>{if(q.done||B.qs[B.i]!==q)return;const s=$("#sea");if(s)s.innerHTML=`<div class="cover"><b>🌊</b></div>`;say("几只？")},3000)};
-    say(TEAM?"大黄蜂，上！去侦察，看准有几只！":"海里的朋友要出来了，看准哦！");return;
+    say(TEAM?`${heroOf(q)[1]}，去侦察，看准有几只！`:"海里的朋友要出来了，看准哦！");return;
   }
   $("#pad").style.pointerEvents="";
   st.innerHTML=stageHTML(q,false);goIn(q);
@@ -906,6 +996,34 @@ function kameFx(voice=true){
 }
 const tenLv=()=>B&&B.lv&&B.lv.n==="凑十";
 const bossIsFriend=()=>B&&B.lv&&/^wukong/.test(B.lv.art);
+/* 下一题：悟空小队玩法里先让孩子点一个队员；一图四式的 4 个算式由擎天柱连着做完；最后是悟空的元气弹 */
+function nextQ(){
+  if(!B.pick){ask();return}
+  const q=B.qs[B.i],prev=B.qs[B.i-1];
+  if(q.last||(q.mode==="eq"&&q.famOf&&prev&&(prev.mode==="intro"||prev.famOf===q.famOf))){ask();return}
+  const left=B.qs.slice(B.i).filter(x=>!x.last);
+  if(!left.length){ask();return}
+  drawBench(true);
+  $("#bHero").innerHTML=art("wukongAngry");
+  const st=$("#stage");st.className="stage bg-camp";
+  st.innerHTML=`<div class="pickme pop"><div class="pic">${art(B.lv.art)}</div><b>派谁上场？</b><span>👇</span></div>`;
+  $("#askT").textContent="派谁上场？";$("#askSay").textContent="家长：让孩子在下面点一个队员。每个队员带来不同的题；打过的队员会休息（💤）。";
+  $("#pad").innerHTML="";$("#fb").hidden=true;$("#nextBtn").hidden=true;
+  say(B.i===0?`悟空队长：${kid()}，派谁先上？点下面的队员！`:"派谁上场？");
+}
+function drawBench(choose){
+  const left=B.qs.slice(B.i).filter(x=>!x.last),cur=choose?null:heroKey(B.qs[B.i]||{});
+  const b=$("#bench");b.classList.toggle("choose",!!choose);
+  b.innerHTML=Object.keys(SQUAD).map(k=>{const has=left.some(x=>heroKey(x)===k);
+    return`<button class="h ${k===cur?"go":""} ${!has&&k!==cur?"rest":""}" data-k="${k}"><div class="pic">${art(SQUAD[k][0])}</div><b>${SQUAD[k][1]}</b></button>`}).join("");
+}
+$("#bench").addEventListener("click",e=>{const h=e.target.closest(".h");if(!h||!B||!B.pick)return;const k=h.dataset.k;
+  const j=B.qs.findIndex((x,i)=>i>=B.i&&!x.last&&heroKey(x)===k);
+  if(j<0){say(`${SQUAD[k][1]}这一局休息啦，换一个！`);sndNo();return}
+  let len=1;if(B.qs[j].mode==="intro"){while(B.qs[j+len]&&B.qs[j+len].famOf===B.qs[j].famOf&&B.qs[j+len].mode==="eq")len++}
+  const blk=B.qs.splice(j,len);B.qs.splice(B.i,0,...blk);
+  sndPick();ask();
+});
 function goIn(q){
   if(!TEAM||q.intro)return;const h=heroOf(q),st=$("#stage"),d=document.createElement("div");d.className="goin";
   d.innerHTML=`<div class="pic">${art(h[0])}</div><b>${h[1]}：看我的！</b>`;st.appendChild(d);setTimeout(()=>d.remove(),2300);
@@ -960,8 +1078,8 @@ function sentenceOf(q){
   if(q.mode==="merge"||q.mode==="treeH")return`${q.a}和${q.b}合起来是${q.n}！`;
   return`${q.n}可以分成${q.a}和${q.b}！`;
 }
-$("#nextBtn").addEventListener("click",()=>{if(B.onIntro){B.onIntro=false;B.i++}
-  if(B.i<B.qs.length)ask();else if(B.probe)probeNext();else if(B.exam)finishExam();else startReverse()});
+$("#nextBtn").addEventListener("click",()=>{if(B.onIntro){B.onIntro=false;B.i++;if(B.pick&&B.i<B.qs.length){ask();return}}
+  if(B.i<B.qs.length)nextQ();else if(B.probe)probeNext();else if(B.exam)finishExam();else startReverse()});
 $("#quit").addEventListener("click",()=>{if(confirm("现在回家，这一仗就不算赢哦。确定吗？")){hush();drawHome();show("home")}});
 $("#quit2").addEventListener("click",()=>{hush();drawHome();show("home")});
 
