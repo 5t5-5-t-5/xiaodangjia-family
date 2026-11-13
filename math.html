@@ -342,9 +342,14 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .dhint i.x::after{content:"";position:absolute;left:-6px;right:-6px;top:50%;height:4px;margin-top:-2px;background:#E0283A;transform:rotate(-45deg);border-radius:2px}
 
 
-.combo{display:flex;flex-direction:column;align-items:center;gap:16px;position:relative;z-index:1}
-.combo .ch{font-size:32px;font-weight:900;background:#fff;border-radius:999px;padding:6px 24px}
-.crow{display:flex;align-items:center;gap:18px}
+.combo{display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:1}
+.combo .cbig{width:104px;height:104px;font-size:66px}.combo .nbox,.combo .qbox{width:104px;height:104px;font-size:60px}
+.combo .cmeter{position:absolute;left:-55px;top:4px;font-size:24px;min-height:0;white-space:nowrap}
+.ctree{display:flex;flex-direction:column;align-items:center}
+.ctop{width:84px;height:84px;border-radius:20px;background:#fff;color:#1F2B57;font-size:56px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 7px 0 #0002}
+.clegs{width:300px;height:46px;display:block}
+.crow{display:flex;align-items:center;gap:90px}
+.csay{font-size:30px;font-weight:900;color:#fff;background:#0003;border-radius:999px;padding:4px 22px}
 .cbig{width:150px;height:150px;border-radius:50%;background:linear-gradient(#FFB347,#F2662B);color:#fff;font-size:96px;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 0 #C2410C;animation:pop .25s}
 .cand{font-size:40px;font-weight:900;color:#fff}
 .cmeter{font-size:40px;font-weight:900;color:#FFE14D;-webkit-text-stroke:2px #B3262E;paint-order:stroke fill;min-height:50px}
@@ -507,11 +512,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113t"></script>
+<script src="art.js?v=20261113u"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113t";
+const VER="20261113u";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -756,11 +761,11 @@ function mk(mode,f,extra){
         t:`${n} 分一分，填一填`,sayT:`${n}可以分成几和几？上面是几，下面填几，一个一个快快填！`,tip:`上面多 1，下面就少 1。`}}
     case"combo":{const seq=shuffle(Array.from({length:n+1},(_,i)=>i));
       return{...q,id:"连"+n,pic:false,seq,k:0,combo:0,best:0,ct:0,allFast:true,anyWrong:false,ans:n-seq[0],
-        t:`${n} 的好朋友`,sayT:`${n}的好朋友数！看到一个数，马上说出它的好朋友！`,tip:`${n} 分成几和几？想想它的好朋友。`}}
+        t:`合起来是 ${n}`,sayT:`合起来是${n}！我说一个数，你马上说：它和几合起来是${n}？`,tip:`${n} 可以分成几和几？`}}
     case"pop":{const P=[];for(let x=0;x<=n/2;x++)P.push(x);let ch=shuffle(P).slice(0,4);while(ch.length<Math.min(4,n+1))ch.push(pick(P));
       const vals=shuffle(ch.flatMap(x=>[x,n-x])),cols=4,rows=Math.ceil(vals.length/cols),cells=shuffle(Array.from({length:cols*rows},(_,i)=>i)).slice(0,vals.length);
       const items=vals.map((v,i)=>{const c=cells[i]%cols,r=Math.floor(cells[i]/cols);return{v,x:14+c*(72/(cols-1))+(Math.random()*6-3),y:(rows===1?50:22+r*(56/(rows-1)))+(Math.random()*6-3),gone:false}});
-      return{...q,id:"消"+n,pic:true,items,sel:null,miss:0,ans:null,t:`点两个，凑成 ${n}`,sayT:`找朋友！点两个泡泡，合起来是${n}就消掉！`,tip:`找一找，谁和谁合起来是 ${n}？`}}
+      return{...q,id:"消"+n,pic:true,items,sel:null,miss:0,ans:null,t:`合起来是 ${n}`,sayT:`点两个泡泡，两个数合起来是${n}，就能消掉！`,tip:`先点一个数，再想：它和几合起来是 ${n}？`}}
     case"intro":return{...q,intro:true,t:`${n} 分成 ${a} 和 ${b}`,sayT:`解放军送来密信：${n}可以分成${a}和${b}。用它来做算式！`};
   }
 }
@@ -897,12 +902,14 @@ function stageHTML(q,reveal){
         <svg viewBox="0 0 220 60" style="width:220px;height:60px"><path d="M110 4 L44 56 M110 4 L176 56" stroke="#8A5A33" stroke-width="8" stroke-linecap="round"/></svg>
         <div style="display:flex;gap:60px">${NB(a)}${NB(b)}</div></div></div></div>`;
     case"table":return tableHTML(q)+boss;
-    case"combo":{const x=q.seq[Math.min(q.k,n)];return`<div class="combo"><div class="ch">${n} 的好朋友</div>
-      <div class="crow"><div class="cbig" key="${q.k}">${x}</div><span class="cand">和</span>${q.done?NB(n-x,"g"):QB}</div>
+    case"combo":{const x=q.seq[Math.min(q.k,n)];return`<div class="combo">
+      <div class="ctree"><div class="ctop">${n}</div><svg viewBox="0 0 300 46" class="clegs"><path d="M150 4 L52 42 M150 4 L248 42" stroke="#fff" stroke-width="8" stroke-linecap="round"/></svg>
+      <div class="crow"><div class="cbig" key="${q.k}">${x}</div>${q.done?NB(n-x,"g"):QB}</div></div>
+      <div class="csay">${x} 和 ${q.done?n-x:"?"} 合起来是 ${n}</div>
       <div class="cmeter">${q.combo>1?`🔥 连击 ×${q.combo}`:"&nbsp;"}</div>${q.done?"":`<div class="ctime"><i style="animation-name:ctime${q.k%2}"></i></div>`}
       <div class="cdots">${q.seq.map((v,i)=>`<u class="${i<q.k?"on":""}"></u>`).join("")}</div></div>`}
     case"pop":return`<div class="popf">${q.items.map((it,i)=>`<button class="bub ${it.gone?"gone":""} ${q.sel===i?"sel":""}" data-i="${i}" style="left:${it.x}%;top:${it.y}%;animation-delay:${(i*.37%2).toFixed(2)}s">${it.v}</button>`).join("")}</div>
-      <div class="total" style="bottom:12px">合起来是 ${n}</div>`;
+      <div class="total" style="bottom:12px">${q.sel!==null&&q.sel!==undefined?`${q.items[q.sel].v} 和 ? 合起来是 ${n}`:`点两个数，合起来是 ${n}`}</div>`;
     case"flash":return`<div class="sea" id="sea"></div>`;
   }
 }
@@ -930,7 +937,8 @@ function multiDone(q,res,speech){
   B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
 }
 function floatText(t,big){const st=$("#stage").getBoundingClientRect(),d=document.createElement("div");d.className="dmg";d.textContent=t;d.style.left=(st.left+st.width/2-60)+"px";d.style.top=(st.top+st.height*.62)+"px";d.style.color="#FFE14D";if(big)d.style.fontSize="56px";document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
-/* 好朋友数连击：0～n 打乱顺序，看到一个马上说出另一个；3 秒内答对连击 +1 */
+/* 凑数连击（合起来是 n）：0～n 打乱顺序，看到一个马上说出和它合起来是 n 的另一个；3 秒内答对连击 +1。
+   2026-11-13 家长说“n 的好朋友”看不懂，改成分合图样子 + “x 和几合起来是 n”。 */
 function comboAnswer(q,btn){
   const x=q.seq[q.k],n=q.n;
   const next=res=>{
@@ -939,21 +947,22 @@ function comboAnswer(q,btn){
     if(x>0&&x<n)record(`${n}|f|${x}`,res,false);
     if(res==="f"){tone(520+q.combo*70,.1,"square",.08);if(q.combo>1)floatText(`连击 ×${q.combo}`,q.combo>=4)}else tone(500,.08,"triangle",.1);
     q.k++;q.ct=0;
-    if(q.k>n){multiDone(q,q.anyWrong?"w":q.allFast?"f":"s",`最高连击${q.best}！${n}的好朋友全找到了！`);return}
+    if(q.k>n){multiDone(q,q.anyWrong?"w":q.allFast?"f":"s",`最高连击${q.best}！合起来是${n}的，全都找到了！`);return}
     q.ans=n-q.seq[q.k];q.t0=Date.now();$("#stage").innerHTML=stageHTML(q);$("#fb").hidden=true;
+    say(`${q.seq[q.k]}和几？`);
   };
   if(btn.dataset.v===String(n-x)){const secs=q.t0?(Date.now()-q.t0)/1000:0;next(q.ct>0?"w":secs<=3?"f":"s")}
   else{q.ct++;q.combo=0;sndNo();$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
-    say(`${x}的好朋友是几？`);if(q.ct>=2){say(`${x}和${n-x}是好朋友。`);next("w")}}
+    say(`${x}和几合起来是${n}？`);if(q.ct>=2){say(`${x}和${n-x}合起来是${n}。`);next("w")}}
 }
-/* 找朋友消消乐：点两个泡泡，合起来是 n 就消掉 */
+/* 合起来消消乐：点两个泡泡，合起来是 n 就消掉；点了一个，下面提示“x 和 ? 合起来是 n” */
 $("#stage").addEventListener("click",e=>{
   const b=e.target.closest(".bub");if(!b||!B)return;const q=B.qs[B.i];if(!q||q.mode!=="pop"||q.done)return;
   const i=+b.dataset.i,n=q.n;
-  if(q.sel===null){q.sel=i;sndPick()}
+  if(q.sel===null){q.sel=i;sndPick();say(`${q.items[i].v}和几合起来是${n}？`)}
   else if(q.sel===i){q.sel=null}
   else{const A=q.items[q.sel],C=q.items[i];
-    if(A.v+C.v===n){A.gone=C.gone=true;q.sel=null;noise(.12,.25,0,2500);tone(880,.12,"triangle",.12);floatText(`${A.v} 和 ${C.v}`)}
+    if(A.v+C.v===n){A.gone=C.gone=true;q.sel=null;noise(.12,.25,0,2500);tone(880,.12,"triangle",.12);floatText(`${A.v} + ${C.v} = ${n}`);say(`${A.v}和${C.v}合起来是${n}！`)}
     else{q.miss++;q.sel=null;sndNo();say(`${A.v}和${C.v}合起来不是${n}，再找找！`);b.classList.add("bad")}
   }
   if(q.items.every(it=>it.gone)){multiDone(q,q.miss?"s":"f",`泡泡全消掉了！`);return}
