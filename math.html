@@ -512,11 +512,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113u"></script>
+<script src="art.js?v=20261113v"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113u";
+const VER="20261113v";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -933,7 +933,7 @@ function multiDone(q,res,speech){
   q.done=true;if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
   $("#stage").innerHTML=stageHTML(q,true);const crit=res==="f";hitFx(crit);crit?sndCrit():sndHit();
   $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⚡ 暴击！":"✅ 完成！";$("#fb").hidden=false;
-  setTimeout(()=>say((crit?"暴击！":"完成！")+speech),crit?650:150);
+  
   B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
 }
 function floatText(t,big){const st=$("#stage").getBoundingClientRect(),d=document.createElement("div");d.className="dmg";d.textContent=t;d.style.left=(st.left+st.width/2-60)+"px";d.style.top=(st.top+st.height*.62)+"px";d.style.color="#FFE14D";if(big)d.style.fontSize="56px";document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
@@ -945,25 +945,25 @@ function comboAnswer(q,btn){
     if(res!=="f"){q.allFast=false;q.combo=0}else{q.combo++;q.best=Math.max(q.best,q.combo)}
     if(res==="w")q.anyWrong=true;
     if(x>0&&x<n)record(`${n}|f|${x}`,res,false);
-    if(res==="f"){tone(520+q.combo*70,.1,"square",.08);if(q.combo>1)floatText(`连击 ×${q.combo}`,q.combo>=4)}else tone(500,.08,"triangle",.1);
+    if(res==="f"&&q.combo>1)floatText(`连击 ×${q.combo}`,q.combo>=4);
     q.k++;q.ct=0;
     if(q.k>n){multiDone(q,q.anyWrong?"w":q.allFast?"f":"s",`最高连击${q.best}！合起来是${n}的，全都找到了！`);return}
     q.ans=n-q.seq[q.k];q.t0=Date.now();$("#stage").innerHTML=stageHTML(q);$("#fb").hidden=true;
     say(`${q.seq[q.k]}和几？`);
   };
   if(btn.dataset.v===String(n-x)){const secs=q.t0?(Date.now()-q.t0)/1000:0;next(q.ct>0?"w":secs<=3?"f":"s")}
-  else{q.ct++;q.combo=0;sndNo();$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
-    say(`${x}和几合起来是${n}？`);if(q.ct>=2){say(`${x}和${n-x}合起来是${n}。`);next("w")}}
+  else{q.ct++;q.combo=0;$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
+    say(`${x}和几合起来是${n}？`);if(q.ct>=2)next("w")}
 }
 /* 合起来消消乐：点两个泡泡，合起来是 n 就消掉；点了一个，下面提示“x 和 ? 合起来是 n” */
 $("#stage").addEventListener("click",e=>{
   const b=e.target.closest(".bub");if(!b||!B)return;const q=B.qs[B.i];if(!q||q.mode!=="pop"||q.done)return;
   const i=+b.dataset.i,n=q.n;
-  if(q.sel===null){q.sel=i;sndPick();say(`${q.items[i].v}和几合起来是${n}？`)}
+  if(q.sel===null){q.sel=i;say(`${q.items[i].v}和几合起来是${n}？`)}
   else if(q.sel===i){q.sel=null}
   else{const A=q.items[q.sel],C=q.items[i];
-    if(A.v+C.v===n){A.gone=C.gone=true;q.sel=null;noise(.12,.25,0,2500);tone(880,.12,"triangle",.12);floatText(`${A.v} + ${C.v} = ${n}`);say(`${A.v}和${C.v}合起来是${n}！`)}
-    else{q.miss++;q.sel=null;sndNo();say(`${A.v}和${C.v}合起来不是${n}，再找找！`);b.classList.add("bad")}
+    if(A.v+C.v===n){A.gone=C.gone=true;q.sel=null;floatText(`${A.v} + ${C.v} = ${n}`)}
+    else{q.miss++;q.sel=null;b.classList.add("bad")}
   }
   if(q.items.every(it=>it.gone)){multiDone(q,q.miss?"s":"f",`泡泡全消掉了！`);return}
   if(!b.classList.contains("bad"))$("#stage").innerHTML=stageHTML(q);else setTimeout(()=>{if(!q.done)$("#stage").innerHTML=stageHTML(q)},400);
@@ -974,12 +974,12 @@ function tableAnswer(q,btn){
   const fill=res=>{
     if(res!=="f")q.allFast=false;if(res==="w")q.anyWrong=true;
     if(top>0&&top<n)record(`${n}|f|${top}`,res,false);
-    q.k++;q.ct=0;tone(660+q.k*60,.09,"triangle",.12);
+    q.k++;q.ct=0;
     if(q.k>n){q.done=true;
       const r2=q.anyWrong?"w":q.allFast?"f":"s";if(r2==="f")B.fast++;else if(r2==="s")B.slow++;else B.wrong++;
       $("#stage").innerHTML=stageHTML(q,true);const crit=r2==="f";hitFx(crit);crit?sndCrit():sndHit();
       $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⚡ 暴击！":"✅ 填完了！";$("#fb").hidden=false;
-      setTimeout(()=>say((crit?"暴击！":"填完了！")+`${n}一共有${n+1}种分法！`),crit?650:150);
+      
       B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;return}
     q.ans=n-q.top[q.k];q.t0=Date.now();$("#stage").innerHTML=stageHTML(q);$("#stage .pop").style.animation="none";
   };
@@ -987,9 +987,9 @@ function tableAnswer(q,btn){
     const secs=q.t0?(Date.now()-q.t0)/1000:0;$("#fb").hidden=true;
     fill(q.ct>0?"w":secs<=3?"f":"s");
   }else{
-    q.ct++;sndNo();$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
-    say(`${n}分成${top}和几？`+(q.k>0?"上面多1，下面就少1。":""));
-    if(q.ct>=2){say(`${n}分成${top}和${n-top}。`);fill("w")}
+    q.ct++;$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
+    say(`${n}分成${top}和几？`);
+    if(q.ct>=2)fill("w")
   }
 }
 
@@ -1050,14 +1050,13 @@ function startBattle0(lv){
 function openBattle(name,title,note,speech){
   const lv=B.lv;$("#bBoss").innerHTML=art(lv.art);$("#bName").textContent=name;
   $("#bHero").hidden=$("#bVs").hidden=!TEAM;if(TEAM)$("#bHero").innerHTML=art("wukongAngry");
-  $("#battle").classList.toggle("team",TEAM);$("#bench").hidden=!TEAM;if(TEAM)drawBench();
+  $("#battle").classList.remove("team");$("#bench").hidden=true;
   show("battle");hpDraw();
   $("#stage").className="stage "+(B.exam||B.probe?"bg-gym":"bg-camp");
   $("#stage").innerHTML=`<div class="pop" style="width:280px;height:330px">${art(lv.art)}</div>`;
   $("#askT").textContent=title;$("#askSay").textContent=note;
   $("#pad").innerHTML="";$("#fb").hidden=true;$("#nextBtn").hidden=true;$("#qno").textContent="";
-  tone(196,.4,"sawtooth",.08);tone(147,.6,"sawtooth",.08,.3);
-  say(speech,()=>ask());
+  setTimeout(()=>ask(),900);   /* 2026-11-13 家长：题目页只念题，开场不说话 */
 }
 function hpDraw(){$("#hp").style.width=Math.max(0,100-100*answeredSoFar()/(answerable()+(B.exam||B.probe?0:1)))+"%"}
 function padHTML(q){
@@ -1068,8 +1067,7 @@ function padHTML(q){
 }
 function ask(){
   const q=B.qs[B.i];q.tries=0;q.done=false;q.t0=0;
-  if(TEAM)drawBench();
-  if(TEAM){const h=heroOf(q);if(q.sayT0==null)q.sayT0=q.sayT;q.sayT=`${h[1]}，上！`+q.sayT0;
+  if(TEAM){const h=heroOf(q);if(q.sayT0==null)q.sayT0=q.sayT;q.sayT=q.sayT0;
     $("#bHero").innerHTML=art(h[0]);const m=$("#bHero");m.classList.remove("pop2");void m.offsetWidth;m.classList.add("pop2")}
   hpDraw();$("#qno").textContent=q.intro?"":`${answeredSoFar()+1}/${answerable()}`;
   $("#fb").hidden=true;$("#nextBtn").hidden=true;
@@ -1087,13 +1085,13 @@ function ask(){
     $("#pad").style.pointerEvents="none";
     st.innerHTML=bubbles()+stageHTML(q)+`<div class="cover" id="cover"><b>👀</b>点一下</div>`;goIn(q);
     /* 一出来就能直接说/点数字；3 秒后盖住；从出来起 5 秒内答对算暴击 */
-    $("#cover").onclick=()=>{$("#cover").remove();placeSea(q);tone(520,.1);q.t0=Date.now();$("#pad").style.pointerEvents="";
+    $("#cover").onclick=()=>{$("#cover").remove();placeSea(q);q.t0=Date.now();$("#pad").style.pointerEvents="";
       setTimeout(()=>{if(q.done||B.qs[B.i]!==q)return;const s=$("#sea");if(s)s.innerHTML=`<div class="cover"><b>🌊</b></div>`;say("几只？")},3000)};
-    say(TEAM?`${heroOf(q)[1]}，去侦察，看准有几只！`:"海里的朋友要出来了，看准哦！");return;
+    return;
   }
   $("#pad").style.pointerEvents="";
   st.innerHTML=stageHTML(q,false);goIn(q);
-  if(q.mode==="take"||(q.mode==="pick"&&q.view==="take"))setTimeout(()=>{st.querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run"));tone(600,.25,"triangle",.08,0,300)},700);
+  if(q.mode==="take"||(q.mode==="pick"&&q.view==="take"))setTimeout(()=>{st.querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run"))},700);
   say(q.sayT,()=>{if(!q.t0)q.t0=Date.now()});
   setTimeout(()=>{if(!q.t0)q.t0=Date.now()},3000);
 }
@@ -1105,9 +1103,7 @@ function kameFx(voice=true){
   const o=document.createElement("div");o.className="kame";
   o.innerHTML=`<div class="wk">${art("wukongAngry")}</div><div class="ball"></div><div class="beam"></div><div class="kw">哈比哈比哈比哈！</div>`;
   document.body.appendChild(o);setTimeout(()=>o.remove(),3000);
-  tone(140,1.4,"sawtooth",.07,0,520);tone(280,1.4,"triangle",.06,0,1040);
-  setTimeout(()=>{noise(1,.45,0,300);tone(90,.8,"sawtooth",.16,0,45);const sc=$("#battle");sc.classList.remove("shake");void sc.offsetWidth;sc.classList.add("shake")},1450);
-  if(voice)say("哈比哈比哈比哈——！");
+  setTimeout(()=>{const sc=$("#battle");sc.classList.remove("shake");void sc.offsetWidth;sc.classList.add("shake")},1450);
 }
 const tenLv=()=>B&&B.lv&&B.lv.n==="凑十";
 const bossIsFriend=()=>B&&B.lv&&/^wukong/.test(B.lv.art);
@@ -1117,6 +1113,7 @@ function drawBench(){
   $("#bench").innerHTML=keys.map(k=>`<div class="h ${k===cur?"go":""}"><div class="pic">${art(SQUAD[k][0])}</div><b>${SQUAD[k][1]}</b></div>`).join("");
 }
 function goIn(q){
+  return;   /* 2026-11-13 家长：英雄太多太吵，不再跳出来说话 */
   if(!TEAM||q.intro)return;const h=heroOf(q),st=$("#stage"),d=document.createElement("div");d.className="goin";
   d.innerHTML=`<div class="pic">${art(h[0])}</div><b>${h[1]}：看我的！</b>`;st.appendChild(d);setTimeout(()=>d.remove(),2300);
 }
@@ -1148,15 +1145,13 @@ $("#pad").addEventListener("click",e=>{
     record(q.id,res,q.pic);if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
     if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}
     const crit=res==="f",kame=q.mode==="energy"||(tenLv()&&crit);
-    if(kame){kameFx(true);if(!crit)sndHit()}else{hitFx(crit);crit?sndCrit():sndHit()}
+    if(kame){kameFx(true);crit?sndCrit():sndHit()}else{hitFx(crit);crit?sndCrit():sndHit()}
     $("#fb").className="fb ok";$("#fb").innerHTML=kame?"💥 哈比哈比哈比哈！":crit?"⚡ 暴击！":"✅ 打中了！";$("#fb").hidden=false;
-    setTimeout(()=>say((crit?pick(["暴击！","闪电反应！","一口就说出来了！"]):pick(["打中了！","好样的！","答对了！"]))+sentenceOf(q)),kame?3000:crit?650:150);
     B.i++;hpDraw();
     $("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":B.probe?"下一个 ›":B.exam?"🏁 看结果 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
   }else{
-    btn.classList.add("no");sndNo();
+    btn.classList.add("no");
     $("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
-    say("差一点！"+q.tip.replace(/\s/g,""));
     if(q.tries>=2&&!q.choices){if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true)+dotsHint(q);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}}
   }
 });
