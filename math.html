@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="数学大作战">
+<link rel="apple-touch-icon" href="icon-math.png">
+<title>数学大作战</title>
+<style>
+:root{
+  --bg:#FBF7F0; --ink:#1F2B57; --soft:#7A86A8; --line:#ECE4D6; --white:#fff;
+  --blue:#3B82F6; --blueL:#E3EEFF; --green:#22B573; --greenL:#DDF5E9;
+  --orange:#FF8A1F; --orangeL:#FFEBD6; --red:#F2545B; --redL:#FDE2E3;
+  --yellow:#FFC93C; --yellowL:#FFF4D1; --purple:#8B5CF6; --purpleL:#EEE7FF;
+  --body:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB",sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-weight:500}
+body{min-height:100vh;min-height:100dvh;-webkit-user-select:none;user-select:none;overflow-x:hidden}
+button{font-family:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
+[hidden]{display:none!important}
+.scr{min-height:100vh;min-height:100dvh;padding:max(16px,env(safe-area-inset-top)) 16px max(20px,env(safe-area-inset-bottom))}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.back{font-size:17px;font-weight:600;color:var(--soft);padding:8px 4px}
+.top h1{margin:0;font-size:24px;font-weight:800;flex:1}
+.pill{background:#fff;border-radius:999px;padding:7px 14px;font-weight:700;font-size:15px}
+
+/* ---------- 首页 ---------- */
+.hero{background:var(--orange);color:#fff;border-radius:24px;padding:20px 22px;display:flex;gap:16px;align-items:center;position:relative;overflow:hidden}
+.hero .boss{font-size:78px;line-height:1;flex:none;filter:drop-shadow(0 0 0 #0000)}
+.hero small{display:block;font-size:15px;opacity:.9;font-weight:700;letter-spacing:.05em}
+.hero b{display:block;font-size:30px;font-weight:800;margin:2px 0 4px}
+.hero p{margin:0;font-size:16px;opacity:.95}
+.go{margin-top:14px;background:#fff;color:var(--orange);font-size:22px;font-weight:800;border-radius:999px;padding:14px 30px}
+.sec{margin:22px 0 10px;font-size:19px;font-weight:800;display:flex;align-items:center;gap:8px}
+.sec span{font-size:14px;color:var(--soft);font-weight:600}
+.map{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px}
+.node{background:#fff;border-radius:18px;padding:12px;text-align:left;position:relative;min-height:112px}
+.node .ic{font-size:34px;line-height:1}
+.node b{display:block;font-size:17px;margin-top:6px}
+.node i{font-style:normal;font-size:13px;color:var(--soft)}
+.node .dots{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap}
+.node .dots u{width:12px;height:12px;border-radius:4px;background:var(--line)}
+.dots u.g{background:var(--green)} .dots u.y{background:var(--yellow)} .dots u.r{background:var(--red)}
+.node.lock{background:#F3EEE5;color:#B0A99C}
+.node.lock .ic{filter:grayscale(1);opacity:.45}
+.node.on{outline:3px solid var(--orange)}
+.node .num{position:absolute;right:12px;top:10px;font-size:26px;font-weight:800;color:var(--orange)}
+.node.lock .num{color:#CFC7B8}
+.album{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.card{flex:none;width:92px;height:122px;border-radius:16px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border:3px solid var(--yellow)}
+.card .e{font-size:44px}
+.card b{font-size:14px}
+.card.none{border:3px dashed var(--line);color:#C9C1B3;font-size:30px}
+.parent{margin-top:22px;background:#fff;border-radius:18px;padding:14px 16px}
+.parent summary{font-weight:800;font-size:17px;cursor:pointer;list-style:none}
+.parent summary::-webkit-details-marker{display:none}
+.grid{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.grow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.grow>b{width:26px;font-size:20px;color:var(--orange)}
+.cell{border-radius:10px;padding:6px 9px;font-size:14px;font-weight:700;background:var(--line);color:#8A8272}
+.cell.g{background:var(--greenL);color:#13804F} .cell.y{background:var(--yellowL);color:#9A6B00} .cell.r{background:var(--redL);color:#C0262E}
+.legend{font-size:13px;color:var(--soft);margin-top:10px;line-height:1.7}
+.legend u{display:inline-block;width:11px;height:11px;border-radius:3px;vertical-align:-1px;margin:0 3px 0 8px}
+.tiny{font-size:13px;color:var(--soft);text-decoration:underline;margin-top:10px}
+
+/* ---------- 战斗 ---------- */
+.bhead{display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:10px 14px}
+.bhead .boss{font-size:44px;line-height:1}
+.bhead .nm{font-weight:800;font-size:18px}
+.hp{flex:1;height:16px;border-radius:999px;background:var(--redL);overflow:hidden;margin-top:6px}
+.hp i{display:block;height:100%;background:var(--red);border-radius:999px;transition:width .5s}
+.qno{font-weight:800;color:var(--soft);font-size:15px;white-space:nowrap}
+.arena{display:grid;grid-template-columns:1fr;gap:14px;margin-top:14px}
+.stage{background:#fff;border-radius:24px;min-height:300px;display:flex;align-items:center;justify-content:center;padding:18px;position:relative;overflow:hidden}
+.side{display:flex;flex-direction:column;gap:12px}
+.ask{background:#fff;border-radius:20px;padding:16px 18px}
+.ask .t{font-size:24px;font-weight:800;line-height:1.45}
+.ask .say{margin-top:8px;font-size:14px;color:var(--soft);line-height:1.5}
+.ask .say b{color:var(--orange)}
+.spk{font-size:14px;font-weight:700;color:var(--blue);margin-top:8px}
+.pad{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.pad button{background:#fff;border-radius:18px;font-size:36px;font-weight:800;height:72px;color:var(--ink);border-bottom:4px solid var(--line);transition:transform .08s}
+.pad button:active{transform:scale(.94)}
+.pad button.ok{background:var(--green);color:#fff;border-color:#179A5F}
+.pad button.no{background:var(--redL);color:var(--red);border-color:var(--redL)}
+.fb{min-height:56px;border-radius:18px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:22px;font-weight:800;padding:8px 14px;text-align:center}
+.fb.ok{background:var(--greenL);color:#13804F}
+.fb.no{background:var(--orangeL);color:#B85B00}
+.next{background:var(--orange);color:#fff;font-size:21px;font-weight:800;border-radius:999px;padding:14px;width:100%}
+
+/* 画面里的小东西 */
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+.sol{width:58px;height:58px;border-radius:50%;background:var(--blueL);border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:var(--blue)}
+.sol.b{background:var(--orangeL);border-color:var(--orange);color:var(--orange)}
+.camp{border-radius:20px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:120px}
+.camp.l{background:#F1F6FF} .camp.r{background:#FFF5EA}
+.camp small{font-weight:800;font-size:15px}
+.cloud{width:120px;height:120px;border-radius:24px;background:var(--orange);color:#fff;font-size:64px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.split{display:flex;gap:16px;align-items:stretch;flex-wrap:wrap;justify-content:center}
+.bar{display:flex;gap:6px;padding:10px;border-radius:18px;background:#2B2F4A}
+.bar i{width:54px;height:84px;border-radius:10px;background:#454A6B;display:flex;align-items:center;justify-content:center;font-style:normal;font-size:30px}
+.bar i.f{background:linear-gradient(#FFE16B,#FFB300);box-shadow:0 0 14px #FFC93C88}
+.bar i.add{background:linear-gradient(#9BE7FF,#3BB4FF)}
+.goku{font-size:64px;text-align:center}
+.lab{text-align:center;font-weight:800;font-size:16px;color:var(--soft);margin-top:8px}
+.dino{font-size:52px;line-height:1}
+.rock{width:150px;height:110px;border-radius:60px 70px 30px 30px;background:#A8A29A;display:flex;align-items:center;justify-content:center;font-size:56px;font-weight:800;color:#fff;position:relative}
+.rock.peek .dino{font-size:40px}
+.tree{display:flex;flex-direction:column;align-items:center}
+.tree .n{width:96px;height:96px;border-radius:24px;background:var(--orange);color:#fff;font-size:58px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.tree svg{display:block}
+.tree .kids{display:flex;gap:60px}
+.tree .kids div{width:84px;height:84px;border-radius:20px;background:var(--blueL);color:var(--blue);font-size:48px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.tree .kids div.q{background:var(--orange);color:#fff}
+.sea{position:relative;width:100%;height:280px}
+.sea span{position:absolute;font-size:50px;transition:opacity .25s}
+.cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:#fff;background:#2E6FD8;border-radius:24px}
+.cover.ready{background:var(--blue);flex-direction:column;gap:8px}
+.cover.ready b{font-size:28px}
+.bot{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:150px}
+.bot i{font-style:normal;font-size:44px}
+.plus{font-size:44px;font-weight:800;color:var(--soft)}
+.pop{animation:pop .45s}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+.hit{animation:hit .5s}
+@keyframes hit{0%,100%{transform:none}20%{transform:translateX(-10px) rotate(-8deg)}40%{transform:translateX(10px) rotate(8deg)}60%{transform:translateX(-6px)}}
+.crit{position:absolute;right:16px;top:12px;background:var(--yellow);color:var(--ink);font-weight:800;border-radius:999px;padding:6px 14px;font-size:18px;animation:pop .4s}
+
+/* ---------- <span class="kidn">孩子</span>出题 ---------- */
+.rev h2{font-size:26px;margin:4px 0 6px}
+.rev p{margin:0 0 12px;color:var(--soft);font-size:16px}
+.pick{display:flex;gap:10px;flex-wrap:wrap}
+.pick button{width:72px;height:72px;border-radius:18px;background:#fff;font-size:36px;font-weight:800;border-bottom:4px solid var(--line)}
+.pick button.on{background:var(--purple);color:#fff;border-color:#6D3FE0}
+.army{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:14px 0}
+.army .sol{width:70px;height:70px;font-size:28px}
+.judge{display:flex;gap:12px}
+.judge button{flex:1;border-radius:18px;padding:16px;font-size:20px;font-weight:800}
+.judge .y{background:var(--green);color:#fff}
+.judge .n{background:var(--red);color:#fff}
+
+/* ---------- 胜利 ---------- */
+.win{text-align:center;padding-top:10px}
+.win .big{font-size:30px;font-weight:800;margin:6px 0}
+.newcard{margin:18px auto;width:190px;height:250px;border-radius:24px;background:#fff;border:5px solid var(--yellow);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;animation:flip .8s}
+@keyframes flip{0%{transform:rotateY(90deg) scale(.7)}100%{transform:none}}
+.newcard .e{font-size:96px}
+.newcard b{font-size:24px}
+.newcard i{font-style:normal;font-size:14px;color:var(--soft)}
+.stats{display:flex;gap:10px;justify-content:center;margin:8px 0 16px;flex-wrap:wrap}
+.stats div{background:#fff;border-radius:16px;padding:10px 16px;font-weight:800;font-size:18px}
+.teaser{background:var(--purpleL);color:#5B34C9;border-radius:18px;padding:14px;font-weight:700;font-size:17px;margin:0 auto 16px;max-width:520px}
+
+/* iPad：左边画面，右边题目和数字键 */
+@media (min-width:760px){
+  .scr{padding-left:28px;padding-right:28px}
+  .arena{grid-template-columns:1.35fr 1fr;align-items:stretch}
+  .stage{min-height:520px}
+  .pad button{height:84px;font-size:42px}
+  .ask .t{font-size:27px}
+  .hero{padding:26px 30px}
+  .hero .boss{font-size:100px}
+  /* iPad 画面大：东西放大一些 */
+  .sol{width:78px;height:78px;font-size:32px}
+  .cloud{width:150px;height:150px;font-size:80px}
+  .cloud.sm{width:108px;height:108px;font-size:62px}
+  .camp{padding:18px;min-width:170px}
+  .camp small{font-size:18px}
+  .bar i{width:70px;height:110px;font-size:38px}
+  .goku{font-size:90px}
+  .dino{font-size:72px}
+  .rock{width:200px;height:150px;font-size:76px}
+  .tree .n{width:130px;height:130px;font-size:80px}
+  .tree svg{width:280px;height:76px}
+  .tree .kids{gap:90px}
+  .tree .kids div{width:110px;height:110px;font-size:64px}
+  .bot{max-width:200px}.bot i{font-size:60px}
+  .plus{font-size:56px}
+  .lab{font-size:19px}
+  .sea{height:460px}.sea span{font-size:68px}
+}
+/* 手机 */
+@media (max-width:420px){
+  .sol{width:46px;height:46px;font-size:19px;border-width:3px}
+  .bar i{width:44px;height:70px}
+  .dino{font-size:42px}
+  .tree .kids{gap:36px}
+  .pad button{height:64px;font-size:32px}
+  .ask .t{font-size:21px}
+  .stage{min-height:260px;padding:12px}
+  .cloud{width:96px;height:96px;font-size:52px}
+  .cloud.sm{width:68px;height:68px;font-size:40px;border-radius:18px}.plus{font-size:30px}
+  .camp{min-width:0;padding:10px}.bot{max-width:110px}.bot i{font-size:34px}
+  .sec{flex-wrap:wrap;row-gap:2px}.sec span{width:100%;font-size:13px}
+  .map{grid-template-columns:repeat(3,1fr);gap:8px}
+  .node{min-height:96px;padding:10px}.node .ic{font-size:28px}.node b{font-size:15px}.node .num{font-size:20px;right:9px;top:8px}.node i{font-size:12px}
+  .hero{padding:16px}.hero .boss{font-size:56px}.hero b{font-size:26px}.hero p{font-size:15px}.go{padding:12px 26px;font-size:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- 首页 -->
+<section class="scr" id="home">
+  <div class="top"><h1>⚔️ 数学大作战</h1><span class="pill" id="streak"></span></div>
+  <div class="hero">
+    <div class="boss" id="hBoss">🛡️</div>
+    <div>
+      <small id="hSub">今天的守关人</small>
+      <b id="hName">张飞</b>
+      <p id="hDesc"></p>
+      <button class="go" id="goBtn">开战！</button>
+    </div>
+  </div>
+
+  <div class="sec">🗺️ 闯关地图 <span>小方块：绿=熟了 黄=要想一想 红=错过</span></div>
+  <div class="map" id="map"></div>
+
+  <div class="sec">🃏 我的卡册 <span id="albumN"></span></div>
+  <div class="album" id="album"></div>
+
+  <details class="parent">
+    <summary>👨‍👩‍👦 家长看这里：<span class="kidn">孩子</span>哪块熟、哪块还缺</summary>
+    <div class="grid" id="grid"></div>
+    <div class="legend">每一格是一种分法，比如“3+2”就是“5 分成 3 和 2”。<br>
+      <u style="background:var(--green)"></u>熟了（最近都在 3 秒内答对）
+      <u style="background:var(--yellow)"></u>答对但要想一想
+      <u style="background:var(--red)"></u>最近答错过
+      <u style="background:var(--line)"></u>还没练过<br>
+      每天开战时，系统会自动多出黄的、红的，熟了的少出。某个数全变绿，下一关就解锁。</div>
+    <button class="tiny" id="resetBtn">清空练习记录（试玩用）</button>
+  </details>
+</section>
+
+<!-- 战斗 -->
+<section class="scr" id="battle" hidden>
+  <div class="top"><button class="back" id="quit">‹ 撤退</button></div>
+  <div class="bhead">
+    <div class="boss" id="bBoss">🛡️</div>
+    <div style="flex:1"><div class="nm" id="bName">张飞</div><div class="hp"><i id="hp" style="width:100%"></i></div></div>
+    <div class="qno" id="qno">1 / 8</div>
+  </div>
+  <div class="arena">
+    <div class="stage" id="stage"></div>
+    <div class="side">
+      <div class="ask"><div class="t" id="askT"></div><div class="say" id="askSay"></div><button class="spk" id="again">🔊 再念一遍</button></div>
+      <div class="pad" id="pad"></div>
+      <div class="fb" id="fb" hidden></div>
+      <button class="next" id="nextBtn" hidden>下一题 ›</button>
+    </div>
+  </div>
+</section>
+
+<!-- 孩子出题 -->
+<section class="scr rev" id="rev" hidden>
+  <div class="top"><button class="back" id="quit2">‹ 撤退</button></div>
+  <h2>🎤 轮到<span class="kidn">孩子</span>出题，考考爸爸妈妈！</h2>
+  <p id="revStep">第一步：选一个数，你要派几个兵？</p>
+  <div class="pick" id="revPick"></div>
+  <div class="army" id="revArmy"></div>
+  <div id="revAsk" class="ask" hidden><div class="t" id="revAskT"></div><div class="say">家长：先大声说出答案。<span class="kidn">孩子</span>来判你对不对！</div></div>
+  <div class="judge" id="revJudge" hidden><button class="y" id="jy">✅ 答对了</button><button class="n" id="jn">❌ 答错啦</button></div>
+  <div class="fb" id="revFb" hidden style="margin-top:12px"></div>
+  <button class="next" id="revNext" hidden style="margin-top:12px">打败守关人 ›</button>
+</section>
+
+<!-- 胜利 -->
+<section class="scr win" id="win" hidden>
+  <div style="font-size:60px" id="wBoss">🛡️</div>
+  <div class="big" id="wTitle">打败了张飞！</div>
+  <div class="stats" id="wStats"></div>
+  <div style="font-weight:800;color:var(--soft)">获得新卡片</div>
+  <div class="newcard" id="wCard"></div>
+  <div class="teaser" id="wTeaser"></div>
+  <button class="next" id="wHome" style="max-width:420px">回到地图</button>
+</section>
+
+<script>
+"use strict";
+/* 孩子的名字：和积分卡同一个网站，读积分卡存在这台设备上的名字 */
+const KID=(()=>{try{return JSON.parse(localStorage.getItem("xdj:profile")).kid.name}catch(e){return""}})()||"小勇士";
+/* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
+const VER="20261113a";
+if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
+  chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
+const $=s=>document.querySelector(s);
+const rnd=n=>Math.floor(Math.random()*n);
+const pick=a=>a[rnd(a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]]}return a};
+
+/* ---------- 关卡：每个数一个守关人 ---------- */
+const LEVELS=[
+  {n:3,boss:"🧑‍🌾",name:"刘备",place:"桃园"},
+  {n:4,boss:"🗡️",name:"关羽",place:"过五关"},
+  {n:5,boss:"🛡️",name:"张飞",place:"长坂桥"},
+  {n:6,boss:"🐎",name:"赵云",place:"长坂坡",lock:true},
+  {n:7,boss:"🦖",name:"霸王龙",place:"恐龙谷",lock:true},
+  {n:8,boss:"🦈",name:"大白鲨",place:"深海",lock:true},
+  {n:9,boss:"🦑",name:"大王乌贼",place:"海底洞",lock:true},
+  {n:10,boss:"🔱",name:"吕布",place:"虎牢关",lock:true},
+  {n:"凑十",boss:"⚡",name:"悟空",place:"能量修炼场",lock:true},
+  {n:"进位",boss:"🤖",name:"擎天柱",place:"汽车人基地",lock:true},
+  {n:"退位",boss:"👑",name:"贝吉塔",place:"赛亚人飞船",lock:true}
+];
+const CARDS=[
+  {e:"🦅",n:"翼龙"},{e:"🧑‍🌾",n:"刘备"},{e:"🗡️",n:"关羽"},{e:"🛡️",n:"张飞"},
+  {e:"🦕",n:"腕龙"},{e:"🦖",n:"霸王龙"},{e:"🦈",n:"大白鲨"},{e:"🐋",n:"蓝鲸"},
+  {e:"🐙",n:"章鱼"},{e:"🐬",n:"海豚"},{e:"🐢",n:"海龟"},{e:"🦀",n:"帝王蟹"},
+  {e:"🐎",n:"赤兔马"},{e:"🏹",n:"黄忠"},{e:"🪭",n:"诸葛亮"},{e:"🐯",n:"老虎将军"}
+];
+
+/* ---------- 记录（先存在这台设备上；正式版跟积分卡用同一个家庭码同步） ---------- */
+const LS="xdjm:";
+const load=(k,d)=>{try{const v=localStorage.getItem(LS+k);return v==null?d:JSON.parse(v)}catch(e){return d}};
+const save=(k,v)=>{try{localStorage.setItem(LS+k,JSON.stringify(v))}catch(e){}};
+let stats=load("stats",{});   /* key → 最近几次结果 ["f","s","w"]，最新在最后 */
+let cards=load("cards",[]);   /* 得到的卡片名字 */
+let days=load("days",[]);     /* 打过仗的日子 */
+
+const pairKey=(n,a)=>{const b=n-a;return n+":"+Math.min(a,b)+"+"+Math.max(a,b)};
+const pairsOf=n=>{const o=[];for(let a=1;a<=n/2;a++)o.push(a);return o.map(a=>pairKey(n,a))};
+function status(k){
+  const h=stats[k]||[];if(!h.length)return"";
+  const last=h.slice(-3);
+  if(last.includes("w"))return"r";
+  if(last.length>=2&&last.every(x=>x==="f"))return"g";
+  return"y";
+}
+function record(k,res){const h=stats[k]||[];h.push(res);stats[k]=h.slice(-6);save("stats",stats)}
+const numDone=n=>pairsOf(n).every(k=>status(k)==="g");
+const unlocked=()=>{const u=LEVELS.filter(l=>!l.lock).map(l=>l.n);return u};
+function focusLevel(){
+  for(const l of LEVELS){if(l.lock)break;if(!numDone(l.n))return l}
+  return LEVELS.filter(l=>!l.lock).pop();
+}
+
+/* ---------- 声音 ---------- */
+let AC=null;
+function tone(f,d,t="sine",v=.15,delay=0){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),s=AC.currentTime+delay;o.type=t;o.frequency.setValueAtTime(f,s);g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g).connect(AC.destination);o.start(s);o.stop(s+d)}catch(e){}}
+const sndOk=()=>{tone(660,.12,"triangle");tone(880,.14,"triangle",.15,.1);tone(1320,.2,"triangle",.12,.2)};
+const sndCrit=()=>{tone(220,.15,"square",.1);tone(440,.12,"square",.1,.08);tone(990,.3,"triangle",.15,.16)};
+const sndNo=()=>{tone(300,.18,"sine",.12);tone(240,.25,"sine",.1,.15)};
+const sndWin=()=>[523,659,784,1047,1319].forEach((f,i)=>tone(f,.3,"triangle",.14,i*.12));
+let zhVoice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices().filter(v=>/zh[-_]CN/i.test(v.lang));zhVoice=vs.find(v=>/Tingting|婷婷|Lili|莉莉/.test(v.name))||vs[0]||null}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+function say(t,done){
+  if(!("speechSynthesis" in window)){done&&setTimeout(done,600);return}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);u.lang="zh-CN";u.rate=1.02;u.pitch=1.1;if(zhVoice)u.voice=zhVoice;
+  let fired=false;const fin=()=>{if(!fired){fired=true;done&&done()}};
+  u.onend=fin;u.onerror=fin;setTimeout(fin,Math.min(6000,800+t.length*200));
+  speechSynthesis.speak(u);
+}
+
+/* ---------- 首页 ---------- */
+function show(id){for(const s of["home","battle","rev","win"])$("#"+s).hidden=s!==id;scrollTo(0,0)}
+function drawHome(){
+  const f=focusLevel();
+  $("#hBoss").textContent=f.boss;$("#hName").textContent=`${f.name}`;
+  $("#hSub").textContent=`今天的守关人 · 第 ${f.n} 关 · ${f.place}`;
+  $("#hDesc").textContent=`${f.name}守着数字 ${f.n}！把 ${f.n} 的分法都答出来，就能打败他。`;
+  const today=new Date().toDateString();
+  $("#streak").textContent=days.includes(today)?"✅ 今天打过了":`已打 ${days.length} 天`;
+  $("#map").innerHTML=LEVELS.map(l=>{
+    const dots=typeof l.n==="number"&&!l.lock?pairsOf(l.n).map(k=>`<u class="${status(k)}"></u>`).join(""):"";
+    const done=typeof l.n==="number"&&!l.lock&&numDone(l.n);
+    return `<button class="node ${l.lock?"lock":""} ${l===f?"on":""}" data-n="${l.n}" ${l.lock?"disabled":""}>
+      <span class="num">${l.n}</span><div class="ic">${l.boss}</div><b>${l.name}${done?" ✓":""}</b>
+      <i>${l.lock?"🔒 还没解锁":l.place}</i><div class="dots">${dots}</div></button>`}).join("");
+  $("#albumN").textContent=`${cards.length} 张`;
+  $("#album").innerHTML=(cards.length?cards.map(n=>{const c=CARDS.find(x=>x.n===n)||{e:"⭐"};return`<div class="card"><div class="e">${c.e}</div><b>${n}</b></div>`}).join(""):"")+
+    `<div class="card none">?</div>`;
+  $("#grid").innerHTML=LEVELS.filter(l=>typeof l.n==="number").map(l=>
+    `<div class="grow"><b>${l.n}</b>${l.lock?`<span class="cell">🔒 还没解锁</span>`:pairsOf(l.n).map(k=>`<span class="cell ${status(k)}">${k.split(":")[1]}</span>`).join("")}${!l.lock?`<span class="cell ${status("看"+l.n)}">一眼看出${l.n}</span>`:""}</div>`).join("");
+}
+$("#map").addEventListener("click",e=>{const b=e.target.closest(".node");if(!b||b.disabled)return;startBattle(LEVELS.find(l=>String(l.n)===b.dataset.n))});
+$("#goBtn").addEventListener("click",()=>startBattle(focusLevel()));
+$("#resetBtn").addEventListener("click",()=>{if(!confirm("清空所有练习记录和卡片吗？"))return;stats={};cards=[];days=[];save("stats",stats);save("cards",cards);save("days",days);drawHome()});
+
+/* ---------- 出题 ---------- */
+const MODES=["tree","split","energy","hide","merge","flash","riddle"];
+function weightOf(k){const s=status(k);return s==="r"?5:s==="y"?3:s===""?3:1}
+function buildQuestions(lv){
+  /* 这一关的数 + 前面的数一起复习；第 3 关分法太少，顺带练 2 和 4 */
+  const nums=[];for(let n=2;n<=Math.max(lv.n,4);n++)if(n<=lv.n||lv.n<=3)nums.push(n);
+  /* 主练这一关的数（约 2/3），再复习前面的数 */
+  const pool=[];
+  for(const n of nums)for(let a=1;a<n;a++){
+    const k=pairKey(n,a);let w=weightOf(k);if(n===lv.n)w*=3;
+    for(let i=0;i<w;i++)pool.push([n,a]);
+  }
+  const modes=shuffle(MODES).concat(shuffle(MODES));
+  const qs=[];let guard=0;
+  while(qs.length<8&&guard++<200){
+    const [n,a]=pick(pool);let mode=modes[qs.length];if(qs.length&&qs[qs.length-1].mode===mode)mode=pick(MODES.filter(m=>m!==mode));
+    if(qs.some(q=>q.n===n&&q.a===a&&q.mode===mode))continue;
+    if(guard<120&&qs.length&&qs[qs.length-1].n===n&&qs[qs.length-1].a===a)continue;
+    qs.push(makeQ(mode,n,a));
+  }
+  return qs;
+}
+function makeQ(mode,n,a){
+  const b=n-a,k=pairKey(n,a);
+  switch(mode){
+    case"tree":return{mode,n,a,b,k,ans:b,t:`${n} 可以分成 ${a} 和几？`,sayT:`${n}可以分成${a}和几？`,tip:`伸出 ${n} 根手指，弯下 ${a} 根，还剩几根？`};
+    case"split":{const g=pick(["刘备","关羽","张飞"]);return{mode,n,a,b,k,ans:b,t:`${g}带了 ${n} 个兵，左边营里 ${a} 个，右边营里几个？`,sayT:`${g}带了${n}个兵，左边${a}个，右边几个？`,tip:`一起数一数：一共 ${n} 个，左边 ${a} 个……`}}
+    case"energy":return{mode,n,a,b,k,ans:b,t:`悟空的能量槽有 ${n} 格，已经充了 ${a} 格，还差几格充满？`,sayT:`能量槽有${n}格，充了${a}格，还差几格充满？`,tip:`看看灰色的格子，有几格还没亮？`};
+    case"hide":return{mode,n,a,b,k,ans:b,t:`一共 ${n} 只恐龙，看得见 ${a} 只，石头后面藏了几只？`,sayT:`一共${n}只恐龙，看得见${a}只，石头后面藏了几只？`,tip:`${a} 和几合起来是 ${n}？用手指试试。`};
+    case"merge":return{mode,n,a,b,k,ans:n,t:`${a} 个机器人和 ${b} 个机器人合体，一共几个？`,sayT:`${a}个机器人和${b}个机器人合体，一共几个？`,tip:`先记住 ${a}，再接着往下数 ${b} 个。`};
+    case"riddle":return{mode,n,a,b,k,ans:n,t:`猜猜我是谁：我是一个数，${a} 和 ${b} 合起来就是我。我是几？`,sayT:`猜猜我是谁：我是一个数，${a}和${b}合起来就是我，我是几？`,tip:`${a} 和 ${b} 合在一起，摆出来数一数。`};
+    case"flash":return{mode,n,a,b,k:"看"+n,ans:n,t:`海洋生物只出现 2 秒！不许数，一眼看：刚才有几只？`,sayT:`准备好！不许数，一眼看，有几只？`,tip:`再看一次，试试把它们分成两小堆来看。`};
+  }
+}
+
+/* ---------- 画面 ---------- */
+const SEA=["🐟","🐠","🐡","🦈","🐙","🐬","🐳","🦀","🐢","🦑"];
+const DINO=["🦖","🦕"];
+function stageHTML(q,reveal){
+  const {n,a,b}=q;
+  switch(q.mode){
+    case"tree":return`<div class="tree pop"><div class="n">${n}</div>
+      <svg width="200" height="56" viewBox="0 0 200 56"><path d="M100 4 L40 52 M100 4 L160 52" stroke="#E6D9C3" stroke-width="7" stroke-linecap="round" fill="none"/></svg>
+      <div class="kids"><div>${a}</div><div class="${reveal?"":"q"}">${reveal?b:"?"}</div></div></div>`;
+    case"split":return`<div class="split pop">
+      <div class="camp l"><small style="color:var(--blue)">左边营 ${a} 个</small><div class="row">${"<div class='sol'>兵</div>".repeat(a)}</div></div>
+      <div class="camp r"><small style="color:var(--orange)">右边营 ${reveal?b+" 个":"几个？"}</small>${reveal?`<div class="row">${"<div class='sol b'>兵</div>".repeat(b)}</div>`:`<div class="cloud">?</div>`}</div>
+      <div style="width:100%;text-align:center;font-weight:800;color:var(--soft)">一共 ${n} 个兵</div></div>`;
+    case"energy":{let cells="";for(let i=0;i<n;i++)cells+=`<i class="${i<a?"f":reveal?"add":""}">${i<a?"⚡":reveal?"✨":""}</i>`;
+      return`<div class="pop"><div class="goku">${reveal?"💥":"🐒"}</div><div class="bar">${cells}</div><div class="lab">能量槽 ${n} 格 · 已充 ${a} 格</div></div>`}
+    case"hide":{const d=pick(DINO);return`<div class="pop" style="display:flex;flex-direction:column;align-items:center;gap:14px">
+      <div class="row">${`<span class="dino">${d}</span>`.repeat(a)}</div>
+      ${reveal?`<div class="row" style="background:#F1EEE8;border-radius:20px;padding:10px 16px">${`<span class="dino">${d}</span>`.repeat(b)}</div>`:`<div class="rock">?</div>`}
+      <div class="lab">一共 ${n} 只恐龙</div></div>`}
+    case"merge":return`<div class="pop" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:center">
+      <div class="camp l"><div class="bot">${"<i>🤖</i>".repeat(a)}</div><small style="color:var(--blue)">${a} 个</small></div><span class="plus">+</span>
+      <div class="camp r"><div class="bot">${"<i>🤖</i>".repeat(b)}</div><small style="color:var(--orange)">${b} 个</small></div>
+      ${reveal?`<span class="plus">=</span><div class="cloud sm" style="background:var(--green)">${n}</div>`:""}</div>`;
+    case"riddle":return`<div class="pop" style="text-align:center"><div style="font-size:70px">🎁</div>
+      <div style="display:flex;gap:14px;align-items:center;justify-content:center;margin-top:10px">
+      <div class="cloud sm" style="background:var(--blue)">${a}</div><span class="plus">和</span><div class="cloud sm" style="background:var(--blue)">${b}</div>
+      <span class="plus">→</span><div class="cloud sm" style="background:${reveal?"var(--green)":"var(--orange)"}">${reveal?n:"?"}</div></div></div>`;
+    case"flash":return`<div class="sea" id="sea"></div>`;
+  }
+}
+function placeSea(n){
+  const sea=$("#sea");if(!sea)return;const W=sea.clientWidth,H=sea.clientHeight;const ic=pick(SEA);
+  const pts=[];let g=0;
+  const sz=W>500?100:78;while(pts.length<n&&g++<800){const x=20+Math.random()*(W-sz-20),y=10+Math.random()*(H-sz);if(pts.every(p=>Math.hypot(p[0]-x,p[1]-y)>sz))pts.push([x,y])}
+  sea.innerHTML=pts.map(p=>`<span style="left:${p[0]}px;top:${p[1]}px">${ic}</span>`).join("");
+}
+
+/* ---------- 战斗流程 ---------- */
+let B=null;
+function startBattle(lv){
+  B={lv,qs:buildQuestions(lv),i:0,fast:0,slow:0,wrong:0,firstTry:0};
+  $("#bBoss").textContent=lv.boss;$("#bName").textContent=`${lv.name} · ${lv.place}`;
+  show("battle");
+  say(`${lv.name}来了！打败他，就要答对${lv.n}的分法。开战！`,()=>ask());
+  $("#stage").innerHTML=`<div class="pop" style="text-align:center"><div style="font-size:120px">${lv.boss}</div><div style="font-size:26px;font-weight:800">${lv.name} 来了！</div></div>`;
+  $("#askT").textContent="准备……";$("#askSay").textContent="";$("#pad").innerHTML="";$("#fb").hidden=true;$("#nextBtn").hidden=true;
+  hpDraw();
+}
+function hpDraw(){$("#hp").style.width=(100-100*B.i/(B.qs.length+1))+"%"}
+function ask(){
+  const q=B.qs[B.i];q.tries=0;q.done=false;
+  hpDraw();$("#qno").textContent=`${B.i+1} / ${B.qs.length}`;
+  $("#fb").hidden=true;$("#nextBtn").hidden=true;
+  $("#askT").textContent=q.t;
+  $("#askSay").innerHTML=`家长：念完题，让${KID}<b>不掰手指</b>直接说或点数字。答错了就照着做：${q.tip}`;
+  const max=Math.max(5,q.ans);
+  $("#pad").innerHTML=Array.from({length:max},(_,i)=>`<button data-v="${i+1}">${i+1}</button>`).join("");
+  $("#pad").style.pointerEvents="none";
+  if(q.mode==="flash"){
+    $("#stage").innerHTML=stageHTML(q)+`<div class="cover ready" id="cover"><b>🌊 准备好了吗？</b><span>点这里，海洋生物出现 2 秒</span></div>`;
+    $("#cover").onclick=()=>{
+      $("#cover").remove();placeSea(q.n);tone(520,.1);
+      setTimeout(()=>{const s=$("#sea");if(s){s.innerHTML="";s.insertAdjacentHTML("beforeend",`<div class="cover">🌊 它们游走了！有几只？</div>`)}
+        say(q.sayT,()=>{q.t0=Date.now();$("#pad").style.pointerEvents=""})},2000);
+    };
+    say("海洋生物要出现了，看准哦！");
+    return;
+  }
+  $("#stage").innerHTML=stageHTML(q,false);
+  $("#pad").style.pointerEvents="";
+  /* 从题目念完开始计时；语音不响时最多 3 秒后开始计时。念的时候就抢答也算快 */
+  say(q.sayT,()=>{if(!q.t0)q.t0=Date.now()});
+  setTimeout(()=>{if(!q.t0)q.t0=Date.now()},3000);
+}
+$("#again").addEventListener("click",()=>{const q=B&&B.qs[B.i];if(q)say(q.sayT)});
+$("#pad").addEventListener("click",e=>{
+  const btn=e.target.closest("button");if(!btn||!B)return;const q=B.qs[B.i];if(q.done)return;
+  const v=+btn.dataset.v;q.tries++;
+  if(v===q.ans){
+    q.done=true;btn.classList.add("ok");
+    const secs=(Date.now()-(q.t0||Date.now()))/1000;
+    const res=q.tries>1?"w":secs<=3?"f":"s";
+    record(q.k,res);
+    if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
+    if(q.mode!=="flash")$("#stage").innerHTML=stageHTML(q,true);
+    else $("#stage").innerHTML=`<div class="sea" id="sea"></div>`,placeSea(q.n);
+    const boss=$("#bBoss");boss.classList.remove("hit");void boss.offsetWidth;boss.classList.add("hit");
+    if(res==="f"){sndCrit();$("#stage").insertAdjacentHTML("beforeend",`<div class="crit">⚡ 暴击！</div>`)}else sndOk();
+    const praise=res==="f"?pick(["暴击！一口就说出来了！","太快了！","闪电反应！"]):res==="s"?pick(["答对了！","打中了！","好样的！"]):pick(["改对了！","想明白了，好样的！"]);
+    $("#fb").className="fb ok";$("#fb").innerHTML=`✅ ${praise}`;$("#fb").hidden=false;
+    say(sentenceOf(q,praise));
+    B.i++;hpDraw();
+    $("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"最后一招 ›";$("#nextBtn").hidden=false;
+  }else{
+    btn.classList.add("no");sndNo();
+    $("#fb").className="fb no";$("#fb").textContent=`差一点！${q.tip}`;$("#fb").hidden=false;
+    say("差一点！"+q.tip.replace(/\s/g,""));
+    if(q.tries>=2){$("#stage").innerHTML=stageHTML(q,true);if(q.mode==="flash")placeSea(q.n)}
+  }
+});
+function sentenceOf(q,p){
+  if(q.mode==="flash")return`${p}有${q.n}只！`;
+  if(q.mode==="merge"||q.mode==="riddle")return`${p}${q.a}和${q.b}合成${q.n}！`;
+  return`${p}${q.n}可以分成${q.a}和${q.b}！`;
+}
+$("#nextBtn").addEventListener("click",()=>{if(B.i<B.qs.length)ask();else startReverse()});
+$("#quit").addEventListener("click",()=>{if(confirm("现在撤退，这一仗就不算赢哦。确定吗？")){speechSynthesis&&speechSynthesis.cancel();drawHome();show("home")}});
+$("#quit2").addEventListener("click",()=>{speechSynthesis&&speechSynthesis.cancel();drawHome();show("home")});
+
+/* ---------- 孩子出题考家长 ---------- */
+let R=null;
+function startReverse(){
+  R={n:0,left:0};show("rev");
+  const max=Math.max(4,B.lv.n);
+  $("#revStep").textContent="第一步：选一个数，你要派几个兵？";
+  $("#revPick").innerHTML=Array.from({length:max-1},(_,i)=>`<button data-n="${i+2}">${i+2}</button>`).join("");
+  $("#revArmy").innerHTML="";$("#revAsk").hidden=true;$("#revJudge").hidden=true;$("#revFb").hidden=true;$("#revNext").hidden=true;
+  say(`最后一招！轮到${KID}出题，考考爸爸妈妈！`);
+}
+$("#revPick").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;R.n=+b.dataset.n;R.left=0;
+  [...$("#revPick").children].forEach(x=>x.classList.toggle("on",x===b));
+  $("#revStep").textContent=`第二步：点一点小兵，把一些兵派到左边营（变成蓝色）。剩下的藏起来考爸爸妈妈！`;
+  drawArmy();
+});
+function drawArmy(){
+  let h="";for(let i=0;i<R.n;i++)h+=`<button class="sol ${i<R.left?"":"b"}" data-i="${i}">${i<R.left?"兵":"?"}</button>`;
+  $("#revArmy").innerHTML=h;
+  if(R.left>0&&R.left<R.n){
+    $("#revAsk").hidden=false;$("#revAskT").textContent=`一共 ${R.n} 个兵，左边营 ${R.left} 个，右边藏起来的有几个？`;
+    $("#revJudge").hidden=false;
+  }else{$("#revAsk").hidden=true;$("#revJudge").hidden=true}
+}
+$("#revArmy").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const i=+b.dataset.i;R.left=i<R.left?i:i+1;if(R.left>=R.n)R.left=R.n-1;tone(500+R.left*60,.08,"triangle");drawArmy()});
+$("#jy").addEventListener("click",()=>{sndOk();$("#revFb").className="fb ok";$("#revFb").textContent=`爸爸妈妈答对了！${R.n} 可以分成 ${R.left} 和 ${R.n-R.left}。${KID}出的题真好！`;$("#revFb").hidden=false;$("#revNext").hidden=false;say(`答对了！${R.n}可以分成${R.left}和${R.n-R.left}！`)});
+$("#jn").addEventListener("click",()=>{sndNo();$("#revFb").className="fb no";$("#revFb").textContent=`哈哈，爸爸妈妈答错啦！${KID}来告诉他们：右边是 ${R.n-R.left} 个！`;$("#revFb").hidden=false;$("#revNext").hidden=false;say(`哈哈，答错啦！${KID}快告诉他们，右边是${R.n-R.left}个！`)});
+$("#revNext").addEventListener("click",finish);
+
+/* ---------- 胜利 ---------- */
+function finish(){
+  const lv=B.lv;sndWin();
+  const today=new Date().toDateString();if(!days.includes(today)){days.push(today);save("days",days)}
+  const left=CARDS.filter(c=>!cards.includes(c.n));
+  const lvCard=CARDS.find(c=>c.n===lv.name&&!cards.includes(c.n));
+  const c=lvCard||(left.length?pick(left):pick(CARDS));
+  if(!cards.includes(c.n)){cards.push(c.n);save("cards",cards)}
+  $("#wBoss").textContent=lv.boss;$("#wTitle").textContent=`打败了${lv.name}！`;
+  $("#wStats").innerHTML=`<div>⚡ 暴击 ${B.fast}</div><div>✅ 答对 ${B.slow}</div><div>🔁 改对 ${B.wrong}</div>`;
+  $("#wCard").innerHTML=`<div class="e">${c.e}</div><b>${c.n}</b><i>第 ${lv.n} 关 · ${lv.place}</i>`;
+  const nx=focusLevel();
+  $("#wTeaser").textContent=nx===lv?`明天${lv.name}还会回来！把黄色、红色的分法练熟，${lv.n} 就全变绿了。`:`明天的守关人是 ${nx.boss} ${nx.name}！他守着数字 ${nx.n}。`;
+  show("win");
+  say(`太厉害了！打败了${lv.name}！得到一张${c.n}卡片！`);
+}
+$("#wHome").addEventListener("click",()=>{drawHome();show("home")});
+
+document.querySelectorAll(".kidn").forEach(e=>e.textContent=KID);
+drawHome();
+</script>
+</body>
+</html>
