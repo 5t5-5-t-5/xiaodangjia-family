@@ -491,7 +491,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <div class="whead"><button class="back" id="wkBack">‹ 回家</button><h2>📒 复习本</h2><span class="pill" id="wkN"></span></div>
   <div class="wkgo"><div class="pic" id="wkPic"></div><button class="go2" id="wkGo">⚔️ 打这些！</button><button class="tiny2" id="wkAll">🔁 大复习（2～10 全部）</button></div>
   <div class="wklist" id="wkList"></div>
-  <div class="wknote">家长：这是错题本——答错过的题（红）和想了 5 秒以上才答对的题（黄）都放在这里。“打这些！”只练这些题，不看图；之后又在 5 秒内答对 2 次，就会自动从本子里拿掉。记录只存在这台 iPad 上。</div>
+  <div class="wknote">家长：这是错题本——答错过的题都放在这里。“打这些！”只练这些题，不看图；之后又答对 2 次，就会自动从本子里拿掉。记录只存在这台 iPad 上。</div>
 </section>
 
 <!-- 胜利 -->
@@ -518,11 +518,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113x"></script>
+<script src="art.js?v=20261113y"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113x";
+const VER="20261113y";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -806,13 +806,12 @@ function buildReview(){
    孩子在首页点“📒 复习本”看到这些题，按“打这些！”就只练它们；会了自动从本子里消失。 */
 function parseFact(id){const m=/^(\d+)\|([fh+-])\|(\d+)$/.exec(id);if(!m)return null;const n=+m[1],t=m[2],a=+m[3];
   if(t==="h"&&a>n-a)return null;if(a<1||a>=n)return null;return{id,n,t,a}}
-/* 2026-11-13 家长定：复习本 = 错题本。答错过、或者想了 5 秒以上才答对的题放进来；
-   之后又在 5 秒内答对 2 次，就从本子里拿掉。 */
-const isBad=x=>x.r==="w"||(x.t!=null&&x.t>5);
+/* 复习本 = 错题本：答错过的题放进来；之后又答对 2 次，就从本子里拿掉。 */
+const isBad=x=>x.r==="w";   /* 2026-11-13 家长又改：只放做错的，慢的不放 */
 function weakInfo(id){const h=stats[id]||[];let k=-1;h.forEach((x,i)=>{if(isBad(x))k=i});if(k<0)return null;
   const good=h.slice(k+1).filter(x=>!isBad(x)).length;if(good>=2)return null;
   const bad=h.filter(isBad),last=h[k],w=h.filter(x=>x.r==="w").length;
-  const why=last.r==="w"?"答错了":`想了 ${Math.round(last.t)} 秒`;
+  const why="答错了";
   return{id,red:last.r==="w",w,why:why+(good?" · 后来对了 1 次":""),d:last.d}}
 function weakList(){
   const out=[];for(const id of Object.keys(stats)){
@@ -1100,7 +1099,7 @@ function ask(){
     B.onIntro=true;$("#nextBtn").textContent="📜 读完了，做算式 ›";$("#nextBtn").hidden=false;
     say(q.sayT);return;
   }
-  $("#askSay").innerHTML=q.mode==="pick"?`家长：让${kid()}说说为什么选这个。${q.tip}`:`家长：把上面的题念给${kid()}听，让他<b>不掰手指</b>直接说或点数字（从题目出来开始算时间，超过 5 秒或答错会进复习本）。答错了就照着做：${q.tip}`;
+  $("#askSay").innerHTML=q.mode==="pick"?`家长：让${kid()}说说为什么选这个。${q.tip}`:`家长：把上面的题念给${kid()}听，让他<b>不掰手指</b>直接说或点数字（答错的题会进复习本）。答错了就照着做：${q.tip}`;
   $("#pad").innerHTML=padHTML(q);
   if(q.mode==="flash"){
     $("#pad").style.pointerEvents="none";
