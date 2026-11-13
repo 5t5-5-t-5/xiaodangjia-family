@@ -360,6 +360,24 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .bub.bad{animation:hurt .4s}
 @keyframes float{50%{translate:0 -10px}}
 
+/* 谁出战 */
+.spk2{position:fixed;inset:0;z-index:85;background:#1F2B57cc;display:flex;align-items:center;justify-content:center}
+.spbox{background:#FBF7F0;border-radius:30px;padding:18px 22px;width:min(960px,96vw)}
+.sphead{display:flex;align-items:center;gap:14px}
+.sphead h3{margin:0;font-size:40px;font-weight:900;flex:1;text-align:center;padding-right:120px}
+.foe{display:flex;align-items:center;gap:6px;background:#fff;border-radius:18px;padding:4px 12px 4px 4px}
+.foe .pic{width:60px;height:68px}.foe b{font-size:18px;color:var(--red)}
+.spgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:14px 0}
+.sp{background:#fff;border-radius:22px;padding:10px 6px 8px;position:relative;box-shadow:0 0 0 3px var(--line);transition:transform .15s}
+.sp .pic{height:150px;opacity:.55;filter:grayscale(.6)}
+.sp b{display:block;font-size:22px;font-weight:900;margin-top:4px;color:var(--soft)}
+.sp i{position:absolute;right:10px;top:8px;width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;font-style:normal;font-size:24px;font-weight:900;display:none;align-items:center;justify-content:center}
+.sp.on{box-shadow:0 0 0 5px var(--yellow),0 8px 0 #E0A800;transform:translateY(-4px)}
+.sp.on .pic{opacity:1;filter:none}.sp.on b{color:var(--ink)}.sp.on i{display:flex}
+.spbar{display:flex;gap:14px;align-items:center}
+.spbar .next{flex:1}.spbar .next:disabled{opacity:.4}
+.tiny2{background:#fff;border-radius:999px;padding:16px 26px;font-size:24px;font-weight:900;box-shadow:0 0 0 3px var(--line)}
+
 /* 名字 */
 .dlg{position:fixed;inset:0;background:#1F2B57aa;z-index:90;display:flex;align-items:center;justify-content:center}
 .dlg>div{background:#fff;border-radius:28px;padding:28px;width:min(440px,92vw);text-align:center}
@@ -452,6 +470,12 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="wHome" style="max-width:420px">🏠 回家</button>
 </section>
 
+<!-- 谁出战（每关开打前选一次） -->
+<div class="spk2" id="squadPick" hidden><div class="spbox">
+  <div class="sphead"><button class="back" id="spBack">‹</button><div class="foe"><div class="pic" id="spFoe"></div><b id="spFoeN"></b></div><h3>谁出战？</h3></div>
+  <div class="spgrid" id="spGrid"></div>
+  <div class="spbar"><button class="tiny2" id="spAll">👥 全部</button><button class="next" id="spGo">⚔️ 出发！（<span id="spN"></span>）</button></div>
+</div></div>
 <div class="dlg" id="nameDlg" hidden><div>
   <h3>👋 小将军叫什么名字？</h3>
   <p>（家长填）游戏里会喊这个名字，只存在这台 iPad 上。</p>
@@ -459,11 +483,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113p"></script>
+<script src="art.js?v=20261113q"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113p";
+const VER="20261113q";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -515,7 +539,9 @@ const SQUAD={wukong:["wukongAngry","悟空"],liubei:["liubei","刘备"],guanyu:[
 const HERO_OF={flash:"dhf",hide:"dhf",split:"liubei",table:"liubei",take:"guanyu",energy:"wukong",merge:"gesila",pop:"gesila",
   pick:"qtz",intro:"qtz",eq:"qtz",combo:"beijita",treeF:"zhangfei",treeH:"zhangfei",blank:"zhangfei",zero:"zhangfei"};
 const HERO_SKILL={wukong:"队长 · 元气弹",liubei:"排兵布阵",guanyu:"一刀拿走",zhangfei:"大喝一声",gesila:"合体变大",beijita:"连击快拳",qtz:"变形四式",dhf:"侦察一眼看"};
-const heroKey=q=>q.hero||HERO_OF[q.mode]||"wukong";
+const heroKey=q=>{const k=q.hero||HERO_OF[q.mode]||"wukong";
+  if(!squadSel||!squadSel.length||squadSel.includes(k)||!B)return k;
+  return squadSel[Math.max(0,B.qs.indexOf(q))%squadSel.length]};
 const heroOf=q=>SQUAD[heroKey(q)];
 const TEAM=MODE==="team";
 const OLD_LEVELS=[
@@ -911,13 +937,32 @@ function bubbles(){return rep(i=>`<span class="bubble" style="left:${8+rnd(84)}%
 let B=null;
 const answerable=()=>B.qs.filter(q=>!q.intro).length;
 const answeredSoFar=()=>B.qs.slice(0,B.i).filter(q=>!q.intro).length;
+/* 悟空小队：每一关开打前选一次谁出战（可以一个，也可以好几个）；题目还是按固定顺序出，由选中的队员轮流上场 */
+let squadSel=null;
 function startBattle(lv){
   if(!KID){askName();return}
-  startBattle0(lv);
+  if(!TEAM){squadSel=null;startBattle0(lv);return}
+  pickSquad(lv);
+}
+function pickSquad(lv){
+  const keys=Object.keys(SQUAD);let sel=load("squad",keys).filter(k=>SQUAD[k]);if(!sel.length)sel=keys.slice();
+  const draw=()=>{
+    $("#spGrid").innerHTML=keys.map(k=>`<button class="sp ${sel.includes(k)?"on":""}" data-k="${k}"><div class="pic">${art(SQUAD[k][0])}</div><b>${SQUAD[k][1]}</b><i>✓</i></button>`).join("");
+    $("#spGo").disabled=!sel.length;$("#spN").textContent=sel.length;
+  };
+  $("#spFoe").innerHTML=art(lv.art);$("#spFoeN").textContent=lv.name;
+  draw();$("#squadPick").hidden=false;
+  $("#spGrid").onclick=e=>{const b=e.target.closest(".sp");if(!b)return;const k=b.dataset.k;
+    if(sel.includes(k)){sel=sel.filter(x=>x!==k);sndNo()}else{sel.push(k);sndPick();say(SQUAD[k][1]+"！")}
+    draw()};
+  $("#spAll").onclick=()=>{sel=keys.slice();draw();sndDrop();say("全体出战！")};
+  $("#spGo").onclick=()=>{if(!sel.length)return;save("squad",sel);$("#squadPick").hidden=true;squadSel=keys.filter(k=>sel.includes(k));startBattle0(lv)};
+  $("#spBack").onclick=()=>{$("#squadPick").hidden=true;hush()};
+  say(`${lv.name}来了！派谁出战？点他们！`);
 }
 /* 悟空小队玩法：孩子每题自己点队员；最后一招是悟空的元气弹（能量格凑满 n，还差几格） */
 function addFinal(){
-  if(!TEAM)return;B.pick=true;
+  if(!TEAM)return;B.team=true;
   const N=typeof B.lv.n==="number"?B.lv.n:10,a=1+rnd(N-1),q=mk("energy",{n:N,a,id:`${N}|f|${a}`});
   q.last=true;q.hero="wukong";q.t="元气弹！还差几格？";
   q.sayT=`最后一招，元气弹！大家把能量给悟空，要凑满${N}格，已经有${a}格，还差几格？`;
@@ -935,14 +980,14 @@ function startBattle0(lv){
 function openBattle(name,title,note,speech){
   const lv=B.lv;$("#bBoss").innerHTML=art(lv.art);$("#bName").textContent=name;
   $("#bHero").hidden=$("#bVs").hidden=!TEAM;if(TEAM)$("#bHero").innerHTML=art("wukongAngry");
-  $("#battle").classList.toggle("team",!!B.pick);$("#bench").hidden=!B.pick;if(B.pick)drawBench();
+  $("#battle").classList.toggle("team",TEAM);$("#bench").hidden=!TEAM;if(TEAM)drawBench();
   show("battle");hpDraw();
   $("#stage").className="stage "+(B.exam||B.probe?"bg-gym":"bg-camp");
   $("#stage").innerHTML=`<div class="pop" style="width:280px;height:330px">${art(lv.art)}</div>`;
   $("#askT").textContent=title;$("#askSay").textContent=note;
   $("#pad").innerHTML="";$("#fb").hidden=true;$("#nextBtn").hidden=true;$("#qno").textContent="";
   tone(196,.4,"sawtooth",.08);tone(147,.6,"sawtooth",.08,.3);
-  say(speech,()=>nextQ());
+  say(speech,()=>ask());
 }
 function hpDraw(){$("#hp").style.width=Math.max(0,100-100*answeredSoFar()/(answerable()+(B.exam||B.probe?0:1)))+"%"}
 function padHTML(q){
@@ -953,7 +998,7 @@ function padHTML(q){
 }
 function ask(){
   const q=B.qs[B.i];q.tries=0;q.done=false;q.t0=0;
-  if(B.pick)drawBench(false);
+  if(TEAM)drawBench();
   if(TEAM){const h=heroOf(q);if(q.sayT0==null)q.sayT0=q.sayT;q.sayT=`${h[1]}，上！`+q.sayT0;
     $("#bHero").innerHTML=art(h[0]);const m=$("#bHero");m.classList.remove("pop2");void m.offsetWidth;m.classList.add("pop2")}
   hpDraw();$("#qno").textContent=q.intro?"":`${answeredSoFar()+1}/${answerable()}`;
@@ -996,34 +1041,11 @@ function kameFx(voice=true){
 }
 const tenLv=()=>B&&B.lv&&B.lv.n==="凑十";
 const bossIsFriend=()=>B&&B.lv&&/^wukong/.test(B.lv.art);
-/* 下一题：悟空小队玩法里先让孩子点一个队员；一图四式的 4 个算式由擎天柱连着做完；最后是悟空的元气弹 */
-function nextQ(){
-  if(!B.pick){ask();return}
-  const q=B.qs[B.i],prev=B.qs[B.i-1];
-  if(q.last||(q.mode==="eq"&&q.famOf&&prev&&(prev.mode==="intro"||prev.famOf===q.famOf))){ask();return}
-  const left=B.qs.slice(B.i).filter(x=>!x.last);
-  if(!left.length){ask();return}
-  drawBench(true);
-  $("#bHero").innerHTML=art("wukongAngry");
-  const st=$("#stage");st.className="stage bg-camp";
-  st.innerHTML=`<div class="pickme pop"><div class="pic">${art(B.lv.art)}</div><b>派谁上场？</b><span>👇</span></div>`;
-  $("#askT").textContent="派谁上场？";$("#askSay").textContent="家长：让孩子在下面点一个队员。每个队员带来不同的题；打过的队员会休息（💤）。";
-  $("#pad").innerHTML="";$("#fb").hidden=true;$("#nextBtn").hidden=true;
-  say(B.i===0?`悟空队长：${kid()}，派谁先上？点下面的队员！`:"派谁上场？");
+/* 下面一排是这一关选中的队员，正在上场的那个高高举起（只看，不用点） */
+function drawBench(){
+  const keys=squadSel&&squadSel.length?squadSel:Object.keys(SQUAD),q=B.qs[B.i],cur=q&&!q.intro?heroKey(q):null;
+  $("#bench").innerHTML=keys.map(k=>`<div class="h ${k===cur?"go":""}"><div class="pic">${art(SQUAD[k][0])}</div><b>${SQUAD[k][1]}</b></div>`).join("");
 }
-function drawBench(choose){
-  const left=B.qs.slice(B.i).filter(x=>!x.last),cur=choose?null:heroKey(B.qs[B.i]||{});
-  const b=$("#bench");b.classList.toggle("choose",!!choose);
-  b.innerHTML=Object.keys(SQUAD).map(k=>{const has=left.some(x=>heroKey(x)===k);
-    return`<button class="h ${k===cur?"go":""} ${!has&&k!==cur?"rest":""}" data-k="${k}"><div class="pic">${art(SQUAD[k][0])}</div><b>${SQUAD[k][1]}</b></button>`}).join("");
-}
-$("#bench").addEventListener("click",e=>{const h=e.target.closest(".h");if(!h||!B||!B.pick)return;const k=h.dataset.k;
-  const j=B.qs.findIndex((x,i)=>i>=B.i&&!x.last&&heroKey(x)===k);
-  if(j<0){say(`${SQUAD[k][1]}这一局休息啦，换一个！`);sndNo();return}
-  let len=1;if(B.qs[j].mode==="intro"){while(B.qs[j+len]&&B.qs[j+len].famOf===B.qs[j].famOf&&B.qs[j+len].mode==="eq")len++}
-  const blk=B.qs.splice(j,len);B.qs.splice(B.i,0,...blk);
-  sndPick();ask();
-});
 function goIn(q){
   if(!TEAM||q.intro)return;const h=heroOf(q),st=$("#stage"),d=document.createElement("div");d.className="goin";
   d.innerHTML=`<div class="pic">${art(h[0])}</div><b>${h[1]}：看我的！</b>`;st.appendChild(d);setTimeout(()=>d.remove(),2300);
@@ -1078,8 +1100,8 @@ function sentenceOf(q){
   if(q.mode==="merge"||q.mode==="treeH")return`${q.a}和${q.b}合起来是${q.n}！`;
   return`${q.n}可以分成${q.a}和${q.b}！`;
 }
-$("#nextBtn").addEventListener("click",()=>{if(B.onIntro){B.onIntro=false;B.i++;if(B.pick&&B.i<B.qs.length){ask();return}}
-  if(B.i<B.qs.length)nextQ();else if(B.probe)probeNext();else if(B.exam)finishExam();else startReverse()});
+$("#nextBtn").addEventListener("click",()=>{if(B.onIntro){B.onIntro=false;B.i++}
+  if(B.i<B.qs.length)ask();else if(B.probe)probeNext();else if(B.exam)finishExam();else startReverse()});
 $("#quit").addEventListener("click",()=>{if(confirm("现在回家，这一仗就不算赢哦。确定吗？")){hush();drawHome();show("home")}});
 $("#quit2").addEventListener("click",()=>{hush();drawHome();show("home")});
 
