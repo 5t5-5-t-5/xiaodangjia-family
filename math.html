@@ -474,7 +474,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 <div class="spk2" id="squadPick" hidden><div class="spbox">
   <div class="sphead"><button class="back" id="spBack">‹</button><div class="foe"><div class="pic" id="spFoe"></div><b id="spFoeN"></b></div><h3>谁出战？</h3></div>
   <div class="spgrid" id="spGrid"></div>
-  <div class="spbar"><button class="tiny2" id="spAll">👥 全部</button><button class="next" id="spGo">⚔️ 出发！（<span id="spN"></span>）</button></div>
+  <div class="spbar"><button class="next" id="spGo">⚔️ 出发！<span id="spN" hidden></span></button></div>
 </div></div>
 <div class="dlg" id="nameDlg" hidden><div>
   <h3>👋 小将军叫什么名字？</h3>
@@ -483,11 +483,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113q"></script>
+<script src="art.js?v=20261113r"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113q";
+const VER="20261113r";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -945,7 +945,7 @@ function startBattle(lv){
   pickSquad(lv);
 }
 function pickSquad(lv){
-  const keys=Object.keys(SQUAD);let sel=load("squad",keys).filter(k=>SQUAD[k]);if(!sel.length)sel=keys.slice();
+  const keys=Object.keys(SQUAD);let sel=load("squad",[]).filter(k=>SQUAD[k]).slice(0,1);
   const draw=()=>{
     $("#spGrid").innerHTML=keys.map(k=>`<button class="sp ${sel.includes(k)?"on":""}" data-k="${k}"><div class="pic">${art(SQUAD[k][0])}</div><b>${SQUAD[k][1]}</b><i>✓</i></button>`).join("");
     $("#spGo").disabled=!sel.length;$("#spN").textContent=sel.length;
@@ -953,12 +953,11 @@ function pickSquad(lv){
   $("#spFoe").innerHTML=art(lv.art);$("#spFoeN").textContent=lv.name;
   draw();$("#squadPick").hidden=false;
   $("#spGrid").onclick=e=>{const b=e.target.closest(".sp");if(!b)return;const k=b.dataset.k;
-    if(sel.includes(k)){sel=sel.filter(x=>x!==k);sndNo()}else{sel.push(k);sndPick();say(SQUAD[k][1]+"！")}
+    if(sel.includes(k)){sel=[];sndNo()}else{sel=[k];sndPick();say(SQUAD[k][1]+"！")}
     draw()};
-  $("#spAll").onclick=()=>{sel=keys.slice();draw();sndDrop();say("全体出战！")};
   $("#spGo").onclick=()=>{if(!sel.length)return;save("squad",sel);$("#squadPick").hidden=true;squadSel=keys.filter(k=>sel.includes(k));startBattle0(lv)};
   $("#spBack").onclick=()=>{$("#squadPick").hidden=true;hush()};
-  say(`${lv.name}来了！派谁出战？点他们！`);
+  say(`${lv.name}来了！派谁出战？选一个！`);
 }
 /* 悟空小队玩法：孩子每题自己点队员；最后一招是悟空的元气弹（能量格凑满 n，还差几格） */
 function addFinal(){
