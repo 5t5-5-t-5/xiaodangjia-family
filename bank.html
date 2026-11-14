@@ -1121,7 +1121,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid" type="button">🧒 小朋友</button><button class="mini" data-vs="normal" type="button">🙂 普通</button><button class="mini" data-vs="robot" type="button">🤖 机器人</button><button class="mini" data-vs="captain" type="button">🦾 机器人队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月13日 12:47</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月14日 19:54</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1631,7 +1631,7 @@ async function initStore(){
    每次切换家庭码都会彻底清空上一家的本地残留，保证家庭与家庭之间 100% 独立、绝不串数据。 */
 const MODE="family",API="https://eelyepkkkazgztdcnicu.supabase.co",APIKEY="sb_publishable_eGBwA1L2QycoBc9XQnzY1Q_LW-ra8ip";
 /* 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="ca5fa96866";
+const BUILD="d50e9b2c18";
 if(MODE==="family"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const setSync=t=>{const el=$("#status");if(el)el.textContent=t};
@@ -2465,7 +2465,7 @@ const Diary=(()=>{
         const foot=p.side||(last&&!p.nofoot);
         return`<div class="${cls} diary${size}${last||p.sig?"":" pmore"}${p.solo?" psolo":""}${foot&&!p.solo?" plast":""}${foot&&m.photo&&!p.solo?" pph":""}"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b><span class="dh-r">${multi&&p.n>1?`<span class="dpg">${p.k||1}/${p.n||1}</span>`:""}<button type="button" class="dh-b" data-edit-diary="${esc(m.id)}" aria-label="修改这篇日记">✏️ 改</button><button type="button" class="dh-b dh-del" data-del-diary="${esc(m.id)}" aria-label="删除这篇日记">🗑 删</button></span></div>${foot?`
         <div class="dfoot">${(st=>m.photo?`<span class="dpic" data-id="${m.id}" role="button" aria-label="看大图"><img src="${m.photo}" alt="">${st}</span>`:st)(`<span class="stamp${q.name.length>3?" s4":""}" style="--c:${q.c}"><i>${esc(q.ic)}</i><span>${esc(q.name)}</span></span>`)}</div>`:""}
-        <div class="dbody">${esc(txt)}</div>${(last?!p.solo:p.sig)?`<div class="dsign">—— 爸爸妈妈记 <span class="emo">✍️</span></div>`:""}${last?"":`<div class="dmore">${p.sig?"翻页看照片 ▸":"还没完，翻页接着看 ▸"}</div>`}${pno(i,side)}</div>`}
+        <div class="dbody">${esc(txt)}</div>${(last?!p.solo:p.sig)?`<div class="dsign">—— ${m.by==="kid"?esc(KID())+"记 <span class=\"emo\">✏️</span>":"爸爸妈妈记 <span class=\"emo\">✍️</span>"}</div>`:""}${last?"":`<div class="dmore">${p.sig?"翻页看照片 ▸":"还没完，翻页接着看 ▸"}</div>`}${pno(i,side)}</div>`}
       case"blank":return`<div class="${cls} diary"><div class="dhead"><b>　</b>月<b>　</b>日　星期<b>　</b>　天气<b>　</b></div><div class="dbody" style="opacity:.55">下一个高光时刻，会写在这里……</div><button type="button" class="dy-inadd" data-add-diary="1">✍️ 现在写一篇高光日记</button>${pno(i,side)}</div>`;
       case"fin":return`<div class="${cls} endp"><div class="owner" style="transform:rotate(2deg)"><small>未完待续</small><b style="font-size:3.4cqw">继续加油！</b><span>${esc(KID())}队员</span></div></div>`;
     }
@@ -2772,14 +2772,16 @@ const Diary=(()=>{
     edDateBox.querySelectorAll("[data-dd]").forEach(b=>b.classList.toggle("on",curD===addDays(today(),+b.dataset.dd)));
     $("#edWx").innerHTML=DWX.map(w=>`<button type="button" data-w="${w}" class="${w===(E.wx||"")?"on":""}" aria-label="天气 ${w}">${w}</button>`).join("");
     $("#edCount").textContent=`${edText.value.trim().length} 字`;
+    $("#edBy").innerHTML=[["kid",KID()+"记","✏️","#4F8DF5"],["parent","爸爸妈妈记","✍️","#F28C38"]].map(([k,n,ic,c])=>`<button type="button" data-by="${k}" class="${(E.by||"parent")===k?"on":""}" style="--c:${c}">${ic} ${esc(n)}</button>`).join("");
   }
   function edOpen(opts){
     const id=typeof opts==="string"?opts:opts&&opts.id||null;
     const d=id?state.diary[id]:null;
     const initDate=(opts&&opts.date)||(d&&d.date)||today();
     const initQ=(opts&&opts.q)||(d&&d.q)||"persist";
-    E=d?{id,...d}:{id:null,date:initDate,q:initQ,wx:"",text:"",photo:null,habit:opts&&opts.habit||null,fromAsk:!!(opts&&opts.fromAsk)};
-    E.orig=JSON.stringify([E.date,E.q,E.wx||"",E.text||"",E.photo||null]);
+    E=d?{id,...d}:{id:null,date:initDate,q:initQ,wx:"",text:"",photo:null,habit:opts&&opts.habit||null,fromAsk:!!(opts&&opts.fromAsk),by:(()=>{try{return localStorage.getItem("xdj:diaryBy")||"parent"}catch(e){return"parent"}})()};
+    if(!E.by)E.by="parent";
+    E.orig=JSON.stringify([E.date,E.q,E.wx||"",E.text||"",E.photo||null,E.by]);
     $("#edTitle").textContent=d?"✏️ 修改高光日记":"📔 记录高光时刻";
     const sub=$("#edSub");
     if(opts&&opts.habitName){sub.textContent=`🌟 刚点亮「${opts.habitName}」· 把这一刻记下来吧`;sub.hidden=false}else sub.hidden=true;
@@ -2790,7 +2792,7 @@ const Diary=(()=>{
     edDateInp.max=today();edDateInp.value=E.date;edText.value=E.text||"";
     edDraw();ed.hidden=false;ed.querySelector(".edbody").scrollTop=0;
   }
-  const edDirty=()=>E&&JSON.stringify([$("#edDate").value||E.date,E.q,E.wx||"",edText.value.trim(),E.photo||null])!==E.orig;
+  const edDirty=()=>E&&JSON.stringify([$("#edDate").value||E.date,E.q,E.wx||"",edText.value.trim(),E.photo||null,E.by])!==E.orig;
   function edClose(){ed.hidden=true;edCust.hidden=true;E=null;edText.blur()}
   /* 跳到指定日记：如果日记本还没翻开封面，就直接自动翻开到那一篇；如果已经翻开，就卷页翻过去 */
   function goTo(id,anim){
@@ -2827,6 +2829,8 @@ const Diary=(()=>{
   function applyCustQ(){const s=[...edCustIn.value.trim()].slice(0,4).join("");if(!s||!E)return;E.q="c:"+s;edCust.hidden=true;edDraw()}
   $("#edCustOk").addEventListener("click",applyCustQ);
   edCustIn.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();applyCustQ()}});
+  /* 谁记的：孩子自己记 / 爸爸妈妈记（日记最后的签名跟着变；新写的日记默认上次选的） */
+  $("#edBy").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.by=b.dataset.by;try{localStorage.setItem("xdj:diaryBy",E.by)}catch(er){}edDraw()}});
   $("#edWx").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.wx=E.wx===b.dataset.w?"":b.dataset.w;edDraw()}});
   edDateBtn.addEventListener("click",()=>{
     edDateBtn.hidden=true;edDateBox.hidden=false;edDraw();
@@ -2857,7 +2861,7 @@ const Diary=(()=>{
     if(!E)return;const text=edText.value.trim();
     if(!text){edErr.textContent="👆 先写一两句发生了什么吧（哪怕一句话也行）～";edErr.hidden=false;edText.classList.remove("shake");void edText.offsetWidth;edText.classList.add("shake");edText.focus();return}
     const isNew=!E.id,id=E.id||"d"+rid(),old=E.id?state.diary[E.id]||{}:{};
-    const data={...old,date:$("#edDate").value||E.date,q:E.q,wx:E.wx||"",text,photo:E.photo||null,ts:old.ts||Date.now(),...(E.habit?{habit:E.habit}:{})};
+    const data={...old,date:$("#edDate").value||E.date,q:E.q,wx:E.wx||"",text,photo:E.photo||null,by:E.by||"parent",ts:old.ts||Date.now(),...(E.habit?{habit:E.habit}:{})};
     if(!data.photo)delete data.photo;
     edClose();await put("diary",id,data);renderEditor();
     if(open)goTo(id,true);
