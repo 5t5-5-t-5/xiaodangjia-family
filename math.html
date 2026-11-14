@@ -133,6 +133,28 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 @keyframes hurt{0%,100%{transform:none;filter:none}15%{transform:translateX(-8px) rotate(-6deg);filter:brightness(2) saturate(.3)}45%{transform:translateX(8px) rotate(6deg)}70%{transform:translateX(-4px)}}
 .bhead .nm{font-weight:900;font-size:24px}
 .hpw{flex:1}
+/* 2026-11-14 题目页安静版：像一页练习纸，没有血条、特效、角色 */
+#battle{background:#FBF7F0}
+#battle .boss,#battle .mine,#battle .vs{display:none!important}
+#battle .bhead{box-shadow:none;border:2px solid var(--line)}
+#battle .bhead .nm{font-size:26px}
+#battle .hp{height:10px!important;border:0!important;background:#EEE6D8!important;margin-top:8px}
+#battle .hp i{background:#8CC7A1!important;transition:width .4s ease!important}
+#battle .hp em{display:none}
+#battle .stage{background:#FFFDF8!important;border:2px solid var(--line)!important;box-shadow:none}
+#battle .stage .bubble{display:none}
+#battle .aura{animation:none!important;filter:none!important}
+#battle .ctime,#battle .cmeter{display:none!important}
+#battle .csay{color:var(--ink);background:#F2ECE0}
+#battle .csay.ok{color:#fff;background:#22B573}
+#battle .clegs path{stroke:#C9BBA3}
+#battle .ctop{box-shadow:0 0 0 3px var(--line)}
+#battle .total{color:var(--ink)}
+#battle .ask .t{font-size:34px;line-height:1.45;letter-spacing:.02em}
+#battle .ask .t.long{font-size:30px;line-height:1.5}
+#battle .fb.ok{background:#E3F5EA;color:#1D8A52}
+#battle .fb.no{background:#FFF1E6;color:#B35A1F}
+.openline{font-size:40px;font-weight:900;color:var(--ink);text-align:center;line-height:1.5}
 .hp{height:22px;border-radius:999px;background:#3A2230;overflow:hidden;margin-top:6px;border:3px solid #2B2B3A;position:relative}
 .hp i{display:block;height:100%;background:linear-gradient(#FF7A6E,#E0283A);transition:width .5s cubic-bezier(.3,1.4,.6,1)}
 .hp em{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 calc(12.5% - 2px),#2B2B3A55 calc(12.5% - 2px) 12.5%)}
@@ -518,11 +540,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261113y"></script>
+<script src="art.js?v=20261114a"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261113y";
+const VER="20261114a";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -635,8 +657,8 @@ function wpick(list,not){const L=list.filter(f=>!not||!not.includes(f.id));const
 let AC=null;const ac=()=>(AC=AC||new (window.AudioContext||window.webkitAudioContext)());
 function tone(f,d,t="sine",v=.15,delay=0,f2){try{const c=ac(),o=c.createOscillator(),g=c.createGain(),s=c.currentTime+delay;o.type=t;o.frequency.setValueAtTime(f,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g).connect(c.destination);o.start(s);o.stop(s+d)}catch(e){}}
 function noise(d,v=.3,delay=0,hp=800){try{const c=ac(),b=c.createBuffer(1,c.sampleRate*d,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*(1-i/x.length);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();f.type="highpass";f.frequency.value=hp;s.buffer=b;g.gain.value=v;s.connect(f).connect(g).connect(c.destination);s.start(c.currentTime+delay)}catch(e){}}
-const sndHit=()=>{noise(.18,.35,0,1500);tone(320,.18,"square",.12,0,90)};
-const sndCrit=()=>{sndHit();[660,880].forEach((f,i)=>tone(f,.25,"triangle",.07,.1+i*.08))};
+const sndHit=()=>{if(!$("#battle").hidden)return;noise(.18,.35,0,1500);tone(320,.18,"square",.12,0,90)};
+const sndCrit=()=>{if(!$("#battle").hidden)return;sndHit();[660,880].forEach((f,i)=>tone(f,.25,"triangle",.07,.1+i*.08))};
 const sndNo=()=>{tone(300,.18,"sine",.12);tone(220,.3,"sine",.1,.15)};
 const sndPick=()=>tone(700,.07,"triangle",.12);
 const sndDrop=()=>{tone(420,.08,"square",.08);tone(630,.1,"triangle",.1,.05)};
@@ -744,8 +766,8 @@ function mk(mode,f,extra){
   switch(mode){
     case"flash":return{...q,id:"看"+n,ans:n,s:pick(["mxj","wuzei","shayu","haitun"]),t:`有几只？`,sayT:`不许数，一眼看，有几只？`,tip:`再看一次，试试把它们分成两小堆来看。`};
     case"hide":return{...q,ans:b,d:pick(["bawanglong","sanjiaolong"]),t:`🪨 后面有几只？`,sayT:`一共${n}只恐龙，外面${a}只，石头后面藏了几只？`,tip:`${a} 和几合起来是 ${n}？用手指试试。`};
-    case"take":return{...q,ans:b,id:`${n}|-|${a}`,t:`跑走 ${a} 个，还剩几个？`,sayT:TEAM?`${n}个敌兵，关羽一刀砍过去，跑走了${a}个，还剩几个？`:`${n}个兵，跑走了${a}个，还剩几个？`,tip:`看看还站着的，一共 ${n} 个，跑走 ${a} 个。`};
-    case"split":{const g=pick(TEAM?["刘备","关羽","张飞"]:["刘备","关羽","赵云"]);return{...q,ans:b,t:`左边 ${a} 个，右边几个？`,sayT:`${g}带了${n}个兵，左边${a}个，右边几个？`,tip:`一共 ${n} 个，左边 ${a} 个，伸手指数一数。`}}
+    case"take":return{...q,ans:b,id:`${n}|-|${a}`,t:`跑走 ${a} 个，还剩几个？`,sayT:`${n}个敌兵，{H}砍了一刀，跑走了${a}个，还剩几个？`,tip:`看看还站着的，一共 ${n} 个，跑走 ${a} 个。`};
+    case"split":{return{...q,ans:b,t:`左边 ${a} 个，右边几个？`,sayT:`{H}带了${n}个兵，左边${a}个，右边几个？`,tip:`一共 ${n} 个，左边 ${a} 个，伸手指数一数。`}}
     case"energy":return{...q,ans:b,t:`还要几个 ⚡ ？`,sayT:`悟空的能量有${n}格，亮了${a}格，还要几格才能变身？`,tip:`看看暗的格子，有几格还没亮？`};
     case"merge":return{...q,ans:n,t:`一共几个？`,sayT:`${a}个擎天柱和${b}个大黄蜂集合，一共几个？`,tip:`先记住 ${a}，再接着往下数 ${b} 个。`};
     case"pick":{const plus=f.t==="v+";const A=plus?`${a} + ${b}`:`${n} − ${a}`,Wr=plus?`${Math.max(a,b)} − ${Math.min(a,b)}`:`${n} + ${a}`;
@@ -942,11 +964,11 @@ function dotsHint(q){
 function multiDone(q,res,speech){
   q.done=true;if(res==="f")B.fast++;else if(res==="s")B.slow++;else B.wrong++;
   $("#stage").innerHTML=stageHTML(q,true);const crit=res==="f";hitFx(crit);crit?sndCrit():sndHit();
-  $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⭐ 又快又对！":"✅ 完成！";$("#fb").hidden=false;
+  $("#fb").className="fb ok";$("#fb").innerHTML="✓ 完成了";$("#fb").hidden=false;
   
-  B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
+  B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"做完了 ›";$("#nextBtn").hidden=false;
 }
-function floatText(t,big){const st=$("#stage").getBoundingClientRect(),d=document.createElement("div");d.className="dmg";d.textContent=t;d.style.left=(st.left+st.width/2-60)+"px";d.style.top=(st.top+st.height*.62)+"px";d.style.color="#FFE14D";if(big)d.style.fontSize="56px";document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
+function floatText(t,big){return;const st=$("#stage").getBoundingClientRect(),d=document.createElement("div");d.className="dmg";d.textContent=t;d.style.left=(st.left+st.width/2-60)+"px";d.style.top=(st.top+st.height*.62)+"px";d.style.color="#FFE14D";if(big)d.style.fontSize="56px";document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
 /* 凑数连击（合起来是 n）：0～n 打乱顺序，看到一个马上说出和它合起来是 n 的另一个；3 秒内答对连击 +1。
    2026-11-13 家长说“n 的好朋友”看不懂，改成分合图样子 + “x 和几合起来是 n”。 */
 function comboAnswer(q,btn){
@@ -954,7 +976,7 @@ function comboAnswer(q,btn){
   const x=q.seq[q.k],n=q.n,secs=q.t0?(Date.now()-q.t0)/1000:0;
   /* 答对（或错两次）先把答案填进去、变绿，停一下再换下一个数 */
   const show=(res,b)=>{q.busy=true;q.rev=true;if(b)b.classList.add("ok");$("#stage").innerHTML=stageHTML(q);
-    $("#fb").className="fb ok";$("#fb").textContent=res==="w"?`${x} 和 ${n-x} 合起来是 ${n}`:"✅ 对了！";$("#fb").hidden=false;
+    $("#fb").className="fb ok";$("#fb").textContent=res==="w"?`${x} 和 ${n-x} 合起来是 ${n}`:"✓ 对了";$("#fb").hidden=false;
     setTimeout(()=>{q.busy=false;q.rev=false;if(b)b.classList.remove("ok");$("#pad").querySelectorAll(".no").forEach(e=>e.classList.remove("no"));next(res)},900)};
   const next=res=>{
     if(res!=="f"){q.allFast=false;q.combo=0}else{q.combo++;q.best=Math.max(q.best,q.combo)}
@@ -967,7 +989,7 @@ function comboAnswer(q,btn){
     say(`${q.seq[q.k]}和几？`);
   };
   if(btn.dataset.v===String(n-x)){show(q.ct>0?"w":secs<=3?"f":"s",btn)}
-  else{q.ct++;q.combo=0;btn.classList.add("no");$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
+  else{q.ct++;q.combo=0;btn.classList.add("no");$("#fb").className="fb no";$("#fb").textContent="再想一想";$("#fb").hidden=false;
     if(q.ct>=2)show("w",null)}
 }
 /* 合起来消消乐：点两个泡泡，合起来是 n 就消掉；点了一个，下面提示“x 和 ? 合起来是 n” */
@@ -995,16 +1017,16 @@ function tableAnswer(q,btn){
     if(q.k>n){q.done=true;
       const r2=q.anyWrong?"w":q.allFast?"f":"s";if(r2==="f")B.fast++;else if(r2==="s")B.slow++;else B.wrong++;
       $("#stage").innerHTML=stageHTML(q,true);const crit=r2==="f";hitFx(crit);crit?sndCrit():sndHit();
-      $("#fb").className="fb ok";$("#fb").innerHTML=crit?"⭐ 又快又对！":"✅ 填完了！";$("#fb").hidden=false;
+      $("#fb").className="fb ok";$("#fb").innerHTML="✓ 填完了";$("#fb").hidden=false;
       
-      B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;return}
+      B.i++;hpDraw();$("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":"做完了 ›";$("#nextBtn").hidden=false;return}
     q.ans=n-q.top[q.k];q.t0=Date.now();$("#stage").innerHTML=stageHTML(q);$("#stage .pop").style.animation="none";
   };
   if(btn.dataset.v===String(n-top)){
     const secs=q.t0?(Date.now()-q.t0)/1000:0;$("#fb").hidden=true;
     fill(q.ct>0?"w":secs<=3?"f":"s");
   }else{
-    q.ct++;$("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
+    q.ct++;$("#fb").className="fb no";$("#fb").textContent="再想一想";$("#fb").hidden=false;
     say(`${n}分成${top}和几？`);
     if(q.ct>=2)fill("w")
   }
@@ -1051,8 +1073,8 @@ function pickSquad(lv){
 function addFinal(){
   if(!TEAM)return;B.team=true;
   const N=typeof B.lv.n==="number"?B.lv.n:B.lv.n==="凑十"?10:Math.min(10,Math.max(5,...B.qs.map(q=>+q.n||0))),a=1+rnd(N-1),q=mk("energy",{n:N,a,id:`${N}|f|${a}`});
-  q.last=true;q.hero="wukong";q.t="元气弹！还差几格？";
-  q.sayT=`最后一招，元气弹！大家把能量给悟空，要凑满${N}格，已经有${a}格，还差几格？`;
+  q.last=true;q.hero="wukong";q.t="还差几格？";
+  q.sayT=`最后一题：悟空攒能量，要凑满${N}格，已经有${a}格，还差几格？`;
   B.qs.push(q);
 }
 function startBattle0(lv){
@@ -1065,17 +1087,19 @@ function startBattle0(lv){
     exam?`决战${lv.name}！十道题，不看图，看${kid()}的真本事！`:TEAM?`${lv.name}来了！悟空队长：${kid()}，带上大家，出发！`:`${lv.name}来了！${kid()}，开战！`);
 }
 function openBattle(name,title,note,speech){
-  const lv=B.lv;$("#bBoss").innerHTML=art(lv.art);$("#bName").textContent=name;
-  $("#bHero").hidden=$("#bVs").hidden=!TEAM;if(TEAM)$("#bHero").innerHTML=art("wukongAngry");
+  const lv=B.lv;$("#bBoss").innerHTML=art(lv.art);
+  const me=TEAM&&squadSel&&squadSel[0]?SQUAD[squadSel[0]][1]:"";
+  $("#bName").textContent=me&&lv.n!=="复习本"?`${me}大战${lv.name}${B.exam?" · 决战":""}`:name;
+  $("#bHero").hidden=$("#bVs").hidden=true;
   $("#battle").classList.remove("team");$("#bench").hidden=true;
   show("battle");hpDraw();
-  $("#stage").className="stage "+(B.exam||B.probe?"bg-gym":"bg-camp");
-  $("#stage").innerHTML=`<div class="pop" style="width:280px;height:330px">${art(lv.art)}</div>`;
-  $("#askT").textContent=title;$("#askSay").textContent=note;
+  $("#stage").className="stage";
+  $("#stage").innerHTML=`<div class="openline">${$("#bName").textContent}</div>`;
+  $("#askT").textContent=$("#bName").textContent;$("#askT").classList.remove("long");$("#askSay").textContent=note;
   $("#pad").innerHTML="";$("#fb").hidden=true;$("#nextBtn").hidden=true;$("#qno").textContent="";
   setTimeout(()=>ask(),900);   /* 2026-11-13 家长：题目页只念题，开场不说话 */
 }
-function hpDraw(){$("#hp").style.width=Math.max(0,100-100*answeredSoFar()/(answerable()+(B.exam||B.probe?0:1)))+"%"}
+function hpDraw(){$("#hp").style.width=Math.min(100,100*answeredSoFar()/Math.max(1,answerable()))+"%"}   /* 安静版：只是做题进度 */
 function padHTML(q){
   if(q.mode==="pop"){$("#pad").className="pad";return""}
   if(q.choices){$("#pad").className="pad choice";return q.choices.map(c=>`<button data-v="${c}">${c}</button>`).join("")}
@@ -1090,7 +1114,8 @@ function ask(){
   $("#fb").hidden=true;$("#nextBtn").hidden=true;
   const FULL={table:`${q.n} 分一分：上面是几，下面填几？`,combo:`合起来是 ${q.n}：看到一个数，马上说出另一个数`,flash:"一眼看，有几只？"};
   const full=FULL[q.mode]||(["eq","blank","zero","treeF","treeH","intro"].includes(q.mode)?q.t:(q.sayT0||q.sayT));
-  const fullT=TEAM&&q.mode==="take"?full.replace("关羽",heroOf(q)[1]):full;
+  const H=TEAM&&squadSel&&squadSel[0]?SQUAD[squadSel[0]][1]:"刘备";
+  const fullT=full.replace(/\{H\}/g,H);
   $("#askT").textContent=fullT;$("#askT").classList.toggle("long",fullT.length>12);
   const st=$("#stage");st.className="stage "+BG[q.mode];
   if(q.intro){
@@ -1099,7 +1124,7 @@ function ask(){
     B.onIntro=true;$("#nextBtn").textContent="📜 读完了，做算式 ›";$("#nextBtn").hidden=false;
     say(q.sayT);return;
   }
-  $("#askSay").innerHTML=q.mode==="pick"?`家长：让${kid()}说说为什么选这个。${q.tip}`:`家长：把上面的题念给${kid()}听，让他<b>不掰手指</b>直接说或点数字（答错的题会进复习本）。答错了就照着做：${q.tip}`;
+  $("#askSay").innerHTML=q.mode==="pick"?`家长：让${kid()}说说为什么选这个。${q.tip}`:`家长：让${kid()}自己读题、读出声，再<b>不掰手指</b>点数字（答错的题会进复习本）。答错了就照着做：${q.tip}`;
   $("#pad").innerHTML=padHTML(q);
   if(q.mode==="flash"){
     $("#pad").style.pointerEvents="none";
@@ -1120,6 +1145,7 @@ $("#again").addEventListener("click",()=>{const q=B&&B.qs[B.i];if(q)say(q.sayT)}
 /* 打中：剑光 + 掉血数字；暴击：全屏闪光、光芒、大字、火花、震屏 */
 /* 悟空的龟派气功：变身大喊（双手张开、长金发）→ 蓄能量球 → 一道光波横扫全屏 */
 function kameFx(voice=true){
+  return;   /* 题目页不放气功特效 */
   const o=document.createElement("div");o.className="kame";
   o.innerHTML=`<div class="wk">${art("wukongAngry")}</div><div class="ball"></div><div class="beam"></div><div class="kw">哈比哈比哈比哈！</div>`;
   document.body.appendChild(o);setTimeout(()=>o.remove(),3000);
@@ -1137,6 +1163,7 @@ function goIn(q){
   d.innerHTML=`<div class="pic">${art(h[0])}</div><b>${h[1]}：看我的！</b>`;st.appendChild(d);setTimeout(()=>d.remove(),2300);
 }
 function hitFx(crit){
+  return;   /* 2026-11-14 家长：题目页要安静，像伴读，不要游戏特效 */
   if(TEAM){const m=$("#bHero");m.classList.remove("atk");void m.offsetWidth;m.classList.add("atk")}
   const bb=$("#bBoss"),r=bb.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
   if(tenLv()&&crit){kameFx(false);return}
@@ -1165,12 +1192,12 @@ $("#pad").addEventListener("click",e=>{
     if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}
     const crit=res==="f",kame=q.mode==="energy"||(tenLv()&&crit);
     if(kame){kameFx(true);crit?sndCrit():sndHit()}else{hitFx(crit);crit?sndCrit():sndHit()}
-    $("#fb").className="fb ok";$("#fb").innerHTML=kame?"💥 哈比哈比哈比哈！":crit?"⭐ 又快又对！":"✅ 打中了！";$("#fb").hidden=false;
+    $("#fb").className="fb ok";$("#fb").innerHTML="✓ 对了";$("#fb").hidden=false;
     B.i++;hpDraw();
-    $("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":B.probe?"下一个 ›":B.exam?"🏁 看结果 ›":"🎤 最后一招 ›";$("#nextBtn").hidden=false;
+    $("#nextBtn").textContent=B.i<B.qs.length?"下一题 ›":B.probe?"下一个 ›":B.exam?"🏁 看结果 ›":"做完了 ›";$("#nextBtn").hidden=false;
   }else{
     btn.classList.add("no");
-    $("#fb").className="fb no";$("#fb").textContent="🤔 再想想！";$("#fb").hidden=false;
+    $("#fb").className="fb no";$("#fb").textContent="再想一想";$("#fb").hidden=false;
     if(q.tries>=2&&!q.choices){if(q.mode==="flash"){$("#stage").innerHTML=bubbles()+stageHTML(q);placeSea(q)}else{$("#stage").innerHTML=stageHTML(q,true)+dotsHint(q);$("#stage").querySelectorAll(".fig.gone").forEach(e=>e.classList.add("run","done"))}}
   }
 });
