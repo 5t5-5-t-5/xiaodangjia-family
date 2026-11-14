@@ -1,0 +1,219 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="数学伴读">
+<title>数学伴读</title>
+<style>
+:root{--bg:#FBF7F0;--paper:#FFFDF8;--ink:#2B2B3A;--mute:#8A8478;--line:#ECE3D3;--ans:#3E8E5E;--tip:#9A6B1F}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"PingFang SC",sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:780px;margin:0 auto;padding:28px 20px 80px}
+h1{font-size:30px;margin:0 0 4px}
+.sub{color:var(--mute);font-size:16px;margin:0 0 20px}
+.days{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.days button{font:inherit;font-size:18px;border:1px solid var(--line);background:var(--paper);color:var(--ink);border-radius:12px;padding:8px 14px;min-width:56px}
+.days button.on{border-color:var(--ink);font-weight:700}
+.days button.done::after{content:" ✓";color:var(--ans)}
+.days button.later{color:#BDB5A6}
+.how{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px 18px;font-size:16px;line-height:1.8;color:#5E584D;margin-bottom:22px}
+.how summary{font-weight:700;color:var(--ink);font-size:17px}
+article{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:26px 26px 30px}
+article h2{font-size:28px;margin:0 0 2px}
+article .meta{color:var(--mute);font-size:15px;margin-bottom:8px}
+h3{font-size:21px;margin:30px 0 8px;padding-top:18px;border-top:1px dashed var(--line)}
+h3 small{font-weight:400;color:var(--mute);font-size:15px;margin-left:6px}
+.k{display:inline-block;font-size:13px;font-weight:600;border-radius:6px;padding:1px 7px;margin-left:8px;vertical-align:3px;background:#EEF3FB;color:#4A6FA5}
+.k.bean{background:#F6EEDD;color:#8A6420}.k.pen{background:#EEF6EF;color:#3E7A50}
+p{font-size:21px;line-height:1.85;margin:8px 0}
+.say{font-size:22px;line-height:1.85}
+.rid{font-size:23px;line-height:2;margin:4px 0;padding-left:16px;border-left:3px solid #E9D9B6}
+ol{padding-left:0;list-style:none;margin:6px 0;counter-reset:q}
+ol li{position:relative;font-size:22px;line-height:1.7;padding:9px 0 9px 36px;border-bottom:1px solid #F3ECDF;counter-increment:q}
+ol li::before{content:counter(q);position:absolute;left:0;top:11px;width:26px;height:26px;border-radius:50%;background:#F2EBDD;font-size:15px;display:grid;place-items:center;color:#7A7262}
+.a{color:var(--ans);font-size:18px}
+.miss{float:right;font:inherit;font-size:14px;color:#B0A898;background:none;border:1px solid var(--line);border-radius:99px;padding:2px 10px;margin:4px 0 0 10px}
+.miss.on{color:#C0563C;border-color:#E7B7A8;background:#FFF3EE}
+.tip{font-size:16px;color:var(--tip);line-height:1.7;margin:6px 0 0}
+.tip::before{content:"提示 · "}
+.dots{font-size:22px;letter-spacing:4px;line-height:1.25;color:#7A6A4A;display:inline-block;vertical-align:middle;margin-left:6px}
+.heroes{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.heroes button{font:inherit;font-size:18px;padding:6px 14px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+.heroes button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.eq{font-size:26px;letter-spacing:1px;font-variant-numeric:tabular-nums}
+.sum{background:#F6F1E6;border-radius:14px;padding:12px 16px;font-size:21px;line-height:1.9}
+.next{background:#F3F0FA;border-radius:14px;padding:12px 16px;font-size:20px;line-height:1.85;color:#4D4570}
+.btn{font:inherit;font-size:18px;padding:10px 18px;border-radius:12px;border:1px solid var(--ink);background:#fff;color:var(--ink);margin:6px 0}
+.fin{display:block;width:100%;margin-top:26px;font:inherit;font-size:20px;padding:14px;border-radius:14px;border:1px solid var(--ink);background:var(--ink);color:#fff}
+.fin.did{background:var(--paper);color:var(--ans);border-color:var(--ans)}
+.redo{background:#FFF6F1;border:1px solid #F0D5C8;border-radius:14px;padding:6px 16px 10px;margin:10px 0 0}
+.redo h3{border:0;margin-top:10px;padding-top:0}
+.foot{color:var(--mute);font-size:14px;text-align:center;margin-top:24px}
+#sheet{display:none}
+@media (max-width:600px){article{padding:20px 16px}p,.say,ol li{font-size:19px}.rid{font-size:20px}}
+/* 打印的纸面题 */
+@media print{
+  @page{size:A4;margin:14mm}
+  body{background:#fff}.wrap{display:none}#sheet{display:block}
+  #sheet{font-family:-apple-system,"PingFang SC",sans-serif;color:#000}
+  #sheet h1{font-size:22pt;margin:0 0 2mm}#sheet .who{font-size:12pt;color:#555;margin-bottom:5mm}
+  #sheet h2{font-size:15pt;margin:7mm 0 3mm;border-bottom:1px solid #999;padding-bottom:1mm}
+  #sheet .eqs{display:grid;grid-template-columns:1fr 1fr;gap:5mm 10mm;font-size:22pt}
+  #sheet .lines{display:flex;justify-content:space-around;font-size:22pt}
+  #sheet .lines div{display:flex;flex-direction:column;gap:6mm}
+  #sheet .lines span{display:inline-block;width:13mm;height:13mm;border:1.5px solid #000;border-radius:50%;text-align:center;line-height:12mm}
+  #sheet .trees{display:flex;justify-content:space-around}
+  #sheet .cells{display:flex;gap:2mm;margin:2mm 0 1mm}#sheet .cells i{width:12mm;height:12mm;border:1.5px solid #000;border-radius:2mm}
+  #sheet .cells i.on{background:repeating-linear-gradient(45deg,#000 0 1px,#fff 1px 4px)}
+  #sheet .row{font-size:16pt;margin:3mm 0}
+  #sheet .avoid{break-inside:avoid}
+}
+</style></head><body><div class="wrap">
+<h1>数学伴读</h1>
+<p class="sub">每天一篇，家长念，孩子听着回答。平板拿在家长手里，孩子不用看屏幕。</p>
+<div class="days" id="days"></div>
+<details class="how"><summary>怎么用（第一次请看一下）</summary>
+<div>① 准备：10 颗豆子（或积木）、一张草稿纸、一支笔。<br>
+② 每段后面写着怎么玩：<span class="k">口头</span>你问他答，<span class="k bean">豆子</span>用手摆，<span class="k pen">纸笔</span>写在纸上。整篇约 20 分钟，可以分两次：口头的白天做，纸笔的晚上做。<br>
+③ 黑字是你念的，绿字是答案，只给你看。<br>
+④ 答不上来先别说答案：让他用手指或豆子摆一摆，再问一次。还是不会就点“没答上”，第二天开头再问。<br>
+⑤ 纸笔题可以点“打印今天的纸面题”打出来，没有打印机就照着抄在草稿纸上。<br>
+⑥ 故事可以随口加油添醋，数字别改。答对了说一句具体的话就好，比如“你一眼就看出来了”。</div></details>
+<article id="art"></article>
+<p class="foot">3 → 10 每天一个数；凑十、进位、退位的篇章接着写</p>
+</div>
+<div id="sheet"></div>
+<script>
+const $=s=>document.querySelector(s);
+const ST={get(k,d){try{const v=localStorage.getItem("xdjb:"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("xdjb:"+k,JSON.stringify(v))}catch(e){}}};
+
+/* 每篇来的“客人”：谜语一句一句念，猜出来就是今天的对手 */
+const GUEST={
+ 3:{name:"美国兵小队",u:"个",t:"美国兵",rid:["他们戴着圆圆的钢盔，像扣了一口小锅。","穿着绿色的衣服，袖子上有红白条纹和小星星的旗子。","他们从来不一个人来，一来就是一小队。"]},
+ 4:{name:"霸王龙",u:"只",t:"霸王龙",rid:["它的头特别大，大得像一辆小汽车。","它的手特别短，短得连自己的鼻子都挠不到。","嘴里的牙齿像一排大香蕉，走一步，地就“咚”地抖一下。"]},
+ 5:{name:"曹操",u:"个",t:"曹兵",rid:["他是三国里兵最多的人。","他最想打败的人，耳朵大大的，有两个厉害的弟弟。","有一句话：说他，他就到。"]},
+ 6:{name:"赵云",u:"个",t:"白马兵",rid:["他骑着一匹雪白雪白的马。","手里拿着一杆银色的长枪，亮得能照出人影。","他一个人冲进好多好多敌人里，抱出了一个小宝宝阿斗。"]},
+ 7:{name:"大白鲨",u:"条",t:"大白鲨",rid:["它住在大海里，游起来一点声音都没有。","背上露出一个尖尖的三角形，一看到它，大家都赶紧上岸。","它的牙齿有好几排，掉了一颗，后面马上长出新的。"]},
+ 8:{name:"吕布",u:"个",t:"吕布兵",rid:["他的头上插着两根长长的羽毛，一走路就晃来晃去。","他骑着一匹红红的马，叫赤兔马，跑得比风还快。","他太厉害了，刘备、关羽、张飞三个人一起上，才打得过他。"]},
+ 9:{name:"三角龙",u:"只",t:"三角龙",rid:["它是吃草的恐龙，可是谁也不敢惹它。","脖子后面有一块大大的骨头盾牌，像戴了一个大围脖。","它的头上长着角，一只、两只、三只——名字就是这么来的。"]},
+ 10:{name:"大王乌贼",u:"条",t:"腿",rid:["它住在很深很深的海底，那里一点光都没有。","它的眼睛比篮球还大，是世界上眼睛最大的动物。","它有好多条长长的腿，上面全是吸盘。到底有几条？今天就要算一算。"],legs:true}};
+const NS=[3,4,5,6,7,8,9,10];
+/* 我方英雄：孩子选谁出战，题目里就用谁 */
+const HERO={刘备:"双股剑一挥",关羽:"青龙刀一扫",张飞:"丈八蛇矛一挺，大吼一声",哥斯拉:"尾巴一甩",贝吉塔:"扔出一个能量球",擎天柱:"变成大卡车冲过去",大黄蜂:"举起手炮轰的一声",悟空:"一个筋斗翻过去"};
+const HN=Object.keys(HERO);
+
+let cur=ST.get("cur",null),done=ST.get("done",{}),miss=ST.get("miss",[]),pick=ST.get("hero",{});
+if(cur==null)cur=NS.find(n=>!done[n])||3;
+
+function li(n,text,ans){const id=n+"|"+text.replace(/<[^>]+>/g,""),on=miss.some(m=>m.id===id);
+  return `<li>${text} <span class="a">（${ans}）</span><button class="miss${on?" on":""}" data-id="${encodeURIComponent(id)}" data-a="${encodeURIComponent(ans)}">${on?"没答上 ✕":"没答上"}</button></li>`}
+function dots(c){const r=[];for(let i=0;i<c;i+=5)r.push("●".repeat(Math.min(5,c-i)));return `<span class="dots">${r.join("<br>")}</span>`}
+function uniq(a){return a.filter((v,i)=>a.indexOf(v)===i)}
+/* 固定的“打乱”，同一篇每次打开都一样 */
+function shuf(a,seed){a=a.slice();for(let i=a.length-1;i>0;i--){seed=(seed*9301+49297)%233280;const j=Math.floor(seed/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function page(n){
+  const i=n-3,G=GUEST[n],u=G.u,t=G.t,H=pick[n]||"关羽",atk=HERO[H],nx=GUEST[n+1];
+  const half=Math.floor(n/2);
+  let h=`<h2>第 ${i+1} 篇　·　数字 ${n}</h2><div class="meta">今天来的是谁？先别看下面，从猜谜开始。</div>`;
+  const redo=miss.filter(m=>+m.id.split("|")[0]!==n).slice(0,5);
+  if(redo.length)h+=`<div class="redo"><h3>先问问上次没答上的</h3><ol>${redo.map(m=>li(m.id.split("|")[0],m.id.split("|").slice(1).join("|"),decodeURIComponent(m.a))).join("")}</ol><p class="tip">这次答对了，就点“没答上 ✕”把它划掉。</p></div>`;
+
+  /* 零 猜谜 */
+  h+=`<h3>猜猜今天谁来了<span class="k">口头</span></h3><p class="say">你说：“报告！有敌人来了！我说三句话，你猜是谁。”</p>`+
+     G.rid.map(r=>`<p class="rid">${r}</p>`).join("")+`<p class="say">答案：<span class="a">${G.name}</span></p><p class="tip">一句一句念，每句停一下让他猜。第一句就猜中，就夸他“侦察兵的耳朵真灵”。</p>`;
+  if(n>3){const p=n-1;h+=`<p class="say">你说：“昨天打跑的是${GUEST[p].name}，那时候我们学的是${p}。先热热身：”</p><ol>`+
+     li(n,`${p}可以分成1和几？`,p-1)+li(n,`${p}${GUEST[p].u}${GUEST[p].t}跑掉了${p-1}${GUEST[p].u}，还剩几${GUEST[p].u}？`,1)+`</ol>`}
+
+  /* 一 一眼识数 */
+  const flash=uniq([n,half||1,n-1,Math.min(n,3),Math.max(1,n-3)].filter(x=>x>=1)).slice(0,4);
+  h+=`<h3>一、一眼看出来<span class="k bean">豆子</span><small>侦察兵只能看一眼</small></h3>
+  <p class="say">你说：“${G.name}派探子过来了！你是侦察兵，我只给你看一眼，看完就盖上。来了几个？”</p>
+  <p class="tip">抓豆子摆好（照下面的样子摆，5 个一排），心里数“一、二”就用手盖住。别让他一个一个数，要的就是一眼看出来。</p><ol>`;
+  flash.forEach(c=>h+=li(n,`摆 ${c} 颗 ${dots(c)}`,c));
+  h+=`</ol><p class="say">你问：“侦察兵，${G.legs?`大王乌贼有 ${n} 条腿`:`敌人一共 ${n} ${u}${t}`}！派谁出战？”</p><div class="heroes">${HN.map(x=>`<button data-h="${x}" class="${x===H?"on":""}">${x}</button>`).join("")}</div>
+  <p class="tip">他说谁，就点谁，下面的故事会换成他选的英雄。</p>`;
+
+  /* 二 打一仗：情境题 */
+  const hideA=Math.max(1,half),runA=n>=4?n-3:1,cutA=Math.max(1,n-1-half);
+  h+=`<h3>二、打一仗<span class="k">口头</span><span class="k pen">纸笔</span><small>听故事，算一算</small></h3><ol>`;
+  h+=li(n,`${G.legs?`大王乌贼有 ${n} 条腿，它把一些腿藏进了石头缝里，${H}只看见 ${hideA} 条。藏起来几条？`:`${n} ${u}${t}躲进了山洞。${H}在洞口一看，外面只站着 ${hideA} ${u}，洞里还藏着几${u}？`}`,n-hideA);
+  h+=li(n,G.legs?`原来大王乌贼有 ${n} 条腿，刘备双股剑一挥，砍掉了 ${cutA} 条，还剩几条？（别担心，乌贼的腿还会长出来）`:`原来有 ${n} ${u}${t}，刘备双股剑一挥，砍跑了 ${cutA} ${u}，还剩几${u}？`,n-cutA);
+  h+=li(n,`${H}叫来帮手：先来了 ${half} 个，又来了 ${n-half} 个。合起来几个？`,n);
+  if(n%2===0)h+=li(n,`${n/2} 个和 ${n/2} 个合起来是几个？`,n);
+  h+=li(n,G.legs?`大王乌贼伸出 ${n} 条腿去抓船，${H}${atk}，吓得它缩回去 ${runA} 条。还有几条在外面？<br><b>请你在草稿纸上把算式写出来。</b>`:`${n} ${u}${t}看见${H}${atk}，吓得跑走了 ${runA} ${u}。<br><b>请你在草稿纸上把算式写出来。</b>`,`${n} − ${runA} = ${n-runA}`);
+  h+=li(n,G.legs?`缩回去的 ${runA} 条又伸出来了，加上外面的 ${n-runA} 条，现在几条？算式怎么写？`:`跑走的 ${runA} ${u}又跑回来了，加上剩下的 ${n-runA} ${u}，现在几${u}？算式怎么写？`,`${n-runA} + ${runA} = ${n}`);
+  h+=`</ol><p class="tip">写算式是重点：问他“先有几个？跑走了是加还是减？”。写对了，就让他把算式念一遍。</p>`;
+
+  /* 三 分与合 */
+  h+=`<h3>三、楼上楼下<span class="k">口头</span><small>${n} 的分与合</small></h3>
+  <p class="say">你说：“${G.legs?`大王乌贼浮到船边，${n} 条腿有的伸到水面上面，有的留在水下面。`:`${H}抓到了 ${n} ${u}${t}，关进一座两层的小楼。`}”</p><ol>`;
+  for(let a=0;a<=n;a++)h+=li(n,G.legs?`上面 ${a} 条，下面几条？`:`楼上 ${a} ${u}，楼下几${u}？`,n-a);
+  h+=`</ol><p class="say">你问：“${G.legs?"上面":"楼上"}多一${u}，${G.legs?"下面":"楼下"}就怎么样？”<span class="a">（少一${u}）</span></p><ol>`;
+  const all=[];for(let a=n;a>=0;a--)all.push(`${a} 和 ${n-a}`);
+  h+=li(n,`${n} 可以分成几和几？全都说出来。`,all.join("、"));
+  h+=li(n,`1 和 ${n-1} 合成几？`,n)+li(n,`${n-1} 和 1 合成几？`,n);
+  if(n>=4)h+=li(n,`${half} 和 ${n-half} 合成几？`,n);
+  h+=`</ol><p class="tip">“分成几和几”要他按顺序说，从 ${n} 和 0 说到 0 和 ${n}。漏了也没关系，问他“还有吗？”。</p>`;
+
+  /* 四 悟空能量格 */
+  const fill=uniq([1,n-2,half].filter(x=>x>=1&&x<n)).slice(0,3);
+  h+=`<h3>四、悟空攒能量<span class="k">口头</span><span class="k pen">纸笔</span><small>还差几格</small></h3>
+  <p class="say">你说：“${G.name}太难打了，得请悟空来！悟空要攒满 ${n} 格能量，才能放出哈比哈比哈比哈。”</p>
+  <p class="tip">在纸上画 ${n} 个格子，按题目涂满几格，问还差几格。他答对了，就让他站起来大喊一声“哈比哈比哈比哈——！”</p><ol>`;
+  fill.forEach(f=>h+=li(n,`一共要 ${n} 格，已经满了 ${f} 格，还差几格？`,n-f));
+  h+=`</ol>`;
+
+  /* 五 纸面题 */
+  const eqs=paperEqs(n),L=[];for(let a=0;a<=n;a++)L.push(a);const Rs=shuf(L.map(a=>n-a),n*7+3);
+  h+=`<h3>五、纸上的题<span class="k pen">纸笔</span><small>算式 · 连线消消乐 · 分合图</small></h3>
+  <button class="btn" id="print">打印今天的纸面题</button>
+  <p class="say"><b>算式</b>（你写在纸上，他来填）：</p><ol>`;
+  eqs.forEach(([q,a])=>h+=li(n,`<span class="eq">${q}</span>`,a));
+  h+=`</ol><p class="say"><b>连线消消乐</b>：左右两排数字，哪两个合起来是 ${n}，就连一条线，连上就算“消掉了”。</p>
+  <p class="say eq">左：${L.join("　")}<br>右：${Rs.join("　")}</p>
+  <p class="tip">答案：${L.map(a=>`${a}—${n-a}`).join("，")}。每连一条，可以让他说“${n} 可以分成几和几”。</p>
+  <p class="say"><b>分合图</b>：上面写 ${n}，下面两个格子，一个写好，一个让他填。</p><ol>`;
+  uniq([1,half,n-1,0]).forEach(a=>h+=li(n,`上面 ${n}，下面一个是 ${a}，另一个是几？`,n-a));
+  h+=`</ol>`;
+
+  /* 六 你来考我 */
+  h+=`<h3>六、你来考我<span class="k">口头</span></h3>
+  <p class="say">你说：“现在换你当队长。你用${H}和${G.name}编一道题考考我，数字不能超过 ${n}。”</p>
+  <p class="tip">他出的题不完整也没关系，帮他补全再回答。故意答错一次，看他能不能抓到你。</p>`;
+  const parts=[];for(let a=n;a>=0;a--)parts.push(`${a}和${n-a}`);
+  h+=`<h3>今天记住了</h3><div class="sum">${n} 可以分成：${parts.join("、")}。</div><p class="tip">一起念一遍。念完就结束，不要再加题。</p>`;
+  if(nx)h+=`<div class="next">${G.name}跑之前大喊：“你们等着！明天我叫一个更厉害的来！”<br>是谁呢？先透露一句：<b>${nx.rid[0]}</b></div>`;
+  else h+=`<div class="next">大王乌贼的腿全数清楚了，3 到 10 全部打完！下一站：凑十。</div>`;
+  h+=`<button class="fin${done[n]?" did":""}" id="fin">${done[n]?"✓ 这篇读完了（"+done[n]+"）":"今天这篇读完了"}</button>`;
+  return h;
+}
+/* 算式：1+( )=n、1+(n−1)、(n−1)+1、n−1、n−(n−1)、复习前面的数（如 2−1） */
+function paperEqs(n){const m=n-1,o=[[`1 + (　) = ${n}`,m],[`1 + ${m} = `,n],[`${m} + 1 = `,n],[`${n} − 1 = `,m],[`${n} − ${m} = `,1],[`${n} − 0 = `,n],[`${n} − ${n} = `,0]];
+  if(n>=4)o.push([`${n-2} − 1 = `,n-3],[`${m} − ${n-3} = `,2],[`(　) + 2 = ${n}`,n-2]);else o.push([`2 − 1 = `,1],[`1 + 1 = `,2]);
+  return o}
+function sheet(n){
+  const G=GUEST[n],half=Math.floor(n/2),eqs=paperEqs(n),L=[];for(let a=0;a<=n;a++)L.push(a);const Rs=shuf(L.map(a=>n-a),n*7+3);
+  const tree=a=>`<svg width="130" height="110" viewBox="0 0 130 110"><rect x="45" y="4" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><text x="65" y="30" font-size="24" text-anchor="middle">${n}</text><path d="M55 38 L30 66 M75 38 L100 66" stroke="#000" stroke-width="2"/><rect x="10" y="66" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><rect x="80" y="66" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><text x="30" y="92" font-size="24" text-anchor="middle">${a}</text></svg>`;
+  const cells=f=>`<div class="cells">${Array.from({length:n},(_,k)=>`<i class="${k<f?"on":""}"></i>`).join("")}</div>`;
+  return `<h1>数字 ${n} · 打跑${G.name}</h1><div class="who">名字：__________　　日期：____月____日</div>
+  <div class="avoid"><h2>一、算式</h2><div class="eqs">${eqs.map(([q])=>`<div>${q.replace(/=\s*$/,"= ____")}</div>`).join("")}</div></div>
+  <div class="avoid"><h2>二、连线消消乐：合起来是 ${n} 的连起来</h2><div class="lines"><div>${L.map(a=>`<span>${a}</span>`).join("")}</div><div>${Rs.map(a=>`<span>${a}</span>`).join("")}</div></div></div>
+  <div class="avoid"><h2>三、分合图</h2><div class="trees">${uniq([1,half,n-1,0]).map(tree).join("")}</div></div>
+  <div class="avoid"><h2>四、悟空的能量格：把没满的格子涂满，还差几格？</h2>
+  ${uniq([1,n-2,half].filter(x=>x>=1&&x<n)).map(f=>cells(f)+`<div class="row">已经满了 ${f} 格，还差 ____ 格。</div>`).join("")}</div>`;
+}
+function render(){
+  $("#days").innerHTML=NS.map(n=>`<button data-n="${n}" class="${n===cur?"on":""}${done[n]?" done":""}">${n}</button>`).join("")+
+    ["凑十","进位","退位"].map(t=>`<button class="later" disabled>${t}</button>`).join("");
+  $("#art").innerHTML=page(cur);$("#sheet").innerHTML=sheet(cur);
+}
+document.addEventListener("click",e=>{
+  const d=e.target.closest(".days button[data-n]");if(d){cur=+d.dataset.n;ST.set("cur",cur);render();scrollTo(0,0);return}
+  const hb=e.target.closest(".heroes button");if(hb){pick[cur]=hb.dataset.h;ST.set("hero",pick);const y=scrollY;render();scrollTo(0,y);return}
+  const m=e.target.closest(".miss");if(m){const id=decodeURIComponent(m.dataset.id),k=miss.findIndex(x=>x.id===id);
+    if(k>=0)miss.splice(k,1);else miss.push({id,a:m.dataset.a});ST.set("miss",miss);const y=scrollY;render();scrollTo(0,y);return}
+  if(e.target.id==="print"){print();return}
+  if(e.target.id==="fin"){const t=new Date();if(done[cur])delete done[cur];else done[cur]=(t.getMonth()+1)+"月"+t.getDate()+"日";ST.set("done",done);
+    if(done[cur]){const nx=NS.find(n=>!done[n]);if(nx)ST.set("cur",nx)}render()}
+});
+render();
+</script></body></html>

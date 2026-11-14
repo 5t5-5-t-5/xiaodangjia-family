@@ -540,11 +540,11 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   <button class="next" id="nameOk">好了</button>
 </div></div>
 
-<script src="art.js?v=20261114b"></script>
+<script src="art.js?v=20261114c"></script>
 <script>
 "use strict";
 /* 主屏幕会缓存旧页面：每次打开都看一下网上有没有新版本，有就换上 */
-const VER="20261114b";
+const VER="20261114c";
 if(location.protocol.startsWith("http")&&location.hostname!=="localhost"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const VER="(\w+)"/);if(m&&m[1]!==VER)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 
@@ -657,8 +657,9 @@ function wpick(list,not){const L=list.filter(f=>!not||!not.includes(f.id));const
 let AC=null;const ac=()=>(AC=AC||new (window.AudioContext||window.webkitAudioContext)());
 function tone(f,d,t="sine",v=.15,delay=0,f2){try{const c=ac(),o=c.createOscillator(),g=c.createGain(),s=c.currentTime+delay;o.type=t;o.frequency.setValueAtTime(f,s);if(f2)o.frequency.exponentialRampToValueAtTime(f2,s+d);g.gain.setValueAtTime(v,s);g.gain.exponentialRampToValueAtTime(.001,s+d);o.connect(g).connect(c.destination);o.start(s);o.stop(s+d)}catch(e){}}
 function noise(d,v=.3,delay=0,hp=800){try{const c=ac(),b=c.createBuffer(1,c.sampleRate*d,c.sampleRate),x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*(1-i/x.length);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();f.type="highpass";f.frequency.value=hp;s.buffer=b;g.gain.value=v;s.connect(f).connect(g).connect(c.destination);s.start(c.currentTime+delay)}catch(e){}}
-const sndHit=()=>{if(!$("#battle").hidden)return;noise(.18,.35,0,1500);tone(320,.18,"square",.12,0,90)};
-const sndCrit=()=>{if(!$("#battle").hidden)return;sndHit();[660,880].forEach((f,i)=>tone(f,.25,"triangle",.07,.1+i*.08))};
+const sndHpDown=()=>{noise(.12,.18,0,900);tone(260,.2,"triangle",.14,0,110)};   /* 题目页：敌人掉血的“咚”，轻一点 */
+const sndHit=()=>{if(!$("#battle").hidden)return sndHpDown();noise(.18,.35,0,1500);tone(320,.18,"square",.12,0,90)};
+const sndCrit=()=>{if(!$("#battle").hidden)return sndHpDown();sndHit();[660,880].forEach((f,i)=>tone(f,.25,"triangle",.07,.1+i*.08))};
 const sndNo=()=>{tone(300,.18,"sine",.12);tone(220,.3,"sine",.1,.15)};
 const sndPick=()=>tone(700,.07,"triangle",.12);
 const sndDrop=()=>{tone(420,.08,"square",.08);tone(630,.1,"triangle",.1,.05)};
