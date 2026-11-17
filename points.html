@@ -125,6 +125,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .tile .p{font-weight:600;font-size:20px;line-height:1.2;color:var(--mint);font-variant-numeric:tabular-nums}
 .tile .p i{font-style:normal;font-weight:500;font-size:13px;margin:0 1px}
 .tile .p.ok{opacity:.55}
+.tile .p.nop{font-size:15px;font-weight:700}
 .tile:active{transform:translateY(4px);box-shadow:none}
 .tile.done::after{content:"✓";position:absolute;right:8px;top:8px;width:26px;height:26px;border-radius:50%;background:var(--mint);color:#fff;font-size:16px;font-weight:900;display:grid;place-items:center}
 .tile.hot{background:linear-gradient(160deg,#FFF6D6,#FFE7A3);box-shadow:0 5px 0 var(--sun-deep)}
@@ -1117,7 +1118,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid" type="button">🧒 小朋友</button><button class="mini" data-vs="normal" type="button">🙂 普通</button><button class="mini" data-vs="robot" type="button">🤖 机器人</button><button class="mini" data-vs="captain" type="button">🦾 机器人队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月14日 19:54</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月17日 09:09</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1174,17 +1175,21 @@ details.parent summary{background:none}
       </div>
       <div class="ed-fcol">
         <div class="ed-sec">
-          <div class="ed-hd"><span class="ed-num">1</span><b>今天做到了什么？</b></div>
+          <div class="ed-hd"><span class="ed-num">1</span><b>当时心里是什么感觉？</b><small>什么感觉都可以</small></div>
+          <div class="edchips" id="edFeel"></div>
+        </div>
+        <div class="ed-sec">
+          <div class="ed-hd"><span class="ed-num">2</span><b>做到了什么？</b></div>
           <div class="edchips" id="edQ"></div>
           <div class="ed-cust" id="edCust" hidden><input id="edCustIn" type="text" maxlength="4" placeholder="印章词（1~4字，如：助人）" aria-label="自定印章词"><button type="button" id="edCustOk">确定</button></div>
         </div>
         <div class="ed-sec">
-          <div class="ed-hd"><label for="edText"><span class="ed-num" style="display:inline-grid;margin-right:8px">2</span><b>发生了什么？</b></label><small>🎤 可点键盘麦克风语音说</small><span class="edcount" id="edCount">0 字</span></div>
+          <div class="ed-hd"><label for="edText"><span class="ed-num" style="display:inline-grid;margin-right:8px">3</span><b>发生了什么？</b></label><small>🎤 可点键盘麦克风语音说</small><span class="edcount" id="edCount">0 字</span></div>
           <textarea id="edText"></textarea>
           <div class="ed-err" id="edErr" hidden></div>
         </div>
         <div class="ed-sec">
-          <div class="ed-hd"><span class="ed-num">3</span><b>谁记的？</b></div>
+          <div class="ed-hd"><span class="ed-num">4</span><b>谁记的？</b></div>
           <div class="edchips" id="edBy"></div>
         </div>
         <div class="ed-meta">
@@ -1380,7 +1385,7 @@ function applyLayout(){
   const L=curLayout();GROUPS=L.groups.map(g=>({...g,c:(Number(g.c)||0)%PAL.length}));HABITS=[];
   const ids=new Set((L.tiles||[]).map(t=>t.id));
   for(const g of GROUPS)for(const t of L.tiles||[])if(t.g===g.id){
-    const pts=Number(t.pts)||1,slot=t.slot&&ids.has(t.slot)&&t.slot!==t.id?t.slot:undefined;
+    const pts=String(t.pts)==="0"?0:(Number(t.pts)||1),slot=t.slot&&ids.has(t.slot)&&t.slot!==t.id?t.slot:undefined;
     HABITS.push({...t,grp:g.id,icon:t.ic,pts,slot,hot:pts>=4||!!t.self,plain:!t.self});
   }
 }
@@ -1714,7 +1719,7 @@ async function initStore(){
    每次切换家庭码都会彻底清空上一家的本地残留，保证家庭与家庭之间 100% 独立、绝不串数据。 */
 const MODE="family",API="https://eelyepkkkazgztdcnicu.supabase.co",APIKEY="sb_publishable_eGBwA1L2QycoBc9XQnzY1Q_LW-ra8ip";
 /* 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="36f50bde0f";
+const BUILD="85baf0cb2a";
 if(MODE==="family"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const setSync=t=>{const el=$("#status");if(el)el.textContent=t};
@@ -1877,7 +1882,10 @@ const Setup={
 };
 
 /* ---------- 家长改项目和选择卡片 ---------- */
-const DQ_BASE={persist:{name:"坚持",ic:"🏁",c:"#FF9F1C"},brave:{name:"勇敢",ic:"🦸",c:"#4A90E2"},focus:{name:"专注",ic:"🎯",c:"#8C7CF0"},nocry:{name:"不哭",ic:"😊",c:"#FF5FA2"},self:{name:"主动",ic:"⭐",c:"#1DB37A"},talk:{name:"有效沟通",ic:"💬",c:"#FF6B5E"}};
+const DQ_BASE={persist:{name:"坚持",ic:"🏁",c:"#FF9F1C"},brave:{name:"勇敢",ic:"🦸",c:"#4A90E2"},focus:{name:"专注",ic:"🎯",c:"#8C7CF0"},nocry:{name:"不哭",ic:"😊",c:"#FF5FA2"},self:{name:"主动",ic:"⭐",c:"#1DB37A"},talk:{name:"有效沟通",ic:"💬",c:"#FF6B5E"},feel:{name:"说出心情",ic:"💗",c:"#E25D8C"}};
+/* 日记里的“当时心里的感觉”：什么感觉都可以，说出来本身就了不起 */
+const FEEL={scared:{ic:"😨",name:"害怕",line:"有点害怕"},sad:{ic:"😢",name:"难过",line:"有点难过"},angry:{ic:"😠",name:"生气",line:"有点生气"},worry:{ic:"😣",name:"着急",line:"有点着急"},tired:{ic:"😮‍💨",name:"累了",line:"有点累"},nowant:{ic:"🙅",name:"不想做",line:"不太想做"},happy:{ic:"😊",name:"开心",line:"很开心"}};
+const dtext=m=>(FEEL[m.feel]?`那时候，心里${FEEL[m.feel].line}。`:"")+(m.text||"（还没写）");
 function curDQ(){
   const out={...DQ_BASE};
   for(const h of HABITS)if(h.diary&&h.diary.startsWith("c:")){
@@ -1909,7 +1917,7 @@ const Layout={
       el.addEventListener("input",e=>{if(e.target.tagName!=="SELECT")this.edit(e.target)});
       el.addEventListener("change",e=>{if(e.target.tagName==="SELECT")this.edit(e.target)});
     }
-    $("#layTip").textContent=(first?"这是一套起步的项目和卡片，改成你家自己的吧！":"")+"每家可以自由定大项目（如 学习、习惯、新习惯、了不起），每个项目下的卡片名字、图标、几颗星、是不是“主动做二选一”、点完写不写高光日记都能自己定。删掉卡片不会扣掉以前得的星星。"+(first?"以后在页面最下面“家长看这里”里随时能再改。":"");
+    $("#layTip").textContent=(first?"这是一套起步的项目和卡片，改成你家自己的吧！":"")+"每家可以自由定大项目（如 学习、习惯、新习惯、了不起），每个项目下的卡片名字、图标、几颗星、是不是“主动做二选一”、点完写不写高光日记都能自己定。选“不加分”的卡片，点亮后只记进高光日记、不能换东西（适合“了不起”这类和心情、品格有关的事）。删掉卡片不会扣掉以前得的星星。"+(first?"以后在页面最下面“家长看这里”里随时能再改。":"");
     this.msg("");this.el.hidden=false;this.draw();this.el.scrollTop=0},
   close(){this.el.hidden=true;$("#layPick").hidden=true},
   draw(){
@@ -1921,7 +1929,7 @@ const Layout={
           const others=ts.map(x=>x[0]).filter(o=>o.id!==t.id&&!o.slot);
           const mode=t.slot&&others.some(o=>o.id===t.slot)?"p:"+t.slot:t.self?"self":"";
           const isCust=!!(t.diary&&t.diary.startsWith("c:"));
-          return `<div class="lt" data-ti="${ti}"><button type="button" class="lic" data-act="tic" aria-label="换卡片图标">${this.icH(t.ic)}</button><input type="text" data-f="tname" maxlength="10" placeholder="卡片名字" aria-label="卡片名字" value="${esc(t.name)}"><select data-f="tpts" aria-label="几颗星">${[1,2,3,4,5,6,8,10].map(n=>`<option value="${n}" ${n==t.pts?"selected":""}>+${n} 分</option>`).join("")}</select><select data-f="tmode" aria-label="计分方式"><option value="" ${!mode?"selected":""}>单独记分</option><option value="self" ${mode==="self"?"selected":""}>🌟 夸“自己主动”</option>${others.map(o=>`<option value="p:${esc(o.id)}" ${mode==="p:"+o.id?"selected":""}>🔄 和「${esc(o.name||"未命名")}」二选一</option>`).join("")}</select><select data-f="tdiary" aria-label="点完写日记"><option value="">不写日记</option>${Object.entries(DQ_BASE).map(([dk,q])=>`<option value="${dk}" ${t.diary===dk?"selected":""}>写日记·${q.name}</option>`).join("")}<option value="c:" ${isCust?"selected":""}>写日记·自定印章…</option></select>${isCust?`<input type="text" class="ldtag" data-f="tdtag" maxlength="4" placeholder="印章词" aria-label="自定印章词" value="${esc(t.diary.slice(2))}">`:""}<span class="lacts"><button type="button" class="lsm" data-act="tup" aria-label="卡片上移" ${k?"":"disabled"}>↑</button><button type="button" class="lsm" data-act="tdn" aria-label="卡片下移" ${k<ts.length-1?"":"disabled"}>↓</button><button type="button" class="lsm del" data-act="tdel" aria-label="删掉这张卡片">✕</button></span></div>`}).join("")+
+          return `<div class="lt" data-ti="${ti}"><button type="button" class="lic" data-act="tic" aria-label="换卡片图标">${this.icH(t.ic)}</button><input type="text" data-f="tname" maxlength="10" placeholder="卡片名字" aria-label="卡片名字" value="${esc(t.name)}"><select data-f="tpts" aria-label="几颗星">${[0,1,2,3,4,5,6,8,10].map(n=>`<option value="${n}" ${n==(t.pts==null?2:t.pts)?"selected":""}>${n?"+"+n+" 分":"不加分（只记日记）"}</option>`).join("")}</select><select data-f="tmode" aria-label="计分方式"><option value="" ${!mode?"selected":""}>单独记分</option><option value="self" ${mode==="self"?"selected":""}>🌟 夸“自己主动”</option>${others.map(o=>`<option value="p:${esc(o.id)}" ${mode==="p:"+o.id?"selected":""}>🔄 和「${esc(o.name||"未命名")}」二选一</option>`).join("")}</select><select data-f="tdiary" aria-label="点完写日记"><option value="">不写日记</option>${Object.entries(DQ_BASE).map(([dk,q])=>`<option value="${dk}" ${t.diary===dk?"selected":""}>写日记·${q.name}</option>`).join("")}<option value="c:" ${isCust?"selected":""}>写日记·自定印章…</option></select>${isCust?`<input type="text" class="ldtag" data-f="tdtag" maxlength="4" placeholder="印章词" aria-label="自定印章词" value="${esc(t.diary.slice(2))}">`:""}<span class="lacts"><button type="button" class="lsm" data-act="tup" aria-label="卡片上移" ${k?"":"disabled"}>↑</button><button type="button" class="lsm" data-act="tdn" aria-label="卡片下移" ${k<ts.length-1?"":"disabled"}>↓</button><button type="button" class="lsm del" data-act="tdel" aria-label="删掉这张卡片">✕</button></span></div>`}).join("")+
         `<button type="button" class="ladd" data-act="tadd">＋ 加一张选择卡片</button></section>`}).join("")+
       (ng<6?`<button type="button" class="ladd" data-act="gadd">＋ 加一个新项目（最多 6 个）</button>`+
         ((ps=>ps.length?`<div class="lpre"><b>一键加常用项目：</b>${ps.map(p=>`<button type="button" data-act="gpre" data-ic="${p.ic}" data-nm="${p.name}" data-c="${p.c}">${p.ic} ＋${p.name}</button>`).join("")}</div>`:"")(GRP_PRE.filter(p=>!names.has(p.name)))):"");
@@ -1968,9 +1976,9 @@ const Layout={
       const used=new Set(d.groups.map(g=>g.c));let c=a==="gpre"?+b.dataset.c:0;if(used.has(c)){c=0;while(used.has(c)&&c<PAL.length-1)c++}
       const gid="g"+this.rid(),nm=a==="gpre"?b.dataset.nm:"",ic=a==="gpre"?b.dataset.ic:"⭐";
       d.groups.push({id:gid,ic,name:nm,c});
-      if(a==="gpre")d.tiles.push({id:"t"+this.rid(),g:gid,ic,name:"",pts:nm==="了不起"?5:2,...(nm==="了不起"?{diary:"brave"}:{})});
+      if(a==="gpre")d.tiles.push({id:"t"+this.rid(),g:gid,ic,name:"",pts:nm==="了不起"?0:2,...(nm==="了不起"?{diary:"brave"}:{})});
       focus=a==="gpre"?`[data-ti="${d.tiles.length-1}"] input`:`[data-gi="${d.groups.length-1}"] .lgn`}
-    else if(a==="tadd"){const g=d.groups[gi],isBrv=g.name==="了不起";d.tiles.push({id:"t"+this.rid(),g:g.id,ic:"⭐",name:"",pts:isBrv?5:2,...(isBrv?{diary:"brave"}:{})});focus=`[data-ti="${d.tiles.length-1}"] input`}
+    else if(a==="tadd"){const g=d.groups[gi],isBrv=g.name==="了不起";d.tiles.push({id:"t"+this.rid(),g:g.id,ic:"⭐",name:"",pts:isBrv?0:2,...(isBrv?{diary:"brave"}:{})});focus=`[data-ti="${d.tiles.length-1}"] input`}
     else if(a==="tdel"){const delId=d.tiles[ti].id;d.tiles.splice(ti,1);for(const x of d.tiles)if(x.slot===delId)delete x.slot}
     else if(a==="tup"||a==="tdn"){const g=d.tiles[ti].g,step=a==="tup"?-1:1;let j=ti+step;while(j>=0&&j<d.tiles.length&&d.tiles[j].g!==g)j+=step;
       if(j<0||j>=d.tiles.length)return;[d.tiles[ti],d.tiles[j]]=[d.tiles[j],d.tiles[ti]]}
@@ -2067,7 +2075,7 @@ function renderPts(){
   $("#gtabs").innerHTML=GROUPS.map(g=>`<button ${gst(g)} data-g="${g.id}" role="tab"><b><i>${esc(g.ic)}</i>${esc(g.name)}</b><span id="tc-${g.id}"></span></button>`).join("");
   $("#tiles").innerHTML=GROUPS.map((g,gi)=>(gi?`<div class="tgrp" ${gst(g)}>${ghead(g)}</div>`:"")+HABITS.filter(h=>h.grp===g.id).map(h=>{
     const d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
-    return `<button class="tile ${h.hot?"hot":""} ${mine?"done":d?"off":""} ${armed(t+"_"+slotOf(h))}" ${gst(g)} data-g="${g.id}" data-h="${h.id}" aria-label="${esc(h.name)}"><span class="e">${ico(h.id,h.icon)}</span><span class="n">${esc(h.name)}</span><span class="p ${d?"ok":""}">${amt(h.pts,"分")}</span></button>`;
+    return `<button class="tile ${h.hot?"hot":""} ${mine?"done":d?"off":""} ${armed(t+"_"+slotOf(h))}" ${gst(g)} data-g="${g.id}" data-h="${h.id}" aria-label="${esc(h.name)}"><span class="e">${ico(h.id,h.icon)}</span><span class="n">${esc(h.name)}</span><span class="p ${d?"ok":""}${h.pts?"":" nop"}">${h.pts?amt(h.pts,"分"):"记下来"}</span></button>`;
   }).join("")).join("");
   /* 每组完成几项 + 今天得到 */
   const slots={},cnt={};let got=0;
@@ -2075,9 +2083,12 @@ function renderPts(){
   for(const h of HABITS){const k=h.grp,d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
     if(!slots[k+slotOf(h)]){slots[k+slotOf(h)]=1;cnt[k][1]++}if(mine)cnt[k][0]++}
   got=p.docs.filter(d=>d.date===t&&d.pts>0).reduce((x,d)=>x+d.pts,0);
-  for(const k in cnt){const e=document.getElementById("cnt-"+k);if(e)e.textContent=cnt[k][0]+" / "+cnt[k][1];const tc=document.getElementById("tc-"+k);if(tc)tc.textContent=cnt[k][0]+"/"+cnt[k][1]}
+  /* 不加分的项目（了不起）：标题右边写“一共 N 件”（以前所有日子点亮过的都算），也不算进今天的进度条 */
+  const zg=new Set(GROUPS.filter(g=>{const hs=HABITS.filter(h=>h.grp===g.id);return hs.length&&hs.every(h=>!h.pts)}).map(g=>g.id));
+  const allCnt=k=>Object.values(state.points).filter(d=>d&&d.habit&&(HABITS.find(h=>h.id===d.habit)||{}).grp===k).length;
+  for(const k in cnt){const e=document.getElementById("cnt-"+k);if(e)e.textContent=zg.has(k)?"一共 "+allCnt(k)+" 件":cnt[k][0]+" / "+cnt[k][1];const tc=document.getElementById("tc-"+k);if(tc)tc.textContent=zg.has(k)?"共"+allCnt(k)+"件":cnt[k][0]+"/"+cnt[k][1]}
   showGrp();
-  const nd=Object.values(cnt).reduce((s,c)=>s+c[0],0),na=Object.values(cnt).reduce((s,c)=>s+c[1],0);
+  const nd=Object.entries(cnt).reduce((s,[k,c])=>s+(zg.has(k)?0:c[0]),0),na=Object.entries(cnt).reduce((s,[k,c])=>s+(zg.has(k)?0:c[1]),0);
   $("#todayLbl").textContent=dayWord(t)+"得到";$("#todayPts").innerHTML="+"+got+'<i class="tst">★</i>';
   $("#mtLbl").textContent=off2(t);$("#mtPts").textContent="+"+got;
   $("#todayBar").style.width=(na?nd/na*100:0)+"%";
@@ -2134,7 +2145,11 @@ const armed=key=>armUndo&&armUndo.key===key&&Date.now()-armUndo.t<3000?"arm":"";
 async function tapHabit(h,btn){
   const date=recDate(),id=date+"_"+slotOf(h),d=state.points[id],r=btn.getBoundingClientRect();
   if(d&&d.habit!==h.id&&(d.habit||h.slot)){say(shortName(d)+"，已经记过啦");return}
-  if(d){if(Date.now()-(d.ts||0)<1500)return;if(needConfirm(id,btn,h.name))return;await del("points",id);fly(r,"−"+(d.pts||h.pts)+"分","neg");bump("ptsCard");say(h.name+"，取消啦");return}
+  if(d){if(Date.now()-(d.ts||0)<1500)return;if(needConfirm(id,btn,h.name))return;await del("points",id);if(d.pts){fly(r,"−"+d.pts+"分","neg");bump("ptsCard")}else fly(r,"取消","neg");say(h.name+"，取消啦");return}
+  /* 不加分的格子（了不起）：不换东西，只把这件事记进高光日记 */
+  if(!h.pts){await put("points",id,{date,habit:h.id,name:h.name,icon:h.icon,pts:0,ts:Date.now()});
+    fly(r,"📖 记下来");say(`${isPast()?dayWord(recDate())+"的":""}${h.name}，了不起！这件事，我们记下来。`);
+    if(h.diary)setTimeout(()=>Diary.ask(h,date),1500);return}
   await put("points",id,{date,habit:h.id,name:h.name,icon:h.icon,pts:h.pts,ts:Date.now()});
   fly(r,"+"+h.pts+"分");bump("ptsCard");capFlash();
   say(`${h.hot&&!h.plain?"哇，自己主动的！":""}${isPast()?dayWord(recDate())+"的":""}${h.name}，加${h.pts}分！`);
@@ -2502,7 +2517,7 @@ const Diary=(()=>{
     return parts;
   }
   function paginate(m){
-    const T=m.text||"（还没写）",w=Math.round(book.clientWidth),key=[m.id,T,!!m.photo,m.q,m.wx,w,Math.round(book.clientHeight),imm].join("|");
+    const T=dtext(m),w=Math.round(book.clientWidth),key=[m.id,T,!!m.photo,m.q,m.wx,w,Math.round(book.clientHeight),imm].join("|");
     if(w<50)return[{t:"diary",m}];
     if(PCACHE.has(key))return PCACHE.get(key).map(o=>({t:"diary",m,...o}));
     needFont(T);
@@ -2543,7 +2558,7 @@ const Diary=(()=>{
       case"cover":return`<div class="${cls} cover"><span class="corner a"></span><span class="corner b"></span><div class="inner"><div class="em">★</div><h2>${esc(KID())}的<br>高光日记</h2><div class="yr">${(M[0]?md(M[0].date)[0]:new Date().getFullYear())}${CLS()?" · "+esc(CLS()):""}</div></div><span class="band"></span><div class="tap">点我打开 ▸</div></div>`;
       case"endp":return`<div class="${cls} endp"><div class="owner"><small>这本日记属于</small><b>${esc(KID())}</b><span>${esc(CLS())}</span></div></div>`;
       case"toc":return`<div class="${cls} diary toc"><h3>目 录<button type="button" class="toc-add" data-add-diary="1">✍️ 写一篇</button></h3><ol>${M.map((m,k)=>{const[,mo,da]=md(m.date),q=dqOf(m.q);return`<li data-id="${esc(m.id)}" role="button" aria-label="打开 ${mo}月${da}日 ${esc(q.name)}">${mo}月${da}日<i style="background:${q.c}">${esc(q.ic)} ${esc(q.name)}</i><span class="dot"></span><em class="tpno">第 ${START[m.id]||k+1} 页 ▸</em></li>`}).join("")}${M.length?"":`<li style="justify-content:center;opacity:.65">还没有高光日记，记下第一个闪光时刻吧</li>`}</ol>${M.length?"":`<button type="button" class="dy-inadd" data-add-diary="1">✍️ 写下第一篇高光日记</button>`}</div>`;
-      case"diary":{const m=p.m,[,mo,da]=md(m.date),q=dqOf(m.q),multi=p.txt!=null,txt=multi?p.txt:(m.text||"（还没写）"),L=txt.length,last=!multi||p.last;
+      case"diary":{const m=p.m,[,mo,da]=md(m.date),q=dqOf(m.q),multi=p.txt!=null,txt=multi?p.txt:dtext(m),L=txt.length,last=!multi||p.last;
         const size=multi?(p.size||"")+(p.first?"":" cont")+(last&&p.n>1?" endp2":""):p.size!=null?p.size:L>65?" long2":L>55?" long":"";
         const foot=p.side||(last&&!p.nofoot);
         return`<div class="${cls} diary${size}${last||p.sig?"":" pmore"}${p.solo?" psolo":""}${foot&&!p.solo?" plast":""}${foot&&m.photo&&!p.solo?" pph":""}"><div class="dhead"><b>${mo}</b>月<b>${da}</b>日　星期<b>${wdOf(m.date)}</b>　天气<b>${m.wx||"　　"}</b><span class="dh-r">${multi&&p.n>1?`<span class="dpg">${p.k||1}/${p.n||1}</span>`:""}<button type="button" class="dh-b" data-edit-diary="${esc(m.id)}" aria-label="修改这篇日记">✏️ 改</button><button type="button" class="dh-b dh-del" data-del-diary="${esc(m.id)}" aria-label="删除这篇日记">🗑 删</button></span></div>${foot?`
@@ -2800,7 +2815,7 @@ const Diary=(()=>{
   prevB.onclick=()=>step(-1);nextB.onclick=()=>step(1);
   /* 念给我听：按整句念（队长录音是一句一句生成的）。这一页从哪句开始就念哪几句；页底没写完的那句也念完 */
   const SENTS=t=>t.match(/[^。！？!?]+[。！？!?]*/g)||[];
-  const sayEntry=p=>{if(!p||p.t!=="diary")return"";const[,mo,da]=md(p.m.date),q=dqOf(p.m.q),full=p.m.text||"（还没写）";
+  const sayEntry=p=>{if(!p||p.t!=="diary")return"";const[,mo,da]=md(p.m.date),q=dqOf(p.m.q),full=dtext(p.m);
     const head=`${mo}月${da}日，星期${wdOf(p.m.date)}。${KID()}做到了${q.name}！`;
     if(p.txt==null||(p.first&&p.last))return head+full;
     const st=Math.max(0,full.indexOf(p.txt)),en=st+p.txt.length;let pos=0,out=[],cover="";
@@ -2819,15 +2834,16 @@ const Diary=(()=>{
   $("#dyEdit").addEventListener("toggle",renderEditor);
   const ed=$("#dyEd"),edText=$("#edText"),edCust=$("#edCust"),edCustIn=$("#edCustIn"),edErr=$("#edErr");let E=null;
   const Q_GUIDES={
-    persist:"本来哪里觉得有点累或难？宝贝是怎么咬牙坚持做完的？",
-    brave:"遇到了什么有点害怕或陌生的事？宝贝是怎么鼓起勇气做到的？",
+    persist:"本来哪里觉得累或难？心里是什么感觉？后来是怎么接着做完的？",
+    brave:"遇到了什么有点害怕或陌生的事？害怕是可以的——害怕了还是去做了，才叫勇敢。",
     focus:"今天做什么事情特别认真投入？一口气专注了多久？",
-    nocry:"遇到了什么着急或委屈的事？宝贝是怎么忍住眼泪好好解决的？",
+    nocry:"遇到了什么着急或委屈的事？哭了也没关系，后来是怎么面对的？",
     self:"今天哪件事不用爸爸妈妈催，自己主动去做好了？",
-    talk:"心里有什么想法或委屈，宝贝是怎么清楚、好好地说出来的？"
+    talk:"心里有什么想法或委屈，宝贝是怎么清楚、好好地说出来的？",
+    feel:"心里有什么感觉（害怕、难过、生气、不想做…）？是怎么说出来的？说出来以后怎么样了？"
   };
   function qChips(sel){const m=curDQ();if(sel&&!m[sel])m[sel]=dqOf(sel);
-    return Object.entries(m).map(([k,q])=>`<button type="button" data-q="${esc(k)}" class="${k===sel?"on":""}" style="--c:${q.c}">${esc(q.ic)} ${esc(q.name)}</button>`).join("")+`<button type="button" data-q="+">＋ 自定印章</button>`}
+    return Object.entries(m).filter(([k])=>k!=="nocry"||k===sel).map(([k,q])=>`<button type="button" data-q="${esc(k)}" class="${k===sel?"on":""}" style="--c:${q.c}">${esc(q.ic)} ${esc(q.name)}</button>`).join("")+`<button type="button" data-q="+">＋ 自定印章</button>`}
   function fmtEdDate(ds){
     if(!ds)ds=today();const[,mo,da]=md(ds),w="周"+wdOf(ds);
     return ds===today()?`今天 · ${mo}月${da}日 ${w}`:ds===addDays(today(),-1)?`昨天 · ${mo}月${da}日 ${w}`:`${mo}月${da}日 ${w}`;
@@ -2855,6 +2871,7 @@ const Diary=(()=>{
     edDateBox.querySelectorAll("[data-dd]").forEach(b=>b.classList.toggle("on",curD===addDays(today(),+b.dataset.dd)));
     $("#edWx").innerHTML=DWX.map(w=>`<button type="button" data-w="${w}" class="${w===(E.wx||"")?"on":""}" aria-label="天气 ${w}">${w}</button>`).join("");
     $("#edCount").textContent=`${edText.value.trim().length} 字`;
+    $("#edFeel").innerHTML=Object.entries(FEEL).map(([k,f])=>`<button type="button" data-f="${k}" class="${E.feel===k?"on":""}" style="--c:#E25D8C">${f.ic} ${f.name}</button>`).join("");
     $("#edBy").innerHTML=[["kid",KID()+"记","✏️","#4F8DF5"],["parent","爸爸妈妈记","✍️","#F28C38"]].map(([k,n,ic,c])=>`<button type="button" data-by="${k}" class="${(E.by||"parent")===k?"on":""}" style="--c:${c}">${ic} ${esc(n)}</button>`).join("");
   }
   function edOpen(opts){
@@ -2862,9 +2879,9 @@ const Diary=(()=>{
     const d=id?state.diary[id]:null;
     const initDate=(opts&&opts.date)||(d&&d.date)||today();
     const initQ=(opts&&opts.q)||(d&&d.q)||"persist";
-    E=d?{id,...d}:{id:null,date:initDate,q:initQ,wx:"",text:"",photo:null,habit:opts&&opts.habit||null,fromAsk:!!(opts&&opts.fromAsk),by:(()=>{try{return localStorage.getItem("xdj:diaryBy")||"parent"}catch(e){return"parent"}})()};
+    E=d?{id,...d}:{id:null,date:initDate,q:initQ,feel:"",wx:"",text:"",photo:null,habit:opts&&opts.habit||null,fromAsk:!!(opts&&opts.fromAsk),by:(()=>{try{return localStorage.getItem("xdj:diaryBy")||"parent"}catch(e){return"parent"}})()};
     if(!E.by)E.by="parent";
-    E.orig=JSON.stringify([E.date,E.q,E.wx||"",E.text||"",E.photo||null,E.by]);
+    E.orig=JSON.stringify([E.date,E.q,E.wx||"",E.text||"",E.photo||null,E.by,E.feel||""]);
     $("#edTitle").textContent=d?"✏️ 修改高光日记":"📔 记录高光时刻";
     const sub=$("#edSub");
     if(opts&&opts.habitName){sub.textContent=`🌟 刚点亮「${opts.habitName}」· 把这一刻记下来吧`;sub.hidden=false}else sub.hidden=true;
@@ -2875,7 +2892,7 @@ const Diary=(()=>{
     edDateInp.max=today();edDateInp.value=E.date;edText.value=E.text||"";
     edDraw();ed.hidden=false;ed.querySelector(".edbody").scrollTop=0;
   }
-  const edDirty=()=>E&&JSON.stringify([$("#edDate").value||E.date,E.q,E.wx||"",edText.value.trim(),E.photo||null,E.by])!==E.orig;
+  const edDirty=()=>E&&JSON.stringify([$("#edDate").value||E.date,E.q,E.wx||"",edText.value.trim(),E.photo||null,E.by,E.feel||""])!==E.orig;
   function edClose(){ed.hidden=true;edCust.hidden=true;E=null;edText.blur()}
   /* 跳到指定日记：如果日记本还没翻开封面，就直接自动翻开到那一篇；如果已经翻开，就卷页翻过去 */
   function goTo(id,anim){
@@ -2914,6 +2931,7 @@ const Diary=(()=>{
   edCustIn.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();applyCustQ()}});
   /* 谁记的：孩子自己记 / 爸爸妈妈记（日记最后的签名跟着变；新写的日记默认上次选的） */
   $("#edBy").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.by=b.dataset.by;try{localStorage.setItem("xdj:diaryBy",E.by)}catch(er){}edDraw()}});
+  $("#edFeel").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.feel=E.feel===b.dataset.f?"":b.dataset.f;edDraw()}});
   $("#edWx").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.wx=E.wx===b.dataset.w?"":b.dataset.w;edDraw()}});
   edDateBtn.addEventListener("click",()=>{
     edDateBtn.hidden=true;edDateBox.hidden=false;edDraw();
@@ -2944,8 +2962,8 @@ const Diary=(()=>{
     if(!E)return;const text=edText.value.trim();
     if(!text){edErr.textContent="👆 先写一两句发生了什么吧（哪怕一句话也行）～";edErr.hidden=false;edText.classList.remove("shake");void edText.offsetWidth;edText.classList.add("shake");edText.focus();return}
     const isNew=!E.id,id=E.id||"d"+rid(),old=E.id?state.diary[E.id]||{}:{};
-    const data={...old,date:$("#edDate").value||E.date,q:E.q,wx:E.wx||"",text,photo:E.photo||null,by:E.by||"parent",ts:old.ts||Date.now(),...(E.habit?{habit:E.habit}:{})};
-    if(!data.photo)delete data.photo;
+    const data={...old,date:$("#edDate").value||E.date,q:E.q,wx:E.wx||"",text,photo:E.photo||null,by:E.by||"parent",feel:E.feel||"",ts:old.ts||Date.now(),...(E.habit?{habit:E.habit}:{})};
+    if(!data.photo)delete data.photo;if(!data.feel)delete data.feel;
     edClose();await put("diary",id,data);renderEditor();
     if(open)goTo(id,true);
     if(isNew)say("写进高光日记啦！");
