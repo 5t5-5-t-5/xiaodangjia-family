@@ -459,66 +459,70 @@ details.parent summary::-webkit-details-marker{display:none}
 .dyed .edx{background:#EFE8DC;color:#6B6152}
 .dyed .edok{background:linear-gradient(#2ACA82,#1EA365);color:#fff;box-shadow:0 4px 0 #157D4C}
 .dyed .edok:active{transform:translateY(3px);box-shadow:0 1px 0 #157D4C}
-.dyed .edbody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:20px 24px 18px;display:grid;grid-template-columns:248px 1fr;gap:24px;align-items:start}
-/* 左栏：重点突出的拍立得照片相框 */
-.ed-pcol{display:flex;flex-direction:column;align-items:center;gap:10px}
-.ed-pola{position:relative;width:100%;background:#fff;border-radius:18px;padding:12px 12px 22px;box-shadow:0 10px 24px rgba(90,56,20,.14),0 0 0 1.5px #ECDFC8;display:flex;flex-direction:column;gap:10px}
-.ed-pola.has{padding-bottom:14px}
-.ed-pola::before{content:"";position:absolute;top:-9px;left:50%;width:64px;height:18px;margin-left:-32px;border-radius:3px;background:rgba(255,226,140,.85);transform:rotate(-2deg);box-shadow:0 2px 4px rgba(0,0,0,.08)}
-.ed-pbox{position:relative;width:100%;aspect-ratio:1;border-radius:12px;border:2.5px dashed #E5CFA8;background:linear-gradient(180deg,#FFFBF2,#FFF2D6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px;text-align:center;cursor:pointer;overflow:hidden;transition:border-color .15s,transform .12s}
-.ed-pbox:active{transform:scale(.98)}
-.ed-pbox.has{border:0;padding:0;background:#F3EBDD}
-.ed-pbox img{width:100%;height:100%;object-fit:cover;display:block}
-.ed-pbox .cam-ic{width:54px;height:54px;border-radius:50%;background:#FFE5AE;display:grid;place-items:center;font-size:28px;box-shadow:0 4px 0 #F0C265}
-.ed-pbox .cam-t{font-size:16px;font-weight:800;color:#6E4214;margin-top:4px}
-.ed-pbox .cam-opt{font-size:12.5px;font-weight:600;color:#A88B67}
-.ed-pst{position:absolute;right:8px;bottom:8px;width:66px;height:66px;border-radius:50%;border:3.5px solid var(--c,#FF9F1C);color:var(--c,#FF9F1C);background:rgba(255,255,255,.86);box-shadow:inset 0 0 0 2px #fff,inset 0 0 0 4px var(--c,#FF9F1C);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-12deg);font-weight:800;line-height:1.05;pointer-events:none}
-.ed-pst i{font-style:normal;font-size:20px}.ed-pst span{font-size:12px;white-space:nowrap}.ed-pst.s4 span{font-size:10px}
-.ed-pacts{display:flex;gap:8px;justify-content:center;align-items:center}
-.ed-pacts[hidden]{display:none}
-.ed-pacts .ed-pbtns{display:flex;gap:8px;width:100%}
-.ed-pacts button{flex:1;border:0;border-radius:10px;padding:8px 10px;font:700 13.5px/1 inherit;background:#EEF4FF;color:#2B6CB0;cursor:pointer;white-space:nowrap}
-.ed-pacts .edgray{background:#F3EEE6;color:#7A6E5E}
-/* 右栏：清晰两步引导 + 底部弱化辅助栏 */
-.ed-fcol{display:flex;flex-direction:column;gap:14px;min-width:0}
-.ed-sec{display:flex;flex-direction:column;gap:8px}
-.ed-hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.ed-num{width:24px;height:24px;border-radius:50%;background:#FF9F1C;color:#fff;font-size:14px;font-weight:800;display:grid;place-items:center;flex:none}
-.ed-hd b{font-size:16px;font-weight:800;color:#3A2614}
-.ed-hd small{font-size:13px;color:#9A8C78;font-weight:500}
-.ed-hd .edcount{margin-left:auto;font-size:13px;color:#9A8C78;font-variant-numeric:tabular-nums}
-.dyed .edchips{display:flex;flex-wrap:wrap;gap:8px}
-.dyed .edchips button{border:2px solid #EAE0CE;background:#fff;border-radius:14px;padding:8px 13px;font:700 15px/1.2 inherit;color:#4A3F32;cursor:pointer;transition:all .15s}
-.dyed .edchips button.on{border-color:var(--c,#FF9F1C);background:var(--c,#FF9F1C);color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.12)}
-.dyed .edchips button[data-q="+"]{border-style:dashed;color:#8A7B66;font-weight:600}
-.ed-cust{display:flex;gap:8px;align-items:center;margin-top:2px}
-.ed-cust input{width:150px;padding:8px 12px;border:2px solid #E5CFA8;border-radius:12px;font:700 15px inherit;background:#fff;color:inherit}
-.ed-cust button{border:0;border-radius:12px;padding:9px 14px;background:#FF9F1C;color:#fff;font:700 14px inherit;cursor:pointer}
-.dyed textarea{width:100%;min-height:172px;border:2px solid #E6D8C0;border-radius:16px;padding:12px 14px;font:inherit;font-size:18px;line-height:1.75;color:#26357A;resize:vertical;
-  background:linear-gradient(transparent 30px,#F1E7D6 31px) 0 8px/100% 31.5px,#FFFDF9}
-.dyed textarea::placeholder{color:#B0A28E;font-size:16.5px;font-weight:400}
-.dyed textarea:focus{outline:none;border-color:#FF9F1C;background-color:#fff}
-.dyed textarea.shake{border-color:#E5534B;animation:nope .36s}
-.ed-err{color:#D9483B;font-size:14px;font-weight:700;min-height:0}
-/* 弱化的次要信息栏：日期（默认今天，点开立刻切昨天或选日子）+ 天气（选填）+ 删除 */
-.ed-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px;padding-top:12px;border-top:1.5px dashed #ECE2D0;color:#8C7F6E;font-size:13.5px}
+.dyed .edbody{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px 22px 20px;display:grid;grid-template-columns:1fr 290px;gap:20px;align-items:stretch;background:#FBF7F0}
+/* D2（2026-11-17）：右边孩子自己选（大表情、大印章，点了会念），左边爸爸妈妈写 */
+.dycard{position:relative}
+.ed-kid{order:2;display:flex;flex-direction:column;gap:14px;min-width:0}
+.ed-kh{font-size:16px;font-weight:800;color:#C2650F;padding-left:4px}
+.ed-card{position:relative;flex:1;min-height:200px;background:#fff;border-radius:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer;border:3px solid transparent;transition:transform .12s,border-color .15s;-webkit-tap-highlight-color:transparent}
+.ed-card:active{transform:scale(.97)}
+.ed-card .q{position:absolute;top:14px;left:18px;font-size:15px;color:#A69CB2;font-weight:700}
+.ed-card .spk{position:absolute;top:10px;right:12px;width:42px;height:42px;border-radius:50%;border:0;background:#F4EFE7;display:grid;place-items:center;font-size:20px;cursor:pointer;padding:0}
+.ed-card .face{font-size:92px;line-height:1.05}
+.ed-card b{font-size:26px;font-weight:800;color:#C23E6E}
+.ed-card.none .face{font-size:64px;opacity:.5}.ed-card.none b{color:#B0A6BA;font-size:22px}
+.ed-card.none{border:3px dashed #EBD9E2}
+.ed-card .hint{font-size:13.5px;color:#B0A6BA;font-weight:600}
+.ed-stamp{width:132px;height:132px;border-radius:50%;border:6px solid var(--c);color:var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-8deg);font-size:28px;font-weight:800;line-height:1.1;margin-bottom:4px}
+.ed-stamp i{font-style:normal;font-size:46px}.ed-stamp.s4{font-size:21px}
+.ed-write{order:1;background:#fff;border-radius:26px;padding:20px 24px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ed-wh{font-size:16px;color:#8A7FA0;font-weight:700;display:flex;align-items:center;gap:8px}
+.ed-wh .edcount{margin-left:auto;font-size:13px;color:#B0A6BA;font-weight:500;font-variant-numeric:tabular-nums}
+.ed-asks{display:flex;flex-wrap:wrap;gap:8px}
+.ed-asks span{font-size:14.5px;background:#F6F1FA;color:#7B6A93;border-radius:99px;padding:5px 12px}
+.dyed textarea{width:100%;flex:1;min-height:210px;border:0;border-radius:14px;padding:6px 4px;font:inherit;font-size:24px;line-height:1.7;color:#26357A;resize:none;background:transparent}
+.dyed textarea::placeholder{color:#B8AEC4;font-size:18px;font-weight:400;line-height:1.6}
+.dyed textarea:focus{outline:none}
+.dyed textarea.shake{animation:nope .36s}
+.ed-err{color:#D9483B;font-size:14px;font-weight:700}
+.ed-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding-top:10px;border-top:1.5px dashed #EEE6DA;color:#8C7F6E;font-size:13.5px}
+.ed-chip,.ed-dwrap,.ed-pbox{border:0;display:inline-flex;align-items:center;gap:6px;padding:8px 13px;border-radius:99px;background:#F7F3EC;color:#6E6252;font-family:inherit;font-weight:600;font-size:14px;line-height:1.2;cursor:pointer;transition:transform .1s}
+.ed-chip:active,.ed-dwrap:active,.ed-pbox:active{transform:scale(.95)}
+.ed-dwrap u{text-decoration:none;color:#4A90E2;font-weight:700}
 .ed-darea{display:inline-flex;align-items:center;min-width:0}
-.ed-dwrap{border:1.5px solid transparent;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;background:#F6F1E7;color:#6E6252;font:600 13.5px/1.2 inherit;cursor:pointer;transition:background-color .15s,border-color .15s,transform .1s}
-.ed-dwrap:hover{background:#EFE7D8;border-color:#E2D3BC}
-.ed-dwrap:active{transform:scale(.96);background:#E8DEC9}
-.ed-dwrap u{text-decoration:none;color:#4A90E2;font-weight:700;margin-left:2px}
 .ed-dpick{display:inline-flex;align-items:center;flex-wrap:wrap;gap:6px;padding:5px 7px;border-radius:14px;background:#FFF6E2;border:1.5px solid #EECB94}
 .ed-dpick[hidden]{display:none}
-.ed-dpick button[data-dd]{border:0;border-radius:99px;padding:6px 11px;background:#fff;color:#6E583A;font:700 13px/1 inherit;cursor:pointer}
+.ed-dpick button[data-dd]{border:0;border-radius:99px;padding:6px 11px;background:#fff;color:#6E583A;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer}
 .ed-dpick button[data-dd].on{background:#FF9F1C;color:#fff}
-.ed-dpick input[type="date"]{border:1.5px solid #E5CCA0;border-radius:10px;background:#fff;padding:4px 8px;font:600 13.5px inherit;color:#3A2614;cursor:pointer;min-height:30px}
-.ed-dpick .ed-dok{border:0;border-radius:99px;padding:6px 10px;background:#EDE3D2;color:#6E5A42;font:700 12.5px/1 inherit;cursor:pointer}
-.ed-wxw{display:inline-flex;align-items:center;gap:4px}
-.ed-wx{display:inline-flex;gap:4px}
-.ed-wx button{border:1.5px solid transparent;background:#F6F1E7;border-radius:99px;width:34px;height:32px;font-size:17px;padding:0;display:grid;place-items:center;opacity:.68;cursor:pointer;transition:all .15s}
-.ed-wx button.on{opacity:1;background:#FFF0C2;border-color:#F2B33D;transform:scale(1.08)}
-.dyed .eddel{border:1px solid #F2C4BE;background:#FFF1EF;color:#C4453A;border-radius:99px;font:700 13px/1 inherit;padding:7px 12px;cursor:pointer}
-.dyed .eddel:active{background:#FFE2DE}
+.ed-dpick input[type="date"]{border:1.5px solid #E5CCA0;border-radius:10px;background:#fff;padding:4px 8px;font-family:inherit;font-size:13.5px;color:#3A2614;min-height:30px}
+.ed-dpick .ed-dok{border:0;border-radius:99px;padding:6px 10px;background:#EDE3D2;color:#6E5A42;font-family:inherit;font-weight:700;font-size:12.5px;cursor:pointer}
+.ed-pbox{background:#fff;box-shadow:inset 0 0 0 2px #E6D9C4;color:#9A8C78}
+.ed-pbox.has{padding:4px 12px 4px 4px;box-shadow:inset 0 0 0 2px #F2C98E;color:#8A5A1E}
+.ed-pbox img{width:38px;height:38px;border-radius:50%;object-fit:cover;display:block}
+.ed-pdel{border:0;width:30px;height:30px;border-radius:50%;background:#F3EEE6;color:#8A7F72;font-size:14px;cursor:pointer;padding:0}
+.ed-pdel[hidden]{display:none}
+.ed-wx{display:inline-flex;gap:3px;background:#F7F3EC;border-radius:99px;padding:3px}
+.ed-wx button{border:0;background:transparent;border-radius:99px;width:32px;height:30px;font-size:16px;padding:0;display:grid;place-items:center;opacity:.5;cursor:pointer}
+.ed-wx button.on{opacity:1;background:#FFF0C2}
+.dyed .eddel{margin-left:auto;border:1px solid #F2C4BE;background:#FFF1EF;color:#C4453A;border-radius:99px;font-family:inherit;font-weight:700;font-size:13px;padding:7px 12px;cursor:pointer}
+/* 孩子点开的大选择 */
+.ed-sheet{position:absolute;inset:0;z-index:3;background:rgba(43,43,58,.3);display:grid;place-items:center;padding:16px}
+.ed-sheet[hidden]{display:none}
+.ed-shc{width:min(800px,100%);max-height:100%;overflow-y:auto;background:#fff;border-radius:30px;padding:24px 26px 20px;animation:pop .28s cubic-bezier(.25,1.25,.5,1)}
+.ed-shc h3{font-size:25px;font-weight:800;color:#2B2B3A;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ed-shc h3 em{font-style:normal;font-size:15px;color:#A69CB2;font-weight:600}
+.ed-big{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
+.ed-big button{height:140px;border-radius:26px;background:#F8F4EE;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:20px;font-weight:700;color:#4A4458;border:4px solid transparent;cursor:pointer;padding:4px}
+.ed-big button b{font-size:64px;line-height:1;font-weight:400}
+.ed-big button.on{background:var(--bg,#FDE7EF);border-color:var(--c,#E25D8C);color:var(--c,#C23E6E)}
+.ed-big button.add{background:#fff;border:3px dashed #DCCFBC;color:#9A8C78;font-size:17px}
+.ed-big button.add b{font-size:40px}
+.ed-cust{display:flex;gap:8px;align-items:center;margin-top:14px;justify-content:center}
+.ed-cust[hidden]{display:none}
+.ed-cust input{width:220px;padding:10px 14px;border:2px solid #E5CFA8;border-radius:14px;font-family:inherit;font-weight:700;font-size:17px;background:#fff;color:inherit}
+.ed-cust button{border:0;border-radius:14px;padding:11px 18px;background:#FF9F1C;color:#fff;font-family:inherit;font-weight:700;font-size:16px;cursor:pointer}
+.ed-shf{display:flex;justify-content:center;gap:12px;margin-top:16px}
+.ed-shf button{border:0;border-radius:99px;padding:10px 22px;background:#F3EEE6;color:#7A6E5E;font-family:inherit;font-weight:700;font-size:15px;cursor:pointer}
 @media (max-width:759px){
   .dyed{padding:10px}
   .dycard{max-height:calc(100svh - 20px);border-radius:24px}
@@ -526,19 +530,25 @@ details.parent summary::-webkit-details-marker{display:none}
   .dyed .edttl b{font-size:17px;white-space:nowrap}
   .dyed .edttl small{font-size:11.5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
   .dyed .edbar button{padding:9px 13px;font-size:14.5px}
-  .dyed .edbody{grid-template-columns:1fr;gap:14px;padding:14px 16px 16px}
-  .ed-pola{padding:8px 10px}
-  .ed-pola.has{flex-direction:row;align-items:center;padding:10px 12px;gap:12px}
-  .ed-pola::before{left:50%;width:44px;height:14px;margin-left:-22px;top:-7px}
-  .ed-pola.has::before{left:54px;margin-left:0}
-  .ed-pola:not(.has) .ed-pbox{width:100%;height:56px;aspect-ratio:auto;flex-direction:row;justify-content:center;gap:10px;padding:8px 14px}
-  .ed-pola:not(.has) .ed-pbox .cam-t{margin-top:0;font-size:15px}
-  .ed-pola.has .ed-pbox{width:88px;height:88px;flex:none}
-  .ed-pbox .cam-ic{width:36px;height:36px;font-size:19px;box-shadow:0 2px 0 #F0C265}
-  .ed-pst{width:42px;height:42px;right:4px;bottom:4px;border-width:2.5px}.ed-pst i{font-size:13px}.ed-pst span{font-size:8.5px}
-  .ed-pacts{flex:1}
-  .ed-pacts .ed-pbtns{display:flex;flex-direction:column;gap:6px;width:100%}
-  .dyed textarea{min-height:124px;font-size:17px}
+  .dyed .edbody{grid-template-columns:1fr;gap:12px;padding:12px 12px 14px}
+  .ed-kid{order:1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .ed-kh{grid-column:1/-1}
+  .ed-card{min-height:156px;border-radius:22px}
+  .ed-card .q{top:10px;left:12px;font-size:13px}
+  .ed-card .spk{width:34px;height:34px;font-size:16px;top:7px;right:8px}
+  .ed-card .face{font-size:58px;margin-top:10px}.ed-card b{font-size:20px}.ed-card.none .face{font-size:44px}.ed-card.none b{font-size:17px}
+  .ed-card .hint{font-size:12px}
+  .ed-stamp{width:88px;height:88px;border-width:4px;font-size:19px;margin-top:12px}.ed-stamp i{font-size:30px}.ed-stamp.s4{font-size:15px}
+  .ed-write{padding:14px 16px 12px;border-radius:22px}
+  .ed-wh{font-size:15px}.ed-asks span{font-size:13px;padding:4px 10px}
+  .dyed textarea{min-height:130px;font-size:19px}
+  .dyed textarea::placeholder{font-size:16px}
+  .ed-shc{padding:18px 14px 14px;border-radius:24px}
+  .ed-shc h3{font-size:20px}
+  .ed-big{gap:8px;margin-top:14px}
+  .ed-big button{height:96px;border-radius:18px;font-size:15px;gap:4px;border-width:3px}
+  .ed-big button b{font-size:40px}.ed-big button.add b{font-size:28px}.ed-big button.add{font-size:13px}
+  .ed-cust input{width:170px}
 }
 #diary .dfoot{display:flex;align-items:flex-end;gap:calc(2*var(--u));order:5}#diary .dsign{order:4}#diary .dfoot .stamp{margin-left:auto}
 #diary .dpic{position:relative;flex:none;width:calc(19*var(--u));padding:calc(1*var(--u)) calc(1*var(--u)) calc(3*var(--u));background:#fff;border-radius:calc(.4*var(--u));box-shadow:0 calc(.5*var(--u)) calc(1.2*var(--u)) rgba(0,0,0,.18);transform:rotate(-5deg);margin:calc(1.6*var(--u)) 0 0 calc(.6*var(--u))}
@@ -1118,7 +1128,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid" type="button">🧒 小朋友</button><button class="mini" data-vs="normal" type="button">🙂 普通</button><button class="mini" data-vs="robot" type="button">🤖 机器人</button><button class="mini" data-vs="captain" type="button">🦾 机器人队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月17日 09:09</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月17日 22:03</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1167,34 +1177,19 @@ details.parent summary{background:none}
       <button type="button" class="edok" id="edSave">✨ 写进日记</button>
     </div>
     <div class="edbody">
-      <div class="ed-pcol">
-        <div class="ed-pola" id="edPola">
-          <div class="ed-pbox" id="edPbox" role="button" tabindex="0" aria-label="添加或更换照片"></div>
-          <div class="ed-pacts" id="edPacts" hidden></div>
-        </div>
+      <div class="ed-kid">
+        <div class="ed-kh">👆 <span id="edKidName"></span>来选</div>
+        <div class="ed-card" id="edFeelCard" role="button" tabindex="0" aria-label="选心情"></div>
+        <div class="ed-card" id="edQCard" role="button" tabindex="0" aria-label="选印章"></div>
       </div>
-      <div class="ed-fcol">
-        <div class="ed-sec">
-          <div class="ed-hd"><span class="ed-num">1</span><b>当时心里是什么感觉？</b><small>什么感觉都可以</small></div>
-          <div class="edchips" id="edFeel"></div>
-        </div>
-        <div class="ed-sec">
-          <div class="ed-hd"><span class="ed-num">2</span><b>做到了什么？</b></div>
-          <div class="edchips" id="edQ"></div>
-          <div class="ed-cust" id="edCust" hidden><input id="edCustIn" type="text" maxlength="4" placeholder="印章词（1~4字，如：助人）" aria-label="自定印章词"><button type="button" id="edCustOk">确定</button></div>
-        </div>
-        <div class="ed-sec">
-          <div class="ed-hd"><label for="edText"><span class="ed-num" style="display:inline-grid;margin-right:8px">3</span><b>发生了什么？</b></label><small>🎤 可点键盘麦克风语音说</small><span class="edcount" id="edCount">0 字</span></div>
-          <textarea id="edText"></textarea>
-          <div class="ed-err" id="edErr" hidden></div>
-        </div>
-        <div class="ed-sec">
-          <div class="ed-hd"><span class="ed-num">4</span><b>谁记的？</b></div>
-          <div class="edchips" id="edBy"></div>
-        </div>
+      <div class="ed-write">
+        <label for="edText" class="ed-wh">✍️ 爸爸妈妈写：发生了什么？<span class="edcount" id="edCount">0 字</span></label>
+        <div class="ed-asks"><span>可以问：当时怎么了？</span><span>你心里怎么想的？</span><span>后来呢？</span></div>
+        <textarea id="edText"></textarea>
+        <div class="ed-err" id="edErr" hidden></div>
         <div class="ed-meta">
           <div class="ed-darea">
-            <button type="button" class="ed-dwrap" id="edDateBtn"><span>📅</span><span id="edDateLbl">今天</span><u>改日期</u></button>
+            <button type="button" class="ed-dwrap" id="edDateBtn"><span>📅</span><span id="edDateLbl">今天</span><u>改</u></button>
             <div class="ed-dpick" id="edDateBox" hidden>
               <button type="button" data-dd="0">今天</button>
               <button type="button" data-dd="-1">昨天</button>
@@ -1202,9 +1197,19 @@ details.parent summary{background:none}
               <button type="button" class="ed-dok" id="edDateDone">收起</button>
             </div>
           </div>
-          <div class="ed-wxw"><span>天气（选填）</span><div class="ed-wx" id="edWx"></div></div>
+          <button type="button" class="ed-chip" id="edByBtn" aria-label="谁记的，点一下换"></button>
+          <button type="button" class="ed-pbox" id="edPbox" aria-label="添加或更换照片"></button><button type="button" class="ed-pdel" id="edPdel" hidden aria-label="去掉照片">✕</button>
+          <div class="ed-wx" id="edWx"></div>
           <button type="button" class="eddel" id="edDel" hidden>🗑 删掉本篇</button>
         </div>
+      </div>
+    </div>
+    <div class="ed-sheet" id="edSheet" hidden>
+      <div class="ed-shc">
+        <h3 id="edShT"></h3>
+        <div class="ed-big" id="edBig"></div>
+        <div class="ed-cust" id="edCust" hidden><input id="edCustIn" type="text" maxlength="4" placeholder="印章上的字（1~4字）" aria-label="自己写的印章"><button type="button" id="edCustOk">好了</button></div>
+        <div class="ed-shf" id="edShF"></div>
       </div>
     </div>
   </div>
@@ -1719,7 +1724,7 @@ async function initStore(){
    每次切换家庭码都会彻底清空上一家的本地残留，保证家庭与家庭之间 100% 独立、绝不串数据。 */
 const MODE="family",API="https://eelyepkkkazgztdcnicu.supabase.co",APIKEY="sb_publishable_eGBwA1L2QycoBc9XQnzY1Q_LW-ra8ip";
 /* 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="85baf0cb2a";
+const BUILD="b195db8a75";
 if(MODE==="family"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const setSync=t=>{const el=$("#status");if(el)el.textContent=t};
@@ -1884,7 +1889,7 @@ const Setup={
 /* ---------- 家长改项目和选择卡片 ---------- */
 const DQ_BASE={persist:{name:"坚持",ic:"🏁",c:"#FF9F1C"},brave:{name:"勇敢",ic:"🦸",c:"#4A90E2"},focus:{name:"专注",ic:"🎯",c:"#8C7CF0"},nocry:{name:"不哭",ic:"😊",c:"#FF5FA2"},self:{name:"主动",ic:"⭐",c:"#1DB37A"},talk:{name:"有效沟通",ic:"💬",c:"#FF6B5E"},feel:{name:"说出心情",ic:"💗",c:"#E25D8C"}};
 /* 日记里的“当时心里的感觉”：什么感觉都可以，说出来本身就了不起 */
-const FEEL={scared:{ic:"😨",name:"害怕",line:"有点害怕"},sad:{ic:"😢",name:"难过",line:"有点难过"},angry:{ic:"😠",name:"生气",line:"有点生气"},worry:{ic:"😣",name:"着急",line:"有点着急"},tired:{ic:"😮‍💨",name:"累了",line:"有点累"},nowant:{ic:"🙅",name:"不想做",line:"不太想做"},happy:{ic:"😊",name:"开心",line:"很开心"}};
+const FEEL={scared:{ic:"😨",name:"害怕",line:"有点害怕"},sad:{ic:"😢",name:"难过",line:"有点难过"},angry:{ic:"😠",name:"生气",line:"有点生气"},worry:{ic:"😣",name:"着急",line:"有点着急"},tired:{ic:"😮‍💨",name:"累了",line:"有点累"},nowant:{ic:"🙅",name:"不想做",line:"不太想做"},happy:{ic:"😊",name:"开心",line:"很开心"},unsure:{ic:"🤔",name:"说不清",line:"说不清是什么感觉"}};
 const dtext=m=>(FEEL[m.feel]?`那时候，心里${FEEL[m.feel].line}。`:"")+(m.text||"（还没写）");
 function curDQ(){
   const out={...DQ_BASE};
@@ -2852,28 +2857,40 @@ const Diary=(()=>{
   function closeDateBox(){edDateBox.hidden=true;edDateBtn.hidden=false}
   function edDraw(){
     if(!E)return;
-    const q=dqOf(E.q),pola=$("#edPola"),pbox=$("#edPbox"),pacts=$("#edPacts");
-    $("#edQ").innerHTML=qChips(E.q);
-    edText.placeholder=Q_GUIDES[E.q]||`宝贝今天在「${q.name}」这件事上是怎么做的？记下一两句吧～`;
-    pola.classList.toggle("has",!!E.photo);
+    const q=dqOf(E.q),f=FEEL[E.feel],pbox=$("#edPbox");
+    const fc=$("#edFeelCard");fc.classList.toggle("none",!f);
+    fc.innerHTML=`<span class="q">心里</span>${f?`<button type="button" class="spk" data-spk="feel" aria-label="念出来">🔊</button>`:""}<span class="face">${f?f.ic:"🙂"}</span><b>${f?esc(f.name):"点我选"}</b><span class="hint">${f?"点一下换":"那时候是什么感觉？"}</span>`;
+    $("#edQCard").innerHTML=`<span class="q">做到了</span><button type="button" class="spk" data-spk="q" aria-label="念出来">🔊</button><div class="ed-stamp${q.name.length>2?" s4":""}" style="--c:${q.c}"><i>${esc(q.ic)}</i>${esc(q.name)}</div><span class="hint">点一下换</span>`;
+    edText.placeholder=Q_GUIDES[E.q]||`在「${q.name}」这件事上是怎么做的？记下一两句吧～`;
     pbox.classList.toggle("has",!!E.photo);
-    if(E.photo){
-      pbox.innerHTML=`<img src="${E.photo}" alt="日记照片"><span class="ed-pst${q.name.length>3?" s4":""}" style="--c:${q.c}"><i>${esc(q.ic)}</i><span>${esc(q.name)}</span></span>`;
-      pacts.innerHTML=`<div class="ed-pbtns"><button type="button" data-pa="pick">换一张</button><button type="button" class="edgray" data-pa="del">去掉</button></div>`;
-      pacts.hidden=false;
-    }else{
-      pbox.innerHTML=`<span class="cam-ic">📷</span><span class="cam-t">加照片</span><span class="cam-opt">选填</span>`;
-      pacts.innerHTML="";
-      pacts.hidden=true;
-    }
+    pbox.innerHTML=E.photo?`<img src="${E.photo}" alt="日记照片">换照片`:`📷 加照片`;
+    $("#edPdel").hidden=!E.photo;
     const curD=edDateInp.value||E.date;
     $("#edDateLbl").textContent=fmtEdDate(curD);
     edDateBox.querySelectorAll("[data-dd]").forEach(b=>b.classList.toggle("on",curD===addDays(today(),+b.dataset.dd)));
     $("#edWx").innerHTML=DWX.map(w=>`<button type="button" data-w="${w}" class="${w===(E.wx||"")?"on":""}" aria-label="天气 ${w}">${w}</button>`).join("");
     $("#edCount").textContent=`${edText.value.trim().length} 字`;
-    $("#edFeel").innerHTML=Object.entries(FEEL).map(([k,f])=>`<button type="button" data-f="${k}" class="${E.feel===k?"on":""}" style="--c:#E25D8C">${f.ic} ${f.name}</button>`).join("");
-    $("#edBy").innerHTML=[["kid",KID()+"记","✏️","#4F8DF5"],["parent","爸爸妈妈记","✍️","#F28C38"]].map(([k,n,ic,c])=>`<button type="button" data-by="${k}" class="${(E.by||"parent")===k?"on":""}" style="--c:${c}">${ic} ${esc(n)}</button>`).join("");
+    $("#edByBtn").textContent=(E.by||"parent")==="kid"?`✏️ ${KID()}记`:"✍️ 爸爸妈妈记";
   }
+  /* 孩子点大卡：弹出大表情 / 大印章，点一个就念出来、自动收起 */
+  const sheet=$("#edSheet");let shK=null;
+  function sheetOpen(k){
+    if(!E)return;shK=k;edCust.hidden=true;
+    if(k==="feel"){
+      $("#edShT").innerHTML=`😶 那时候，心里…… <em>点一个，会念出来</em>`;
+      $("#edBig").innerHTML=Object.entries(FEEL).map(([id,f])=>`<button type="button" data-f="${id}" class="${E.feel===id?"on":""}"><b>${f.ic}</b>${esc(f.name)}</button>`).join("");
+      $("#edShF").innerHTML=E.feel?`<button type="button" data-clear="1">先不选</button>`:"";
+      say("那时候，心里是什么感觉？");
+    }else{
+      const m=curDQ();if(E.q&&!m[E.q])m[E.q]=dqOf(E.q);
+      $("#edShT").innerHTML=`🏅 做到了…… <em>点一个，会念出来</em>`;
+      $("#edBig").innerHTML=Object.entries(m).filter(([id])=>id!=="nocry"||id===E.q).map(([id,x])=>`<button type="button" data-q="${esc(id)}" class="${id===E.q?"on":""}" style="--c:${x.c};--bg:${x.c}1F"><b>${esc(x.ic)}</b>${esc(x.name)}</button>`).join("")+`<button type="button" class="add" data-q="+"><b>✍️</b>自己写一个</button>`;
+      $("#edShF").innerHTML="";
+      say("做到了什么？");
+    }
+    sheet.hidden=false;
+  }
+  function sheetClose(){sheet.hidden=true;edCust.hidden=true;shK=null}
   function edOpen(opts){
     const id=typeof opts==="string"?opts:opts&&opts.id||null;
     const d=id?state.diary[id]:null;
@@ -2888,12 +2905,12 @@ const Diary=(()=>{
     $("#edCancel").textContent=E.fromAsk?"先跳过":"取消";
     $("#edSave").textContent=d?"保存修改":"✨ 写进日记";
     $("#edDel").hidden=!d;
-    edCust.hidden=true;edErr.hidden=true;edText.classList.remove("shake");closeDateBox();
+    edCust.hidden=true;edErr.hidden=true;edText.classList.remove("shake");closeDateBox();sheetClose();$("#edKidName").textContent=KID();
     edDateInp.max=today();edDateInp.value=E.date;edText.value=E.text||"";
     edDraw();ed.hidden=false;ed.querySelector(".edbody").scrollTop=0;
   }
   const edDirty=()=>E&&JSON.stringify([$("#edDate").value||E.date,E.q,E.wx||"",edText.value.trim(),E.photo||null,E.by,E.feel||""])!==E.orig;
-  function edClose(){ed.hidden=true;edCust.hidden=true;E=null;edText.blur()}
+  function edClose(){ed.hidden=true;sheetClose();E=null;edText.blur()}
   /* 跳到指定日记：如果日记本还没翻开封面，就直接自动翻开到那一篇；如果已经翻开，就卷页翻过去 */
   function goTo(id,anim){
     if(!open)return;
@@ -2921,17 +2938,24 @@ const Diary=(()=>{
   $("#dyBarAdd").addEventListener("click",()=>{showBar(false);edOpen()});
   $("#dyBarEdit").addEventListener("click",()=>{const cm=curEntry();if(cm){showBar(false);edOpen(cm.id)}});
   $("#dyBarDel").addEventListener("click",()=>{const cm=curEntry();if(cm)delDiary(cm.id)});
-  $("#edQ").addEventListener("click",e=>{
+  function cardTap(k,e){if(!E)return;const sp=e.target.closest("[data-spk]");
+    if(sp){e.stopPropagation();if(k==="feel"){const f=FEEL[E.feel];if(f)say(`那时候，心里${f.line}`)}else say(`做到了，${dqOf(E.q).name}！`);return}
+    sheetOpen(k)}
+  $("#edFeelCard").addEventListener("click",e=>cardTap("feel",e));
+  $("#edQCard").addEventListener("click",e=>cardTap("q",e));
+  $("#edBig").addEventListener("click",e=>{
     const b=e.target.closest("button");if(!b||!E)return;
+    if(b.dataset.f){E.feel=b.dataset.f;say(FEEL[E.feel].name);edDraw();sheetClose();return}
     if(b.dataset.q==="+"){edCust.hidden=!edCust.hidden;if(!edCust.hidden){edCustIn.value=E.q&&E.q.startsWith("c:")?E.q.slice(2):"";edCustIn.focus()}return}
-    edCust.hidden=true;E.q=b.dataset.q;edDraw();
+    if(b.dataset.q){E.q=b.dataset.q;say(dqOf(E.q).name);edDraw();sheetClose()}
   });
-  function applyCustQ(){const s=[...edCustIn.value.trim()].slice(0,4).join("");if(!s||!E)return;E.q="c:"+s;edCust.hidden=true;edDraw()}
+  $("#edShF").addEventListener("click",e=>{if(e.target.closest("[data-clear]")&&E){E.feel="";edDraw();sheetClose()}});
+  sheet.addEventListener("click",e=>{if(e.target===sheet)sheetClose()});
+  function applyCustQ(){const s=[...edCustIn.value.trim()].slice(0,4).join("");if(!s||!E)return;E.q="c:"+s;edCust.hidden=true;edDraw();sheetClose()}
   $("#edCustOk").addEventListener("click",applyCustQ);
   edCustIn.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();applyCustQ()}});
-  /* 谁记的：孩子自己记 / 爸爸妈妈记（日记最后的签名跟着变；新写的日记默认上次选的） */
-  $("#edBy").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.by=b.dataset.by;try{localStorage.setItem("xdj:diaryBy",E.by)}catch(er){}edDraw()}});
-  $("#edFeel").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.feel=E.feel===b.dataset.f?"":b.dataset.f;edDraw()}});
+  /* 谁记的：点一下换（日记最后的签名跟着变；新写的日记默认上次选的） */
+  $("#edByBtn").addEventListener("click",()=>{if(!E)return;E.by=(E.by||"parent")==="kid"?"parent":"kid";try{localStorage.setItem("xdj:diaryBy",E.by)}catch(er){}edDraw()});
   $("#edWx").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&E){E.wx=E.wx===b.dataset.w?"":b.dataset.w;edDraw()}});
   edDateBtn.addEventListener("click",()=>{
     edDateBtn.hidden=true;edDateBox.hidden=false;edDraw();
@@ -2950,11 +2974,7 @@ const Diary=(()=>{
   $("#dyPhoto").addEventListener("change",async e=>{const f=e.target.files[0],cb=photoCb;photoCb=null;if(!f||!cb)return;
     try{cb(await shrinkPhoto(f,480))}catch(err){alert("这张照片读不出来，换一张试试")}});
   $("#edPbox").addEventListener("click",()=>pickPhoto(ph=>{if(E){E.photo=ph;edDraw()}}));
-  $("#edPacts").addEventListener("click",e=>{
-    const b=e.target.closest("[data-pa]");
-    if(b){if(b.dataset.pa==="pick")pickPhoto(ph=>{if(E){E.photo=ph;edDraw()}});else if(b.dataset.pa==="del"&&E){E.photo=null;edDraw()}return}
-    if(E&&!E.photo)pickPhoto(ph=>{if(E){E.photo=ph;edDraw()}});
-  });
+  $("#edPdel").addEventListener("click",()=>{if(E){E.photo=null;edDraw()}});
   function tryCancelEd(){if(edDirty()&&!confirm("写的内容还没保存，确定不要了吗？"))return;edClose()}
   $("#edCancel").addEventListener("click",tryCancelEd);
   ed.addEventListener("click",e=>{if(e.target===ed)tryCancelEd()});
@@ -2973,7 +2993,7 @@ const Diary=(()=>{
   function closeDiary(){stopSpeech();if(imm)exitImm(true);if(busy)return;if(!ed.hidden)edClose();open=false;root.hidden=true;document.body.style.overflow=""}
   $("#diaryGo").addEventListener("click",openDiary);$("#dyClose").addEventListener("click",closeDiary);
   addEventListener("keydown",e=>{
-    if(!ed.hidden){if(e.key==="Escape")tryCancelEd();return}
+    if(!ed.hidden){if(e.key==="Escape"){if(!sheet.hidden)sheetClose();else tryCancelEd()}return}
     if(!open||/TEXTAREA|INPUT|SELECT/.test(e.target.tagName))return;
     if(e.key==="Escape"){if(!big.hidden)hideBig();else if(imm)exitImm();else closeDiary()}
     if(e.key==="ArrowRight")step(1);if(e.key==="ArrowLeft")step(-1)});
