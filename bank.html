@@ -1132,7 +1132,7 @@ details.parent summary{background:none}
       <div class="line"><button class="mini" data-vs="kid" type="button">🧒 小朋友</button><button class="mini" data-vs="normal" type="button">🙂 普通</button><button class="mini" data-vs="robot" type="button">🤖 机器人</button><button class="mini" data-vs="captain" type="button">🦾 机器人队长</button></div>
       <div class="line"><select id="voiceSel" aria-label="选声音"></select><button class="mini" id="voiceTry" type="button">🔊 试听</button></div>
       <div><b>声音太机械？</b>① iPad 打开 设置 → 辅助功能 → 朗读内容 → 声音 → 中文（中国大陆）；② 选一个声音，点它右边带“优化”或“高级”字样的版本下载（几百 MB，连 Wi-Fi）；③ 下载完把 Safari 彻底关掉再打开这页；④ 回到这里，上面会显示“✅ 高品质”，下拉框里也能选到它，点“🔊 试听”。</div>
-      <div style="color:var(--soft);font-size:12px">版本：11月17日 22:03</div>
+      <div style="color:var(--soft);font-size:12px">版本：11月17日 22:39</div>
     </div></details>
     <div class="status o-status" id="status"></div>
   </div>
@@ -1447,8 +1447,8 @@ const XDJCaptainVoice=(()=>{
     }
     if(text.endsWith("，取消啦")&&pack.clips&&pack.clips["cancelled"])return["cancelled"];
     if(text.endsWith("，已经记过啦")&&pack.clips&&pack.clips["already-recorded"])return["already-recorded"];
-    const short=text.match(/^(.+，要\d+分。)还差\d+分，再加油！$/);
-    if(short&&clipOf(short[1]+"还差几分，再加油！"))return clipOf(short[1]+"还差几分，再加油！");
+    const short=text.match(/^(.+，要\d+分。)还差\d+分，慢慢攒，会攒到的！$/);
+    if(short&&clipOf(short[1]+"慢慢攒，会攒到的！"))return clipOf(short[1]+"慢慢攒，会攒到的！");
     const parts=(text.match(/[^。！？!?]+[。！？!?]*/g)||[]).map(x=>x.trim()).filter(Boolean);
     if(parts.length>1){const ids=[];for(const p of parts){const c=clipOf(p);if(!c)return null;ids.push(...c)}return ids}
     return null;
@@ -1520,7 +1520,7 @@ const pick=a=>a[Math.floor(Math.random()*a.length)];
 function captainize(t){let m;
   if(m=t.match(/^(哇，自己主动的！)?(.+)，加(\d+)分！$/)){const[,hot,nm,n]=m;
     return(hot?"主动出击，好样的！":"")+pick([`${KID()}队员，${nm}任务完成！奖励${n}分！`,`报告！${nm}任务完成，能量加${n}分！`,`干得漂亮，${KID()}队员！${nm}，加${n}分！`])}
-  if(m=t.match(/^(.+)，要(\d+)分。还差(\d+)分，再加油！$/))return`${m[1]}需要${m[2]}分，能量还差${m[3]}分。继续执行任务，${KID()}队员！`;
+  if(m=t.match(/^(.+)，要(\d+)分。还差(\d+)分，慢慢攒，会攒到的！$/))return`${m[1]}，要${m[2]}分。还差${m[3]}分，慢慢攒，会攒到的！`;
   if(m=t.match(/^(.+)，(\d+)分。请爸爸妈妈按住收银机。$/))return`${m[1]}，${m[2]}分。请指挥官爸爸妈妈，按住收银机确认！`;
   if(m=t.match(/^换到啦！(.+)！$/))return`补给成功！${m[1]}，已经到手！`;
   if(t==="你好呀，我是小当家！")return KID()+"队员，我是机器人队长。准备好执行今天的任务了吗？";
@@ -1642,7 +1642,7 @@ async function initStore(){
    每次切换家庭码都会彻底清空上一家的本地残留，保证家庭与家庭之间 100% 独立、绝不串数据。 */
 const MODE="family",API="https://eelyepkkkazgztdcnicu.supabase.co",APIKEY="sb_publishable_eGBwA1L2QycoBc9XQnzY1Q_LW-ra8ip";
 /* 主屏幕会缓存旧页面：每次打开都问一下网上有没有新版本，有就换上 */
-const BUILD="46124084d3";
+const BUILD="7adb033a9f";
 if(MODE==="family"){const chk=()=>fetch(location.pathname+"?t="+Date.now(),{cache:"no-store"}).then(r=>r.text()).then(t=>{const m=t.match(/const BUILD="(\w+)"/);if(m&&m[1]!==BUILD)location.replace(location.pathname+"?v="+m[1])}).catch(()=>{});
   chk();document.addEventListener("visibilitychange",()=>{if(!document.hidden)chk()})}
 const setSync=t=>{const el=$("#status");if(el)el.textContent=t};
@@ -1805,7 +1805,7 @@ const Setup={
 };
 
 /* ---------- 家长改项目和选择卡片 ---------- */
-const DQ_BASE={persist:{name:"坚持",ic:"🏁",c:"#FF9F1C"},brave:{name:"勇敢",ic:"🦸",c:"#4A90E2"},focus:{name:"专注",ic:"🎯",c:"#8C7CF0"},nocry:{name:"不哭",ic:"😊",c:"#FF5FA2"},self:{name:"主动",ic:"⭐",c:"#1DB37A"},talk:{name:"有效沟通",ic:"💬",c:"#FF6B5E"},feel:{name:"说出心情",ic:"💗",c:"#E25D8C"}};
+const DQ_BASE={persist:{name:"坚持",ic:"🏁",c:"#FF9F1C"},brave:{name:"勇敢",ic:"🦸",c:"#4A90E2"},focus:{name:"专注",ic:"🎯",c:"#8C7CF0"},nocry:{name:"不哭",ic:"😊",c:"#FF5FA2"},self:{name:"主动",ic:"⭐",c:"#1DB37A"},talk:{name:"有效沟通",ic:"💬",c:"#FF6B5E"},feel:{name:"说出心情",ic:"💗",c:"#E25D8C"},tired:{name:"诚实",ic:"🙋",c:"#2BA59B"}};
 /* 日记里的“当时心里的感觉”：什么感觉都可以，说出来本身就了不起 */
 const FEEL={scared:{ic:"😨",name:"害怕",line:"有点害怕"},sad:{ic:"😢",name:"难过",line:"有点难过"},angry:{ic:"😠",name:"生气",line:"有点生气"},worry:{ic:"😣",name:"着急",line:"有点着急"},tired:{ic:"😮‍💨",name:"累了",line:"有点累"},nowant:{ic:"🙅",name:"不想做",line:"不太想做"},happy:{ic:"😊",name:"开心",line:"很开心"},unsure:{ic:"🤔",name:"说不清",line:"说不清是什么感觉"}};
 const dtext=m=>(FEEL[m.feel]?`那时候，心里${FEEL[m.feel].line}。`:"")+(m.text||"（还没写）");
@@ -2006,15 +2006,13 @@ function renderPts(){
   for(const h of HABITS){const k=h.grp,d=state.points[t+"_"+slotOf(h)],mine=d&&(d.habit===h.id||(!d.habit&&!h.slot));
     if(!slots[k+slotOf(h)]){slots[k+slotOf(h)]=1;cnt[k][1]++}if(mine)cnt[k][0]++}
   got=p.docs.filter(d=>d.date===t&&d.pts>0).reduce((x,d)=>x+d.pts,0);
-  /* 不加分的项目（了不起）：标题右边写“一共 N 件”（以前所有日子点亮过的都算），也不算进今天的进度条 */
+  /* 不加分的项目（了不起）：标题右边写“一共 N 件”（以前所有日子点亮过的都算）。加分的项目只写今天做了几件、不写总数，也没有进度条（2026-11-17 家长要求：总数和进度条对孩子是压力） */
   const zg=new Set(GROUPS.filter(g=>{const hs=HABITS.filter(h=>h.grp===g.id);return hs.length&&hs.every(h=>!h.pts)}).map(g=>g.id));
   const allCnt=k=>Object.values(state.points).filter(d=>d&&d.habit&&(HABITS.find(h=>h.id===d.habit)||{}).grp===k).length;
-  for(const k in cnt){const e=document.getElementById("cnt-"+k);if(e)e.textContent=zg.has(k)?"一共 "+allCnt(k)+" 件":cnt[k][0]+" / "+cnt[k][1];const tc=document.getElementById("tc-"+k);if(tc)tc.textContent=zg.has(k)?"共"+allCnt(k)+"件":cnt[k][0]+"/"+cnt[k][1]}
+  for(const k in cnt){const e=document.getElementById("cnt-"+k);if(e){e.textContent=zg.has(k)?"一共 "+allCnt(k)+" 件":cnt[k][0]?"做了 "+cnt[k][0]+" 件":"";e.hidden=!e.textContent}const tc=document.getElementById("tc-"+k);if(tc)tc.textContent=zg.has(k)?"共"+allCnt(k)+"件":cnt[k][0]?"做了"+cnt[k][0]+"件":"\u00a0"}
   showGrp();
-  const nd=Object.entries(cnt).reduce((s,[k,c])=>s+(zg.has(k)?0:c[0]),0),na=Object.entries(cnt).reduce((s,[k,c])=>s+(zg.has(k)?0:c[1]),0);
   $("#todayLbl").textContent=dayWord(t)+"得到";$("#todayPts").innerHTML="+"+got+'<i class="tst">★</i>';
   $("#mtLbl").textContent=off2(t);$("#mtPts").textContent="+"+got;
-  $("#todayBar").style.width=(na?nd/na*100:0)+"%";
   const byDay={};for(const d of p.docs)(byDay[d.date]=byDay[d.date]||[]).push(d);
   let rows=[];
   for(const ds of Object.keys(byDay).sort().reverse()){
@@ -2224,7 +2222,7 @@ async function pickItem(d,el){
   if(busyShop)return;
   const total=ptsCalc().total;
   if(picked===d.id)return;
-  if(total<d.pts){el.classList.remove("nope");void el.offsetWidth;el.classList.add("nope");say(`${d.name}，要${d.pts}分。还差${d.pts-total}分，再加油！`);return}
+  if(total<d.pts){el.classList.remove("nope");void el.offsetWidth;el.classList.add("nope");say(`${d.name}，要${d.pts}分。还差${d.pts-total}分，慢慢攒，会攒到的！`);return}
   askBuy(d);
 }
 /* 点一下买得起的东西：弹出大图和大按钮“换它！” */
@@ -2757,12 +2755,13 @@ const Diary=(()=>{
   $("#dyEdit").addEventListener("toggle",renderEditor);
   const ed=$("#dyEd"),edText=$("#edText"),edCust=$("#edCust"),edCustIn=$("#edCustIn"),edErr=$("#edErr");let E=null;
   const Q_GUIDES={
-    persist:"本来哪里觉得累或难？心里是什么感觉？后来是怎么接着做完的？",
+    persist:"本来哪里觉得累或难？心里是什么感觉？（累了说出来、歇一会儿再回来，也算坚持）后来怎么样了？",
     brave:"遇到了什么有点害怕或陌生的事？害怕是可以的——害怕了还是去做了，才叫勇敢。",
     focus:"今天做什么事情特别认真投入？一口气专注了多久？",
     nocry:"遇到了什么着急或委屈的事？哭了也没关系，后来是怎么面对的？",
     self:"今天哪件事不用爸爸妈妈催，自己主动去做好了？",
     talk:"心里有什么想法或委屈，宝贝是怎么清楚、好好地说出来的？",
+    tired:"是在做什么的时候累了？是怎么说出来的？停下来以后做了什么？\n（累了说出来，我们就停下来——这很了不起。）",
     feel:"心里有什么感觉（害怕、难过、生气、不想做…）？是怎么说出来的？说出来以后怎么样了？"
   };
   function qChips(sel){const m=curDQ();if(sel&&!m[sel])m[sel]=dqOf(sel);
@@ -2814,7 +2813,7 @@ const Diary=(()=>{
     const d=id?state.diary[id]:null;
     const initDate=(opts&&opts.date)||(d&&d.date)||today();
     const initQ=(opts&&opts.q)||(d&&d.q)||"persist";
-    E=d?{id,...d}:{id:null,date:initDate,q:initQ,feel:"",wx:"",text:"",photo:null,habit:opts&&opts.habit||null,fromAsk:!!(opts&&opts.fromAsk),by:(()=>{try{return localStorage.getItem("xdj:diaryBy")||"parent"}catch(e){return"parent"}})()};
+    E=d?{id,...d}:{id:null,date:initDate,q:initQ,feel:opts&&opts.feel||"",wx:"",text:"",photo:null,habit:opts&&opts.habit||null,fromAsk:!!(opts&&opts.fromAsk),by:(()=>{try{return localStorage.getItem("xdj:diaryBy")||"parent"}catch(e){return"parent"}})()};
     if(!E.by)E.by="parent";
     E.orig=JSON.stringify([E.date,E.q,E.wx||"",E.text||"",E.photo||null,E.by,E.feel||""]);
     $("#edTitle").textContent=d?"✏️ 修改高光日记":"📔 记录高光时刻";
@@ -2918,7 +2917,7 @@ const Diary=(()=>{
   /* 点完“了不起”里的格子后：弹出同一个宽敞的高光日记录入框 */
   function ask(h,date){
     if(!$("#pop").hidden||!ed.hidden||open)return;
-    edOpen({date,q:h.diary||"persist",habit:h.id,habitName:h.name,fromAsk:true});
+    edOpen({date,q:h.diary||"persist",habit:h.id,habitName:h.name,fromAsk:true,feel:h.diary==="tired"?"tired":""});
   }
   return{refresh(){if(open&&!busy){build();show()}if(open)renderEditor()},ask};
 })();
