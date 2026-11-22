@@ -81,7 +81,7 @@ ol li::before{content:counter(q);position:absolute;left:0;top:11px;width:26px;he
 ⑤ 纸笔题可以点“打印今天的纸面题”打出来，没有打印机就照着抄在草稿纸上。<br>
 ⑥ 故事可以随口加油添醋，数字别改。答对了说一句具体的话就好，比如“你一眼就看出来了”。</div></details>
 <article id="art"></article>
-<p class="foot">3 → 10 每天一个数，然后是凑十；进位、退位的篇章接着写</p>
+<p class="foot">3 → 10 每天一个数，然后是凑十、进位（20 以内进位加法）、退位（20 以内退位减法）</p>
 </div>
 <div id="sheet"></div>
 <script>
@@ -98,7 +98,7 @@ const GUEST={
  8:{name:"吕布",u:"个",t:"吕布兵",rid:["他的头上插着两根长长的羽毛，一走路就晃来晃去。","他骑着一匹红红的马，叫赤兔马，跑得比风还快。","他太厉害了，刘备、关羽、张飞三个人一起上，才打得过他。"]},
  9:{name:"三角龙",u:"只",t:"三角龙",rid:["它是吃草的恐龙，可是谁也不敢惹它。","脖子后面有一块大大的骨头盾牌，像戴了一个大围脖。","它的头上长着角，一只、两只、三只——名字就是这么来的。"]},
  10:{name:"大王乌贼",u:"条",t:"腿",rid:["它住在很深很深的海底，那里一点光都没有。","它的眼睛比篮球还大，是世界上眼睛最大的动物。","它有好多条长长的腿，上面全是吸盘。到底有几条？今天就要算一算。"],legs:true}};
-const NS=[3,4,5,6,7,8,9,10,"凑十"];
+const NS=[3,4,5,6,7,8,9,10,"凑十","进位","退位"];
 /* 我方英雄：孩子选谁出战，题目里就用谁 */
 const HERO={刘备:"双股剑一挥",关羽:"青龙刀一扫",张飞:"丈八蛇矛一挺，大吼一声",哥斯拉:"尾巴一甩",贝吉塔:"扔出一个能量球",擎天柱:"变成大卡车冲过去",大黄蜂:"举起手炮轰的一声",悟空:"一个筋斗翻过去"};
 const HN=Object.keys(HERO);
@@ -115,6 +115,8 @@ function shuf(a,seed){a=a.slice();for(let i=a.length-1;i>0;i--){seed=(seed*9301+
 
 function page(n){
   if(n==="凑十")return pageC10();
+  if(n==="进位")return pageJW();
+  if(n==="退位")return pageTW();
   const i=n-3,G=GUEST[n],u=G.u,t=G.t,H=pick[n]||"关羽",atk=HERO[H],nx=GUEST[n+1];
   const half=Math.floor(n/2);
   let h=`<h2>第 ${i+1} 篇　·　数字 ${n}</h2><div class="meta">今天来的是谁？先别看下面，从猜谜开始。</div>`;
@@ -196,6 +198,8 @@ function paperEqs(n){const m=n-1,o=[[`1 + (　) = ${n}`,m],[`1 + ${m} = `,n],[`$
   return o}
 function sheet(n){
   if(n==="凑十")return sheetC10();
+  if(n==="进位")return sheetJW();
+  if(n==="退位")return sheetTW();
   const G=GUEST[n],half=Math.floor(n/2),eqs=paperEqs(n),L=[];for(let a=0;a<=n;a++)L.push(a);const Rs=shuf(L.map(a=>n-a),n*7+3);
   const tree=a=>`<svg width="130" height="110" viewBox="0 0 130 110"><rect x="45" y="4" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><text x="65" y="30" font-size="24" text-anchor="middle">${n}</text><path d="M55 38 L30 66 M75 38 L100 66" stroke="#000" stroke-width="2"/><rect x="10" y="66" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><rect x="80" y="66" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><text x="30" y="92" font-size="24" text-anchor="middle">${a}</text></svg>`;
   const cells=f=>`<div class="cells">${Array.from({length:n},(_,k)=>`<i class="${k<f?"on":""}"></i>`).join("")}</div>`;
@@ -276,7 +280,7 @@ function pageC10(){
   <p class="tip">故意答错一次，比如把 3 的好朋友说成 6，看他能不能抓到你。</p>`;
 
   h+=`<h3>今天记住了</h3><div class="sum">10 的好朋友：${FR.map(([a,b])=>a+" 和 "+b).join("、")}，还有 0 和 10。<br>一九一九好朋友，二八二八手拉手，<br>三七三七真亲密，四六四六一起走，<br>五五凑成一双手。</div><p class="tip">一起念一遍凑十歌，可以边念边拍手。念完就结束，不要再加题。</p>`;
-  h+=`<div class="next">抹香鲸潜回海底前喷了最后一根水柱：“10 个朋友都被你认全了！下次我带更多的鱼来，看你还凑不凑得上！”<br>下一站：进位（9 加几）。</div>`;
+  h+=`<div class="next">抹香鲸潜回海底前喷了最后一根水柱：“10 个朋友都被你认全了！下次我带更多的鱼来，看你还凑不凑得上！”<br>下一篇是进位。先透露一句：<b>${JW.rid[0]}</b></div>`;
   h+=`<button class="fin${done[n]?" did":""}" id="fin">${done[n]?"✓ 这篇读完了（"+done[n]+"）":"今天这篇读完了"}</button>`;
   return h;
 }
@@ -292,9 +296,146 @@ function sheetC10(){
   <div class="avoid"><h2>三、分合图</h2><div class="trees">${[3,8,5,1,6].map(tree).join("")}</div></div>
   <div class="avoid"><h2>四、十格框：还空几格？</h2><div class="tfs">${[7,4,9,2].map(frame).join("")}</div></div>`;
 }
+/* ===== 进位、退位共用的小零件 ===== */
+function redoBlock(n){const redo=miss.filter(m=>m.id.split("|")[0]!==n).slice(0,5);
+  return redo.length?`<div class="redo"><h3>先问问上次没答上的</h3><ol>${redo.map(m=>li(m.id.split("|")[0],m.id.split("|").slice(1).join("|"),decodeURIComponent(m.a))).join("")}</ol><p class="tip">这次答对了，就点“没答上 ✕”把它划掉。</p></div>`:""}
+function riddle(G,open,hint){return `<h3>猜猜今天谁来了<span class="k">口头</span></h3><p class="say">你说：“${open}我说三句话，你猜是谁。”</p>`+
+  G.rid.map(r=>`<p class="rid">${r}</p>`).join("")+`<p class="say">答案：<span class="a">${G.name}</span></p><p class="tip">一句一句念，每句停一下让他猜。${hint}</p>`}
+function heroBtns(H,q){return `<p class="say">你问：“${q}派谁出战？”</p><div class="heroes">${HN.map(x=>`<button data-h="${x}" class="${x===H?"on":""}">${x}</button>`).join("")}</div><p class="tip">他说谁，就点谁，下面的故事会换成他选的英雄。</p>`}
+/* 两个十格框：第一个框先有 a 颗（●），再来的 b 颗用 ▲ 表示，先填满第一个框，剩下的放第二个框 */
+function tf2(a,b){const cell=k=>k<a?"●":k<a+b?"▲":"○";const row=(base)=>Array.from({length:5},(_,j)=>cell(base+j)).join("");
+  return `<span class="dots">${row(0)}　${row(10)}<br>${row(5)}　${row(15)}</span>`}
+function finBtn(n){return `<button class="fin${done[n]?" did":""}" id="fin">${done[n]?"✓ 这篇读完了（"+done[n]+"）":"今天这篇读完了"}</button>`}
+function sheetHead(t){return `<h1>${t}</h1><div class="who">名字：__________　　日期：____月____日</div>`}
+function eqGrid(eqs,title){return `<div class="avoid"><h2>${title}</h2><div class="eqs">${eqs.map(([q])=>`<div>${q.replace(/=\s*$/,"= ____")}</div>`).join("")}</div></div>`}
+
+/* ===== 进位：20 以内进位加法，凑十法 ===== */
+const JW={name:"棘龙",rid:["它是一只吃肉的恐龙，身子比霸王龙还要长。","它的背上竖着一排长长的骨头，撑起一张像船帆一样的“大帆”。","它的嘴巴又长又窄，像鳄鱼，最爱下水抓鱼吃。"]};
+function pageJW(){
+  const n="进位",H=pick[n]||"张飞",atk=HERO[H];
+  let h=`<h2>第 10 篇　·　进位</h2><div class="meta">9 加几、8 加几……加起来超过 10，就先凑成 10。先从猜谜开始。</div>`+redoBlock(n);
+  h+=riddle(JW,"报告！抹香鲸带着一大堆鱼回来了，可是鱼被一只恐龙抢走了！","猜不出来就提示：“它的背上有一张帆。”");
+  h+=`<p class="say">你说：“上次我们认全了 10 的好朋友。先热热身：”</p><ol>`+
+    li(n,`7 的好朋友是几？（合起来是 10）`,3)+li(n,`10 加 3 是几？`,13)+li(n,`15 是 1 个十和几个一？`,5)+li(n,`10 和 6 合起来是几？`,16)+`</ol>
+    <p class="tip">“10 加几”要很快答出来，今天每道题最后一步都是它。慢的话先多练几道：10+2、10+5、10+8。</p>`;
+
+  /* 一 十格框里加 */
+  h+=`<h3>一、两个十格框<span class="k bean">豆子</span><small>先把第一个框填满</small></h3>
+  <p class="say">你说：“棘龙抢了一盒鱼，盒子有 10 个格子。我们把鱼抢回来，先放满第一盒，放不下的放第二盒。”</p>
+  <p class="tip">画两个十格框。第一个框先摆好前面的数（●），再一颗一颗放后面的数（▲）：<b>先把第一个框填满</b>，剩下的放第二个框。然后问：第一个框满了是 10，第二个框有几颗？一共是几？</p><ol>`;
+  [[9,3],[9,5],[8,4],[8,6],[7,5],[6,5]].forEach(([a,b])=>h+=li(n,`${a} + ${b}　${tf2(a,b)}`,`先拿 ${10-a} 颗填满，第二框 ${a+b-10} 颗，一共 ${a+b}`));
+  h+=`</ol>`+heroBtns(H,"棘龙一张嘴就是十几颗大牙！");
+
+  /* 二 凑十三步 */
+  h+=`<h3>二、凑十三步<span class="k">口头</span><small>看大数，拆小数，凑成十，加剩下</small></h3>
+  <p class="say">你说：“${H}有一个秘密办法：遇到 9 加几，先帮 9 找个好朋友凑成 10。”</p>
+  <p class="tip">每道题按三步问，一步一步来。第一步问“还差几个到 10”，第二步问“把后面的数分一分”，第三步问“10 加剩下的”。三步熟了，就直接问得数。</p>`;
+  [[9,4],[9,7],[8,5],[7,6],[6,6]].forEach(([a,b])=>{h+=`<p class="say eq">${a} + ${b} = ?</p><ol>`+
+    li(n,`${a} + ${b}：${a} 还差几个凑成 10？`,10-a)+li(n,`${a} + ${b}：把 ${b} 分成 ${10-a} 和几？`,b-(10-a))+li(n,`10 加 ${b-(10-a)} 是几？所以 ${a} + ${b} 等于几？`,a+b)+`</ol>`});
+
+  /* 三 打一仗 */
+  h+=`<h3>三、打一仗<span class="k">口头</span><span class="k pen">纸笔</span><small>听故事，算一算</small></h3><ol>`;
+  h+=li(n,`${H}抢回来 9 条鱼，又从棘龙嘴里抢回来 3 条，一共几条？<br><b>请你在草稿纸上把算式写出来。</b>`,`9 + 3 = 12`);
+  h+=li(n,`棘龙的帆上有 8 根骨头，${H}${atk}，帆上又插了 5 根箭。帆上一共几根？`,`8 + 5 = 13`);
+  h+=li(n,`前面来了 7 个兵，后面又来了 4 个，一共几个兵？算式怎么写？`,`7 + 4 = 11`);
+  h+=li(n,`左边的山洞里藏了 6 个兵，右边的山洞里藏了 8 个兵，一共几个？`,`6 + 8 = 14（也可以先算 8 + 6）`);
+  h+=li(n,`棘龙一天吃了 9 条鱼，晚上又吃了 9 条，一共吃了几条？`,`9 + 9 = 18`);
+  h+=`</ol><p class="tip">他用手指数也可以，答完再问一句：“能不能用凑十的办法再算一遍？”</p>`;
+
+  /* 四 悟空攒能量 */
+  h+=`<h3>四、悟空攒能量<span class="k">口头</span><span class="k pen">纸笔</span><small>两条能量槽</small></h3>
+  <p class="say">你说：“棘龙太大了，得请悟空来！悟空有两条能量槽，每条 10 格，第一条满了才能攒第二条。”</p>
+  <p class="tip">画两条 10 格的槽。先涂好第一个数，再涂第二个数，第一条涂满了才往第二条涂。答对了，就让他站起来大喊一声“哈比哈比哈比哈——！”</p><ol>`;
+  [[9,6],[8,7],[5,7]].forEach(([a,b])=>h+=li(n,`已经攒了 ${a} 格，又攒了 ${b} 格。第二条有几格？一共几格？`,`第二条 ${a+b-10} 格，一共 ${a+b} 格`));
+  h+=`</ol>`;
+
+  /* 五 纸上的题 */
+  h+=`<h3>五、纸上的题<span class="k pen">纸笔</span><small>算式 · 凑十图</small></h3><button class="btn" id="print">打印今天的纸面题</button>
+  <p class="say"><b>算式</b>（你写在纸上，他来填）：</p><ol>`;
+  paperJW().forEach(([q,a])=>h+=li(n,`<span class="eq">${q}</span>`,a));
+  h+=`</ol><p class="say"><b>凑十图</b>：写“9 + 5”，在 5 下面画两条线分成两个格子，他填 1 和 4，再写 10 + 4 = 14。</p><ol>`;
+  [[9,5],[8,7],[7,7],[6,9]].forEach(([a,b])=>h+=li(n,`<span class="eq">${a} + ${b}</span>：${b} 分成 ${10-a} 和几？得数是几？`,`${b-(10-a)}，${a+b}`));
+  h+=`</ol><p class="tip">6 + 9 这种前面小、后面大的，也可以把 6 拆开帮 9 凑十，问问他哪种更快。</p>`;
+
+  /* 六 你来考我 */
+  h+=`<h3>六、你来考我<span class="k">口头</span></h3>
+  <p class="say">你说：“现在换你当队长。你出一道 9 加几或者 8 加几考我，还要说说我是怎么凑十的。”</p>
+  <p class="tip">故意算错一次，比如说“9 加 5 等于 15”，看他能不能抓到你。</p>`;
+  h+=`<h3>今天记住了</h3><div class="sum">看大数，拆小数，凑成十，加剩下。<br>9 加几：9 + 4，先拿 1 个给 9 凑成 10，还剩 3 个，10 加 3 是 13。</div><p class="tip">一起说一遍“看大数，拆小数，凑成十，加剩下”。说完就结束，不要再加题。</p>`;
+  h+=`<div class="next">棘龙抱着空空的鱼盒跳回河里：“你算得太快了！我去天上找帮手！”<br>下一篇是退位。先透露一句：<b>${TW.rid[0]}</b></div>`+finBtn(n);
+  return h;
+}
+function paperJW(){return [[`9 + 2 = `,11],[`9 + 6 = `,15],[`9 + 8 = `,17],[`8 + 3 = `,11],[`8 + 5 = `,13],[`8 + 9 = `,17],
+  [`7 + 4 = `,11],[`7 + 6 = `,13],[`6 + 5 = `,11],[`5 + 8 = `,13],[`4 + 7 = `,11],[`3 + 9 = `,12],[`10 + 7 = `,17],[`9 + (　) = 13`,4]]}
+function sheetJW(){
+  const tf=(a,b)=>`<div><div class="tf">${Array.from({length:10},(_,k)=>`<i>${k<a?"●":""}</i>`).join("")}</div><div class="tf" style="margin-top:4mm">${Array.from({length:10},()=>`<i></i>`).join("")}</div><div class="row">${a} + ${b} = ____</div></div>`;
+  return sheetHead("进位 · 打跑棘龙")+eqGrid(paperJW(),"一、算式")+
+  `<div class="avoid"><h2>二、凑十：把后面的数分一分</h2>${[[9,5],[8,7],[7,7],[9,8]].map(([a,b])=>`<div class="row">${a} + ${b} = ____　　${b} 分成 ____ 和 ____　　10 + ____ = ____</div>`).join("")}</div>
+  <div class="avoid"><h2>三、两个十格框：画上后面的数，先把第一个框画满</h2><div class="tfs">${[[9,4],[8,5],[7,6]].map(([a,b])=>tf(a,b)).join("")}</div></div>`}
+
+/* ===== 退位：20 以内退位减法，破十法、想加算减 ===== */
+const TW={name:"风神翼龙",rid:["它不是鸟，可是会飞；它也不是恐龙，可是和恐龙活在同一个时候。","它的翅膀张开，差不多和一辆大公交车一样长。","它有一张又长又尖的嘴，从天上“呼”地冲下来抓东西。"]};
+function pageTW(){
+  const n="退位",H=pick[n]||"哥斯拉",atk=HERO[H];
+  let h=`<h2>第 11 篇　·　退位</h2><div class="meta">十几减几，个位不够减，就从 10 里减。先从猜谜开始。</div>`+redoBlock(n);
+  h+=riddle(TW,"报告！棘龙找的帮手从天上飞来了！","说“翼龙”就算对。猜不出来就提示：“它会飞，翅膀特别大。”");
+  h+=`<p class="say">你说：“上次我们学了进位，9 加几先凑十。先热热身：”</p><ol>`+
+    li(n,`9 + 4 等于几？`,13)+li(n,`13 是 10 和几合起来的？`,3)+li(n,`10 − 9 等于几？`,1)+li(n,`10 − 7 等于几？`,3)+`</ol>
+    <p class="tip">“10 减几”要很快答出来，今天每道题都要用。慢的话先多练几道：10−8、10−6、10−3。</p>`;
+
+  /* 一 破十：豆子 */
+  h+=`<h3>一、从 10 里拿<span class="k bean">豆子</span><small>零散的不够拿，就拆一整盒</small></h3>
+  <p class="say">你说：“风神翼龙抢走了我们的鱼。我们有一整盒 10 条，外面还有几条散的。”</p>
+  <p class="tip">摆一个满满的十格框（10 颗），外面再放几颗散的。比如 13 − 9：外面只有 3 颗，不够拿 9 颗，就从<b>满的框里拿走 9 颗</b>，框里剩 1 颗，再和外面的 3 颗合起来，是 4 颗。</p><ol>`;
+  [[13,9],[15,9],[12,8],[14,7],[11,6],[16,8]].forEach(([a,b])=>h+=li(n,`${a} − ${b}：框里 10 颗，外面 ${a-10} 颗。从框里拿走 ${b} 颗，框里剩几颗？一共还剩几颗？`,`框里剩 ${10-b}，一共 ${a-b}`));
+  h+=`</ol>`+heroBtns(H,"风神翼龙的翅膀比公交车还长！");
+
+  /* 二 想加算减 */
+  h+=`<h3>二、想加算减<span class="k">口头</span><small>减法变成“还差几个”</small></h3>
+  <p class="say">你说：“${H}还有一个秘密办法：13 − 9，就想 9 加几等于 13。上次学的进位，这里正好用上。”</p><ol>`;
+  [[13,9],[15,8],[12,7],[17,9],[14,6]].forEach(([a,b])=>h+=li(n,`${b} 加几等于 ${a}？所以 ${a} − ${b} 等于几？`,a-b));
+  h+=`</ol><p class="tip">两种办法都行：从 10 里减，或者想加法。问他喜欢哪一种。</p>`;
+
+  /* 三 打一仗 */
+  h+=`<h3>三、打一仗<span class="k">口头</span><span class="k pen">纸笔</span><small>听故事，算一算</small></h3><ol>`;
+  h+=li(n,`我们有 14 条鱼，风神翼龙冲下来叼走了 9 条，还剩几条？<br><b>请你在草稿纸上把算式写出来。</b>`,`14 − 9 = 5`);
+  h+=li(n,`天上飞来 12 只翼龙，${H}${atk}，打跑了 8 只，还剩几只？`,`12 − 8 = 4`);
+  h+=li(n,`${H}带了 11 个大包子，打完仗吃掉 5 个，还剩几个？算式怎么写？`,`11 − 5 = 6`);
+  h+=li(n,`船上有 16 个兵，翼龙扇了一下翅膀，吹下水 7 个，船上还剩几个？`,`16 − 7 = 9`);
+  h+=li(n,`有 13 个兵，其中 4 个在站岗，别的在睡觉。睡觉的有几个？`,`13 − 4 = 9`);
+  h+=`</ol><p class="tip">写完算式问他：“你是从 10 里减的，还是想加法的？”</p>`;
+
+  /* 四 悟空攒能量 */
+  h+=`<h3>四、悟空放能量<span class="k">口头</span><span class="k pen">纸笔</span><small>用掉几格还剩几格</small></h3>
+  <p class="say">你说：“悟空攒了两条能量槽，放一次哈比哈比哈比哈要用掉好多格！”</p>
+  <p class="tip">画两条 10 格的槽，按题目涂好。用掉的格子划掉：先划第二条里的，不够再划第一条里的。答对了，就让他喊一声“哈比哈比哈比哈——！”</p><ol>`;
+  [[14,9],[12,5],[17,8]].forEach(([a,b])=>h+=li(n,`一共攒了 ${a} 格，放一次用掉 ${b} 格，还剩几格？`,a-b));
+  h+=`</ol>`;
+
+  /* 五 纸上的题 */
+  h+=`<h3>五、纸上的题<span class="k pen">纸笔</span><small>算式 · 一图四式</small></h3><button class="btn" id="print">打印今天的纸面题</button>
+  <p class="say"><b>算式</b>（你写在纸上，他来填）：</p><ol>`;
+  paperTW().forEach(([q,a])=>h+=li(n,`<span class="eq">${q}</span>`,a));
+  h+=`</ol><p class="say"><b>一图四式</b>：给他三个数，写出两道加法、两道减法。</p><ol>`;
+  [[9,4,13],[8,7,15],[6,5,11]].forEach(([a,b,c])=>h+=li(n,`${a}、${b}、${c}`,`${a}+${b}=${c}，${b}+${a}=${c}，${c}−${a}=${b}，${c}−${b}=${a}`));
+  h+=`</ol>`;
+
+  /* 六 你来考我 */
+  h+=`<h3>六、你来考我<span class="k">口头</span></h3>
+  <p class="say">你说：“现在换你当队长。用${H}和风神翼龙编一道十几减几的题考我。”</p>
+  <p class="tip">故意算错一次，比如说“13 减 9 等于 3”，看他能不能抓到你，再让他说说怎么算的。</p>`;
+  h+=`<h3>今天记住了</h3><div class="sum">个位不够减，就从 10 里减，再和剩下的合起来。<br>13 − 9：10 − 9 = 1，1 + 3 = 4。<br>也可以想：9 加几等于 13？9 + 4 = 13，所以是 4。</div><p class="tip">一起说一遍“不够减，从 10 里减”。说完就结束，不要再加题。</p>`;
+  h+=`<div class="next">风神翼龙扇着大翅膀飞走了：“你们的加法减法都太厉害了，我认输！”<br>一年级上学期的加减法全部打完！以后没答上的题，每次打开都会在最上面再问一遍。</div>`+finBtn(n);
+  return h;
+}
+function paperTW(){return [[`11 − 9 = `,2],[`14 − 9 = `,5],[`16 − 9 = `,7],[`12 − 8 = `,4],[`15 − 8 = `,7],[`13 − 7 = `,6],
+  [`16 − 7 = `,9],[`11 − 6 = `,5],[`14 − 6 = `,8],[`12 − 5 = `,7],[`13 − 4 = `,9],[`11 − 3 = `,8],[`17 − 10 = `,7],[`15 − (　) = 9`,6]]}
+function sheetTW(){
+  return sheetHead("退位 · 打跑风神翼龙")+eqGrid(paperTW(),"一、算式")+
+  `<div class="avoid"><h2>二、从 10 里减</h2>${[[13,9],[15,8],[12,7],[14,6]].map(([a,b])=>`<div class="row">${a} − ${b}：　10 − ${b} = ____，　____ + ${a-10} = ____</div>`).join("")}</div>
+  <div class="avoid"><h2>三、一图四式</h2>${[[9,4,13],[8,7,15],[6,5,11]].map(([a,b,c])=>`<div class="avoid"><div class="row"><b>${a}、${b}、${c}</b></div><div class="eqs" style="font-size:16pt;gap:3mm 10mm;margin-bottom:4mm"><div>____ + ____ = ____</div><div>____ + ____ = ____</div><div>____ − ____ = ____</div><div>____ − ____ = ____</div></div></div>`).join("")}</div>`}
 function render(){
-  $("#days").innerHTML=NS.map(n=>`<button data-n="${n}" class="${n===cur?"on":""}${done[n]?" done":""}">${n}</button>`).join("")+
-    ["进位","退位"].map(t=>`<button class="later" disabled>${t}</button>`).join("");
+  $("#days").innerHTML=NS.map(n=>`<button data-n="${n}" class="${n===cur?"on":""}${done[n]?" done":""}">${n}</button>`).join("");
   $("#art").innerHTML=page(cur);$("#sheet").innerHTML=sheet(cur);
 }
 document.addEventListener("click",e=>{
