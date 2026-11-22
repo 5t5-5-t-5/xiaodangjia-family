@@ -65,6 +65,8 @@ ol li::before{content:counter(q);position:absolute;left:0;top:11px;width:26px;he
   #sheet .cells{display:flex;gap:2mm;margin:2mm 0 1mm}#sheet .cells i{width:12mm;height:12mm;border:1.5px solid #000;border-radius:2mm}
   #sheet .cells i.on{background:repeating-linear-gradient(45deg,#000 0 1px,#fff 1px 4px)}
   #sheet .row{font-size:16pt;margin:3mm 0}
+  #sheet .tf{display:grid;grid-template-columns:repeat(5,11mm);gap:1.5mm;margin:2mm 0}#sheet .tf i{width:11mm;height:11mm;border:1.5px solid #000;border-radius:2mm;display:grid;place-items:center;font-style:normal;font-size:16pt}
+  #sheet .tfs{display:flex;gap:12mm;flex-wrap:wrap}
   #sheet .avoid{break-inside:avoid}
 }
 </style></head><body><div class="wrap">
@@ -79,7 +81,7 @@ ol li::before{content:counter(q);position:absolute;left:0;top:11px;width:26px;he
 ⑤ 纸笔题可以点“打印今天的纸面题”打出来，没有打印机就照着抄在草稿纸上。<br>
 ⑥ 故事可以随口加油添醋，数字别改。答对了说一句具体的话就好，比如“你一眼就看出来了”。</div></details>
 <article id="art"></article>
-<p class="foot">3 → 10 每天一个数；凑十、进位、退位的篇章接着写</p>
+<p class="foot">3 → 10 每天一个数，然后是凑十；进位、退位的篇章接着写</p>
 </div>
 <div id="sheet"></div>
 <script>
@@ -96,13 +98,13 @@ const GUEST={
  8:{name:"吕布",u:"个",t:"吕布兵",rid:["他的头上插着两根长长的羽毛，一走路就晃来晃去。","他骑着一匹红红的马，叫赤兔马，跑得比风还快。","他太厉害了，刘备、关羽、张飞三个人一起上，才打得过他。"]},
  9:{name:"三角龙",u:"只",t:"三角龙",rid:["它是吃草的恐龙，可是谁也不敢惹它。","脖子后面有一块大大的骨头盾牌，像戴了一个大围脖。","它的头上长着角，一只、两只、三只——名字就是这么来的。"]},
  10:{name:"大王乌贼",u:"条",t:"腿",rid:["它住在很深很深的海底，那里一点光都没有。","它的眼睛比篮球还大，是世界上眼睛最大的动物。","它有好多条长长的腿，上面全是吸盘。到底有几条？今天就要算一算。"],legs:true}};
-const NS=[3,4,5,6,7,8,9,10];
+const NS=[3,4,5,6,7,8,9,10,"凑十"];
 /* 我方英雄：孩子选谁出战，题目里就用谁 */
 const HERO={刘备:"双股剑一挥",关羽:"青龙刀一扫",张飞:"丈八蛇矛一挺，大吼一声",哥斯拉:"尾巴一甩",贝吉塔:"扔出一个能量球",擎天柱:"变成大卡车冲过去",大黄蜂:"举起手炮轰的一声",悟空:"一个筋斗翻过去"};
 const HN=Object.keys(HERO);
 
 let cur=ST.get("cur",null),done=ST.get("done",{}),miss=ST.get("miss",[]),pick=ST.get("hero",{});
-if(cur==null)cur=NS.find(n=>!done[n])||3;
+if(cur==null||!NS.includes(cur))cur=NS.find(n=>!done[n])||3;
 
 function li(n,text,ans){const id=n+"|"+text.replace(/<[^>]+>/g,""),on=miss.some(m=>m.id===id);
   return `<li>${text} <span class="a">（${ans}）</span><button class="miss${on?" on":""}" data-id="${encodeURIComponent(id)}" data-a="${encodeURIComponent(ans)}">${on?"没答上 ✕":"没答上"}</button></li>`}
@@ -112,10 +114,11 @@ function uniq(a){return a.filter((v,i)=>a.indexOf(v)===i)}
 function shuf(a,seed){a=a.slice();for(let i=a.length-1;i>0;i--){seed=(seed*9301+49297)%233280;const j=Math.floor(seed/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 
 function page(n){
+  if(n==="凑十")return pageC10();
   const i=n-3,G=GUEST[n],u=G.u,t=G.t,H=pick[n]||"关羽",atk=HERO[H],nx=GUEST[n+1];
   const half=Math.floor(n/2);
   let h=`<h2>第 ${i+1} 篇　·　数字 ${n}</h2><div class="meta">今天来的是谁？先别看下面，从猜谜开始。</div>`;
-  const redo=miss.filter(m=>+m.id.split("|")[0]!==n).slice(0,5);
+  const redo=miss.filter(m=>m.id.split("|")[0]!==String(n)).slice(0,5);
   if(redo.length)h+=`<div class="redo"><h3>先问问上次没答上的</h3><ol>${redo.map(m=>li(m.id.split("|")[0],m.id.split("|").slice(1).join("|"),decodeURIComponent(m.a))).join("")}</ol><p class="tip">这次答对了，就点“没答上 ✕”把它划掉。</p></div>`;
 
   /* 零 猜谜 */
@@ -183,7 +186,7 @@ function page(n){
   const parts=[];for(let a=n;a>=0;a--)parts.push(`${a}和${n-a}`);
   h+=`<h3>今天记住了</h3><div class="sum">${n} 可以分成：${parts.join("、")}。</div><p class="tip">一起念一遍。念完就结束，不要再加题。</p>`;
   if(nx)h+=`<div class="next">${G.name}跑之前大喊：“你们等着！明天我叫一个更厉害的来！”<br>是谁呢？先透露一句：<b>${nx.rid[0]}</b></div>`;
-  else h+=`<div class="next">大王乌贼的腿全数清楚了，3 到 10 全部打完！下一站：凑十。</div>`;
+  else h+=`<div class="next">大王乌贼缩着腿逃回海底，一边逃一边喊：“我去叫我的老对头来！它专门吃乌贼！”<br>3 到 10 全部打完！下一篇是凑十。先透露一句：<b>${C10.rid[0]}</b></div>`;
   h+=`<button class="fin${done[n]?" did":""}" id="fin">${done[n]?"✓ 这篇读完了（"+done[n]+"）":"今天这篇读完了"}</button>`;
   return h;
 }
@@ -192,6 +195,7 @@ function paperEqs(n){const m=n-1,o=[[`1 + (　) = ${n}`,m],[`1 + ${m} = `,n],[`$
   if(n>=4)o.push([`${n-2} − 1 = `,n-3],[`${m} − ${n-3} = `,2],[`(　) + 2 = ${n}`,n-2]);else o.push([`2 − 1 = `,1],[`1 + 1 = `,2]);
   return o}
 function sheet(n){
+  if(n==="凑十")return sheetC10();
   const G=GUEST[n],half=Math.floor(n/2),eqs=paperEqs(n),L=[];for(let a=0;a<=n;a++)L.push(a);const Rs=shuf(L.map(a=>n-a),n*7+3);
   const tree=a=>`<svg width="130" height="110" viewBox="0 0 130 110"><rect x="45" y="4" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><text x="65" y="30" font-size="24" text-anchor="middle">${n}</text><path d="M55 38 L30 66 M75 38 L100 66" stroke="#000" stroke-width="2"/><rect x="10" y="66" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><rect x="80" y="66" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><text x="30" y="92" font-size="24" text-anchor="middle">${a}</text></svg>`;
   const cells=f=>`<div class="cells">${Array.from({length:n},(_,k)=>`<i class="${k<f?"on":""}"></i>`).join("")}</div>`;
@@ -202,13 +206,99 @@ function sheet(n){
   <div class="avoid"><h2>四、悟空的能量格：把没满的格子涂满，还差几格？</h2>
   ${uniq([1,n-2,half].filter(x=>x>=1&&x<n)).map(f=>cells(f)+`<div class="row">已经满了 ${f} 格，还差 ____ 格。</div>`).join("")}</div>`;
 }
+/* ===== 凑十：10 的好朋友数，说出一个马上想到另一个 ===== */
+const C10={name:"抹香鲸",rid:["它的头特别大，像一个大大的方盒子，差不多占了身子的三分之一。","它能潜到很深很深、一点光都没有的海底，专门去抓大王乌贼吃。","它浮上来换气的时候，头顶“噗”地喷出一根水柱。"]};
+const FR=[[1,9],[2,8],[3,7],[4,6],[5,5]];
+/* 十格框：上下两排，每排 5 格，满的是 ●，空的是 ○ */
+function tf(c){const r=k=>Array.from({length:5},(_,j)=>k*5+j<c?"●":"○").join("");return `<span class="dots">${r(0)}<br>${r(1)}</span>`}
+function pageC10(){
+  const n="凑十",H=pick[n]||"悟空",atk=HERO[H];
+  let h=`<h2>第 9 篇　·　凑十</h2><div class="meta">10 的好朋友：说出一个，马上想到另一个。先从猜谜开始。</div>`;
+  const redo=miss.filter(m=>m.id.split("|")[0]!==n).slice(0,5);
+  if(redo.length)h+=`<div class="redo"><h3>先问问上次没答上的</h3><ol>${redo.map(m=>li(m.id.split("|")[0],m.id.split("|").slice(1).join("|"),decodeURIComponent(m.a))).join("")}</ol><p class="tip">这次答对了，就点“没答上 ✕”把它划掉。</p></div>`;
+
+  /* 零 猜谜 + 热身 */
+  h+=`<h3>猜猜今天谁来了<span class="k">口头</span></h3><p class="say">你说：“报告！大王乌贼把它的老对头叫来了！我说三句话，你猜是谁。”</p>`+
+     C10.rid.map(r=>`<p class="rid">${r}</p>`).join("")+`<p class="say">答案：<span class="a">抹香鲸</span></p><p class="tip">一句一句念，每句停一下让他猜。猜不出来就提示：“它是大海里最大的牙齿鲸。”</p>`;
+  h+=`<p class="say">你说：“昨天我们数清了大王乌贼的 10 条腿。先热热身：”</p><ol>`+
+     li(n,`10 可以分成 3 和几？`,7)+li(n,`大王乌贼 10 条腿，缩回去 4 条，外面还有几条？`,6)+`</ol>`;
+
+  /* 一 十格框 */
+  h+=`<h3>一、十格框看一眼<span class="k bean">豆子</span><small>还空几格</small></h3>
+  <p class="say">你说：“抹香鲸的嘴里有 10 个格子，每个格子放一颗牙。我只给你看一眼：有几颗牙？还空几格？”</p>
+  <p class="tip">在纸上画 2 排、每排 5 个格子（像下面这样），照着摆豆子，心里数“一、二”就盖住。上面一排满了是 5，看下面一排就够了。</p><ol>`;
+  [7,9,5,6,8,3].forEach(c=>h+=li(n,`摆 ${c} 颗 ${tf(c)}`,`${c} 颗，空 ${10-c} 格`));
+  h+=`</ol><p class="say">你问：“抹香鲸一口能吞下 10 条鱼！派谁出战？”</p><div class="heroes">${HN.map(x=>`<button data-h="${x}" class="${x===H?"on":""}">${x}</button>`).join("")}</div>
+  <p class="tip">他说谁，就点谁，下面的故事会换成他选的英雄。</p>`;
+
+  /* 二 好朋友数连击 */
+  const order=[3,8,1,6,10,4,7,2,9,0,5];
+  h+=`<h3>二、好朋友数连击<span class="k">口头</span><small>合起来是 10 的两个数，就是好朋友</small></h3>
+  <p class="say">你说：“${H}和抹香鲸比快！我说一个数，你马上说出它的好朋友，两个合起来是 10。慢了，抹香鲸就喷你一身水！”</p>
+  <p class="tip">一个接一个往下念，别停。他 3 秒内说出来就是“连击”，你数着连了几个。想了很久才说对的，也点“没答上”，明天再练。</p><ol>`;
+  order.forEach(a=>h+=li(n,`${a}`,10-a));
+  h+=`</ol><p class="say">再来一轮，这次反过来：<b>他说一个数，你来答</b>。故意答错一次，看他能不能抓到你。</p>`;
+
+  /* 三 打一仗 */
+  h+=`<h3>三、打一仗<span class="k">口头</span><span class="k pen">纸笔</span><small>听故事，凑成 10</small></h3><ol>`;
+  h+=li(n,`${H}要凑齐 10 个兵才能开船出海。已经来了 6 个，还要再来几个？`,4);
+  h+=li(n,`船上有 10 个兵，抹香鲸“噗”地喷出一根水柱，冲下去 3 个。船上还剩几个？<br><b>请你在草稿纸上把算式写出来。</b>`,`10 − 3 = 7`);
+  h+=li(n,`掉下水的 3 个兵游回来了，加上船上的 7 个，现在几个？算式怎么写？`,`7 + 3 = 10`);
+  h+=li(n,`抹香鲸张开大嘴，一口吞了 8 条鱼。它一口要吞满 10 条才算吃饱，还差几条？`,2);
+  h+=li(n,`${H}${atk}，抹香鲸掉了 10 颗牙里的 5 颗，还剩几颗？`,5);
+  h+=li(n,`海面上漂着三块木板，上面写着 4、6、3。哪两块合起来正好是 10？`,`4 和 6`);
+  h+=li(n,`又漂来三块：2、5、8。哪两块合起来是 10？`,`2 和 8`);
+  h+=`</ol><p class="tip">“还差几个”就是找好朋友。他卡住了，就问他：“6 的好朋友是谁？”</p>`;
+
+  /* 四 悟空攒能量 */
+  h+=`<h3>四、悟空攒能量<span class="k">口头</span><span class="k pen">纸笔</span><small>攒满 10 格</small></h3>
+  <p class="say">你说：“抹香鲸太大了，得请悟空来！悟空要攒满 10 格能量，才能放出哈比哈比哈比哈。”</p>
+  <p class="tip">在纸上画 10 个格子（两排，每排 5 个），按题目涂满几格，问还差几格。答对了，就让他站起来大喊一声“哈比哈比哈比哈——！”</p><ol>`;
+  [8,4,1,7,5].forEach(f=>h+=li(n,`已经满了 ${f} 格，还差几格？`,10-f));
+  h+=`</ol>`;
+
+  /* 五 纸上的题 */
+  const eqs=paperC10(),L=[0,1,2,3,4,5,6,7,8,9,10],Rs=shuf(L.map(a=>10-a),73);
+  h+=`<h3>五、纸上的题<span class="k pen">纸笔</span><small>算式 · 连线消消乐 · 分合图</small></h3>
+  <button class="btn" id="print">打印今天的纸面题</button>
+  <p class="say"><b>算式</b>（你写在纸上，他来填）：</p><ol>`;
+  eqs.forEach(([q,a])=>h+=li(n,`<span class="eq">${q}</span>`,a));
+  h+=`</ol><p class="say"><b>连线消消乐</b>：左右两排数字，哪两个合起来是 10，就连一条线。</p>
+  <p class="say eq">左：${L.join("　")}<br>右：${Rs.join("　")}</p>
+  <p class="tip">答案：${L.map(a=>`${a}—${10-a}`).join("，")}。</p>
+  <p class="say"><b>分合图</b>：上面写 10，下面两个格子，一个写好，一个让他填。</p><ol>`;
+  [3,8,5,1,6].forEach(a=>h+=li(n,`上面 10，下面一个是 ${a}，另一个是几？`,10-a));
+  h+=`</ol>`;
+
+  /* 六 你来考我 */
+  h+=`<h3>六、你来考我<span class="k">口头</span></h3>
+  <p class="say">你说：“现在换你当队长。你说一个数，我来说它的好朋友。或者用${H}和抹香鲸编一道‘还差几个凑成 10’的题考我。”</p>
+  <p class="tip">故意答错一次，比如把 3 的好朋友说成 6，看他能不能抓到你。</p>`;
+
+  h+=`<h3>今天记住了</h3><div class="sum">10 的好朋友：${FR.map(([a,b])=>a+" 和 "+b).join("、")}，还有 0 和 10。<br>一九一九好朋友，二八二八手拉手，<br>三七三七真亲密，四六四六一起走，<br>五五凑成一双手。</div><p class="tip">一起念一遍凑十歌，可以边念边拍手。念完就结束，不要再加题。</p>`;
+  h+=`<div class="next">抹香鲸潜回海底前喷了最后一根水柱：“10 个朋友都被你认全了！下次我带更多的鱼来，看你还凑不凑得上！”<br>下一站：进位（9 加几）。</div>`;
+  h+=`<button class="fin${done[n]?" did":""}" id="fin">${done[n]?"✓ 这篇读完了（"+done[n]+"）":"今天这篇读完了"}</button>`;
+  return h;
+}
+function paperC10(){return [[`3 + (　) = 10`,7],[`(　) + 8 = 10`,2],[`6 + (　) = 10`,4],[`(　) + 5 = 10`,5],[`9 + 1 = `,10],[`1 + 9 = `,10],
+  [`10 − 4 = `,6],[`10 − (　) = 7`,3],[`10 − 2 = `,8],[`10 − 0 = `,10],[`10 − 10 = `,0],[`7 + 3 = `,10]]}
+function sheetC10(){
+  const eqs=paperC10(),L=[0,1,2,3,4,5,6,7,8,9,10],Rs=shuf(L.map(a=>10-a),73);
+  const tree=a=>`<svg width="130" height="110" viewBox="0 0 130 110"><rect x="45" y="4" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><text x="65" y="30" font-size="24" text-anchor="middle">10</text><path d="M55 38 L30 66 M75 38 L100 66" stroke="#000" stroke-width="2"/><rect x="10" y="66" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><rect x="80" y="66" width="40" height="34" rx="6" fill="none" stroke="#000" stroke-width="2"/><text x="30" y="92" font-size="24" text-anchor="middle">${a}</text></svg>`;
+  const frame=c=>`<div><div class="tf">${Array.from({length:10},(_,k)=>`<i>${k<c?"●":""}</i>`).join("")}</div><div class="row">有 ${c} 个，还空 ____ 格</div></div>`;
+  return `<h1>凑十 · 打跑抹香鲸</h1><div class="who">名字：__________　　日期：____月____日</div>
+  <div class="avoid"><h2>一、算式</h2><div class="eqs">${eqs.map(([q])=>`<div>${q.replace(/=\s*$/,"= ____")}</div>`).join("")}</div></div>
+  <div class="avoid"><h2>二、连线消消乐：合起来是 10 的连起来</h2><div class="lines"><div>${L.map(a=>`<span>${a}</span>`).join("")}</div><div>${Rs.map(a=>`<span>${a}</span>`).join("")}</div></div></div>
+  <div class="avoid"><h2>三、分合图</h2><div class="trees">${[3,8,5,1,6].map(tree).join("")}</div></div>
+  <div class="avoid"><h2>四、十格框：还空几格？</h2><div class="tfs">${[7,4,9,2].map(frame).join("")}</div></div>`;
+}
 function render(){
   $("#days").innerHTML=NS.map(n=>`<button data-n="${n}" class="${n===cur?"on":""}${done[n]?" done":""}">${n}</button>`).join("")+
-    ["凑十","进位","退位"].map(t=>`<button class="later" disabled>${t}</button>`).join("");
+    ["进位","退位"].map(t=>`<button class="later" disabled>${t}</button>`).join("");
   $("#art").innerHTML=page(cur);$("#sheet").innerHTML=sheet(cur);
 }
 document.addEventListener("click",e=>{
-  const d=e.target.closest(".days button[data-n]");if(d){cur=+d.dataset.n;ST.set("cur",cur);render();scrollTo(0,0);return}
+  const d=e.target.closest(".days button[data-n]");if(d){cur=isNaN(+d.dataset.n)?d.dataset.n:+d.dataset.n;ST.set("cur",cur);render();scrollTo(0,0);return}
   const hb=e.target.closest(".heroes button");if(hb){pick[cur]=hb.dataset.h;ST.set("hero",pick);const y=scrollY;render();scrollTo(0,y);return}
   const m=e.target.closest(".miss");if(m){const id=decodeURIComponent(m.dataset.id),k=miss.findIndex(x=>x.id===id);
     if(k>=0)miss.splice(k,1);else miss.push({id,a:m.dataset.a});ST.set("miss",miss);const y=scrollY;render();scrollTo(0,y);return}
